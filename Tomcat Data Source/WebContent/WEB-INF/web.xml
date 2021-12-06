@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" version="3.1">
+  <display-name>NIKE</display-name>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+  
+  <!-- Find All Product -->
+  <servlet>
+    <servlet-name>FindAllProductsData</servlet-name>
+    <servlet-class>main.RESTfulWebService.FindAllProductsData</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>FindAllProductsData</servlet-name>
+    <url-pattern>/product</url-pattern>
+  </servlet-mapping>
+  
+  <!-- Find Product By ID -->
+  <servlet>
+    <servlet-name>FindProductByID</servlet-name>
+    <servlet-class>main.RESTfulWebService.FindProductByID</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>FindProductByID</servlet-name>
+    <url-pattern>/product/id/*</url-pattern>
+  </servlet-mapping>
+  
+  <!-- Find Product By Product Name -->
+  <servlet>
+    <servlet-name>FindProductByName</servlet-name>
+    <servlet-class>main.RESTfulWebService.FindProductByName</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>FindProductByName</servlet-name>
+    <url-pattern>/product/name/*</url-pattern>
+  </servlet-mapping>
+</web-app>
