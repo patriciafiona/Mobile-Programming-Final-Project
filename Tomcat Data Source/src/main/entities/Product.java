@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 @JsonAutoDetect(fieldVisibility = Visibility.ANY)
 public class Product{
 	private int id;
-	private int product_id;
+	private int product_detail_id;
 	private int category_id;
 	private String name;
 	private float price;
@@ -25,12 +25,12 @@ public class Product{
 	private String category_name;
 	private String color_code;
 	
-	public Product(int id, int product_id, int category_id, String name, float price, String description,
+	public Product(int id, int product_detail_id, int category_id, String name, float price, String description,
 			double rating, String style, String color_description, int color_id, int stock, String photo_01,
 			String photo_02, String photo_03, String photo_04, String photo_05) {
 		super();
 		this.id = id;
-		this.product_id = product_id;
+		this.product_detail_id = product_detail_id;
 		this.category_id = category_id;
 		this.name = name;
 		this.price = price;
@@ -47,12 +47,14 @@ public class Product{
 		this.photo_05 = photo_05;
 	}
 	
-	public Product(int id, String name, float price, String description,
+	public Product(int id, int product_detail_id, int category_id, String name, float price, String description,
 			double rating, String style, String color_description, int stock, String photo_01,
 			String photo_02, String photo_03, String photo_04, String photo_05,
 			String category_name, String color_code) {
 		super();
 		this.id = id;
+		this.product_detail_id = product_detail_id;
+		this.category_id = category_id;
 		this.name = name;
 		this.price = price;
 		this.description = description;

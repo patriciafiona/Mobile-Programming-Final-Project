@@ -3,10 +3,8 @@ package main.RESTfulWebService;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.List;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,25 +17,25 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import main.entities.Product;
 import main.service.implementation.ProductsServiceImpl;
 
-@WebServlet("/FindAllProductsData")
-public class FindAllProductsData extends HttpServlet {
+public class FindProductByDetailID extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    public FindAllProductsData() {
+    public FindProductByDetailID() {
         super();
     }
-
+    
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setHeader("Access-Control-Allow-Origin", "*");
-		
 		ProductsServiceImpl ps = new ProductsServiceImpl();
+		
 		try {
-			List<Product> listProduct = ps.findAll();
-			request.setAttribute("listProduct", listProduct);
+			String URI = request.getRequestURI();
+			int id = Integer.valueOf(URI.substring(URI.lastIndexOf('/') + 1) );
+			Product product = ps.findByDetailID(id);
+			request.setAttribute("product", product);
 			
 			ObjectMapper objectMapper = new ObjectMapper();
 			objectMapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
-			String ok = objectMapper.writeValueAsString(listProduct);
+			String ok = objectMapper.writeValueAsString(product);
 			
 			ObjectMapper mapper = new ObjectMapper();
 		    JsonNode actualObj = mapper.readTree(ok);
@@ -47,10 +45,9 @@ public class FindAllProductsData extends HttpServlet {
 	        response.setCharacterEncoding("UTF-8");
 	        out.print(actualObj);
 	        out.flush();   
-		} catch (SQLException e) {
+		}catch (SQLException e) {
 			e.printStackTrace();
-		}	
-		
+		}
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

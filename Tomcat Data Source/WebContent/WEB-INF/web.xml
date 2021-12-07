@@ -30,6 +30,16 @@
     <url-pattern>/product/id/*</url-pattern>
   </servlet-mapping>
   
+  <!-- Find Product By Product Detail ID -->
+  <servlet>
+    <servlet-name>FindProductByDetailID</servlet-name>
+    <servlet-class>main.RESTfulWebService.FindProductByDetailID</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>FindProductByDetailID</servlet-name>
+    <url-pattern>/product/detail_id/*</url-pattern>
+  </servlet-mapping>
+  
   <!-- Find Product By Product Name -->
   <servlet>
     <servlet-name>FindProductByName</servlet-name>

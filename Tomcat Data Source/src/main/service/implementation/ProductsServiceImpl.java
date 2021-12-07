@@ -14,12 +14,16 @@ public class ProductsServiceImpl implements Service{
 	}
 	
 	@Override
-	public <Product> Product findById(int id) throws SQLException {
+	public <Product> List<Product> findById(int id) throws SQLException {
 		return dao.findById(id);
 	}
 	
 	@Override
 	public <Product> List<Product> findByName(String name) throws SQLException {
 		return dao.findByName(name);
+	}
+	
+	public <Product> Product findByDetailID(int id) throws SQLException {
+		return dao.findByDetailID(id);
 	}
 }

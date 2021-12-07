@@ -1,18 +1,18 @@
 package main.RESTfulWebService;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.List;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import main.entities.Product;
@@ -31,13 +31,21 @@ public class FindProductByID extends HttpServlet {
 		try {
 			String URI = request.getRequestURI();
 			int id = Integer.valueOf(URI.substring(URI.lastIndexOf('/') + 1) );
-			Product product = ps.findById(id);
-			request.setAttribute("product", product);
+			List<Product> listProduct = ps.findById(id);
+			request.setAttribute("product", listProduct);
 			
 			ObjectMapper objectMapper = new ObjectMapper();
 			objectMapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
-			String ok = objectMapper.writeValueAsString(product);
-			response.getWriter().append(ok);
+			String ok = objectMapper.writeValueAsString(listProduct);
+			
+			ObjectMapper mapper = new ObjectMapper();
+		    JsonNode actualObj = mapper.readTree(ok);
+			
+		    PrintWriter out = response.getWriter();
+	        response.setContentType("application/json");
+	        response.setCharacterEncoding("UTF-8");
+	        out.print(actualObj);
+	        out.flush();   
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}
