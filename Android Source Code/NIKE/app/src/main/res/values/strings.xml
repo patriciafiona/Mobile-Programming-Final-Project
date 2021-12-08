@@ -10,4 +10,6 @@
     <string name="shopping_cart">Shopping Cart</string>
     <string name="account">Account</string>
     <string name="press_again">Press Again to Exit</string>
+    <string name="get_started">GET STARTED</string>
+    <string name="temp_title">Testing Title Section</string>
 </resources>

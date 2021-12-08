@@ -5,11 +5,16 @@
       <map>
         <entry key="..\:/kalbis/Nanjing Xiaozhuang University/Semester 7/Mobile Programming/Final Project/L20253009_PatriciaFiona/Android Source Code/NIKE/app/src/main/res/drawable/bottom_nav_icon_color_selector.xml" value="0.8857142857142857" />
         <entry key="..\:/kalbis/Nanjing Xiaozhuang University/Semester 7/Mobile Programming/Final Project/L20253009_PatriciaFiona/Android Source Code/NIKE/app/src/main/res/drawable/ic_baseline_home_white.xml" value="0.16041666666666668" />
+        <entry key="..\:/kalbis/Nanjing Xiaozhuang University/Semester 7/Mobile Programming/Final Project/L20253009_PatriciaFiona/Android Source Code/NIKE/app/src/main/res/drawable/rectangle_black.xml" value="0.2484375" />
         <entry key="..\:/kalbis/Nanjing Xiaozhuang University/Semester 7/Mobile Programming/Final Project/L20253009_PatriciaFiona/Android Source Code/NIKE/app/src/main/res/drawable/rounded_bottom_navigation.xml" value="0.16041666666666668" />
         <entry key="..\:/kalbis/Nanjing Xiaozhuang University/Semester 7/Mobile Programming/Final Project/L20253009_PatriciaFiona/Android Source Code/NIKE/app/src/main/res/drawable/splash_logo.xml" value="0.2484375" />
         <entry key="..\:/kalbis/Nanjing Xiaozhuang University/Semester 7/Mobile Programming/Final Project/L20253009_PatriciaFiona/Android Source Code/NIKE/app/src/main/res/layout/activity_main.xml" value="0.14427083333333332" />
         <entry key="..\:/kalbis/Nanjing Xiaozhuang University/Semester 7/Mobile Programming/Final Project/L20253009_PatriciaFiona/Android Source Code/NIKE/app/src/main/res/layout/activity_splash.xml" value="0.14427083333333332" />
+        <entry key="..\:/kalbis/Nanjing Xiaozhuang University/Semester 7/Mobile Programming/Final Project/L20253009_PatriciaFiona/Android Source Code/NIKE/app/src/main/res/layout/activity_welcome.xml" value="0.2826530612244898" />
         <entry key="..\:/kalbis/Nanjing Xiaozhuang University/Semester 7/Mobile Programming/Final Project/L20253009_PatriciaFiona/Android Source Code/NIKE/app/src/main/res/layout/fragment_favorite.xml" value="0.23229166666666667" />
+        <entry key="..\:/kalbis/Nanjing Xiaozhuang University/Semester 7/Mobile Programming/Final Project/L20253009_PatriciaFiona/Android Source Code/NIKE/app/src/main/res/layout/fragment_welcome_page.xml" value="0.23229166666666667" />
+        <entry key="..\:/kalbis/Nanjing Xiaozhuang University/Semester 7/Mobile Programming/Final Project/L20253009_PatriciaFiona/Android Source Code/NIKE/app/src/main/res/layout/item_welcome_page.xml" value="0.2" />
+        <entry key="..\:/kalbis/Nanjing Xiaozhuang University/Semester 7/Mobile Programming/Final Project/L20253009_PatriciaFiona/Android Source Code/NIKE/app/src/main/res/layout/item_welcome_slider.xml" value="0.23229166666666667" />
         <entry key="..\:/kalbis/Nanjing Xiaozhuang University/Semester 7/Mobile Programming/Final Project/L20253009_PatriciaFiona/Android Source Code/NIKE/app/src/main/res/menu/bottom_nav_menu.xml" value="0.14427083333333332" />
       </map>
     </option>
