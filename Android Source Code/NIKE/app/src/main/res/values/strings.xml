@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">NIKE</string>
+    <string name="img_desc">img desc</string>
+    <string name="nike_slogan">JUST DO IT</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="home">Home</string>
+    <string name="search">Search</string>
+    <string name="favorite">Favorite</string>
+    <string name="shopping_cart">Shopping Cart</string>
+    <string name="account">Account</string>
+    <string name="press_again">Press Again to Exit</string>
 </resources>
