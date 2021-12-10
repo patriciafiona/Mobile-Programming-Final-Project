@@ -6,10 +6,12 @@
     <color name="dim_gray_1">#676767</color>
     <color name="dim_gray_2">#747474</color>
     <color name="nobel">#9C9C9C</color>
-    <color name="philippine_sliver">#B5B5B5</color>
+    <color name="philippine_silver">#B5B5B5</color>
     <color name="whisper">#E5E5E5</color>
     <color name="white_smoke">#F0F0F0</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="transparency">#00000000</color>
 
     <color name="red">#FF0000</color>
     <color name="yellow">#FFF500</color>

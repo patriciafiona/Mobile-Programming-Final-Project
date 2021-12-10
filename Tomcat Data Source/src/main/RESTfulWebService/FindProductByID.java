@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.simple.JSONObject;
+
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -40,11 +42,16 @@ public class FindProductByID extends HttpServlet {
 			
 			ObjectMapper mapper = new ObjectMapper();
 		    JsonNode actualObj = mapper.readTree(ok);
+		    
+		    //adding status & convert to JSON object
+		    JSONObject finalObj=new JSONObject(); 
+		    finalObj.put("status", 200); 
+		    finalObj.put("results", actualObj);
 			
 		    PrintWriter out = response.getWriter();
 	        response.setContentType("application/json");
 	        response.setCharacterEncoding("UTF-8");
-	        out.print(actualObj);
+	        out.print(finalObj);
 	        out.flush();   
 		}catch (SQLException e) {
 			e.printStackTrace();

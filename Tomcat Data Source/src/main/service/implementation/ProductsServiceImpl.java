@@ -26,4 +26,8 @@ public class ProductsServiceImpl implements Service{
 	public <Product> Product findByDetailID(int id) throws SQLException {
 		return dao.findByDetailID(id);
 	}
+	
+	public <Product> List<Product> findByCategory(int category_id) throws SQLException{
+		return dao.findByCategory(category_id);
+	}
 }

@@ -49,4 +49,24 @@
     <servlet-name>FindProductByName</servlet-name>
     <url-pattern>/product/name/*</url-pattern>
   </servlet-mapping>
+  
+  <!-- Find Product By Category ID -->
+  <servlet>
+    <servlet-name>FindProductByCategoryID</servlet-name>
+    <servlet-class>main.RESTfulWebService.FindProductByCategoryID</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>FindProductByCategoryID</servlet-name>
+    <url-pattern>/product/category_id/*</url-pattern>
+  </servlet-mapping>
+  
+  <!-- Find All Category -->
+  <servlet>
+    <servlet-name>FindAllCategories</servlet-name>
+    <servlet-class>main.RESTfulWebService.FindAllCategories</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>FindAllCategories</servlet-name>
+    <url-pattern>/category</url-pattern>
+  </servlet-mapping>
 </web-app>

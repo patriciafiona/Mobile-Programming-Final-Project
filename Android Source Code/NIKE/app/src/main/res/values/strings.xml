@@ -12,4 +12,17 @@
     <string name="press_again">Press Again to Exit</string>
     <string name="get_started">GET STARTED</string>
     <string name="temp_title">Testing Title Section</string>
+    <string name="new_arrivals">New Arrivals</string>
+    <string name="up_to_30_discount">Up to \n30% Discount</string>
+    <string name="collection">Collection</string>
+    <string name="temp_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</string>
+    <string name="temp_category">Category Name</string>
+    <string name="temp_price">Rp 1900.000</string>
+    <string name="latest_shoes">Latest Shoes</string>
+    <string name="basketball_shoes">Basketball Shoes</string>
+    <string name="sneakers_shoes">Sneakers Shoes</string>
+    <string name="high_tops_shoes">High Tops Shoes</string>
+    <string name="check_our_official_store">Check Our \nOfficial Store</string>
+    <string name="check_now">Check Now</string>
+    <string name="no_data">No Data</string>
 </resources>
