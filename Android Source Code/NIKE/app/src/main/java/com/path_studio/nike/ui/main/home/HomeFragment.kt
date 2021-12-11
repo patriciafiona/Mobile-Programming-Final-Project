@@ -53,12 +53,12 @@ class HomeFragment : Fragment() {
         //scroll listener
         binding.scrollContainer.viewTreeObserver.addOnScrollChangedListener {
             val scrollY: Int = binding.scrollContainer.scrollY
-            val navView = requireActivity().findViewById<View>(com.path_studio.nike.R.id.top_nav_container)
+            val navView = activity?.findViewById<View>(R.id.top_nav_container)
 
             if (scrollY in 0..70) {
-                navView.visibility = View.VISIBLE
+                navView?.visibility = View.VISIBLE
             }else{
-                navView.visibility = View.INVISIBLE
+                navView?.visibility = View.INVISIBLE
             }
         }
 
@@ -66,6 +66,7 @@ class HomeFragment : Fragment() {
         with(binding){
             categoriesChipsContainer.setOnCheckedChangeListener { chipGroup, id ->
                 prepareCollectionRV(viewModel, chipGroup.checkedChipId)
+                prepareLatestRV(viewModel, chipGroup.checkedChipId)
                 prepareTypeRV(rvBasketballShoes, "basket", viewModel, chipGroup.checkedChipId, "%basket%")
                 prepareTypeRV(rvHighTopShoes, "high tops", viewModel, chipGroup.checkedChipId, "%high tops%")
                 prepareTypeRV(rvSneakersShoes, "sneakers", viewModel, chipGroup.checkedChipId, "%sneakers%")
@@ -126,7 +127,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun prepareCollectionRV(viewModel: HomeViewModel, categoryId: Int){
-        val collectionAdapter = ProductRotateXLAdapter()
+        val collectionAdapter = ProductRotateXLAdapter(viewModel)
 
         viewModel.getProductsByCategoryWithLimit(categoryId, 5).observe(requireActivity(), { products ->
             if (products != null) {
@@ -154,6 +155,38 @@ class HomeFragment : Fragment() {
             rvCollections.setHasFixedSize(true)
             rvCollections.adapter = collectionAdapter
         }
+    }
+
+    private fun prepareLatestRV(viewModel: HomeViewModel, categoryId: Int){
+        val adapter = ProductMDAdapter()
+
+        viewModel.getLatestProductWithLimit(categoryId, 5).observe(requireActivity(), { products ->
+            if (products != null) {
+                when (products.status) {
+                    Status.LOADING -> binding.progressBarBasketball.visibility = View.VISIBLE
+                    Status.SUCCESS -> {
+                        showHideDataIndicator("latest", true)
+                        binding.progressBarBasketball.visibility = View.GONE
+
+                        //add empty data for show more button
+                        adapter.submitList(products.data)
+                    }
+                    Status.ERROR -> {
+                        binding.progressBarBasketball.visibility = View.GONE
+                        Toast.makeText(context, "Something Error", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }else{
+                showHideDataIndicator("latest", false)
+            }
+        })
+
+        with(binding){
+            rvLatestShoes.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
+            rvLatestShoes.setHasFixedSize(true)
+            rvLatestShoes.adapter = adapter
+        }
+
     }
 
     private fun prepareTypeRV(rv: RecyclerView, status: String, viewModel: HomeViewModel, categoryId: Int, typeName: String){

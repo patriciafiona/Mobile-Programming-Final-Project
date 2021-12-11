@@ -3,6 +3,7 @@ package com.path_studio.nike.ui.main.home.adapter
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageButton
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -11,9 +12,10 @@ import com.bumptech.glide.request.RequestOptions
 import com.path_studio.nike.R
 import com.path_studio.nike.data.source.local.entity.ProductEntity
 import com.path_studio.nike.databinding.ItemRowProductRotateXlBinding
+import com.path_studio.nike.ui.main.home.HomeViewModel
 import com.path_studio.nike.utils.Utils.getNumberThousandFormat
 
-class ProductRotateXLAdapter: PagedListAdapter<ProductEntity, ProductRotateXLAdapter.ItemViewHolder>(DIFF_CALLBACK) {
+class ProductRotateXLAdapter(private val homeViewModel: HomeViewModel): PagedListAdapter<ProductEntity, ProductRotateXLAdapter.ItemViewHolder>(DIFF_CALLBACK) {
     companion object {
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ProductEntity>() {
             override fun areItemsTheSame(oldItem: ProductEntity, newItem: ProductEntity): Boolean {
@@ -28,7 +30,7 @@ class ProductRotateXLAdapter: PagedListAdapter<ProductEntity, ProductRotateXLAda
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val itemsBinding = ItemRowProductRotateXlBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ItemViewHolder(itemsBinding)
+        return ItemViewHolder(homeViewModel, itemsBinding)
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
@@ -38,7 +40,7 @@ class ProductRotateXLAdapter: PagedListAdapter<ProductEntity, ProductRotateXLAda
         }
     }
 
-    class ItemViewHolder(private val binding: ItemRowProductRotateXlBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ItemViewHolder(private val viewModel: HomeViewModel, private val binding: ItemRowProductRotateXlBinding) : RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
         fun bind(product: ProductEntity) {
             with(binding) {
@@ -46,8 +48,11 @@ class ProductRotateXLAdapter: PagedListAdapter<ProductEntity, ProductRotateXLAda
                 rvProductCategoryName.text = "${product.categoryName} Shoes"
                 rvProductPriceAfter.text = "Rp ${getNumberThousandFormat(product.price)}"
 
+                setFavoriteState(rvFavBtn, product.favorite)
+
                 rvFavBtn.setOnClickListener {
-                    //logic
+                    viewModel.setFavorite(product)
+                    setFavoriteState(rvFavBtn, !product.favorite)
                 }
 
                 itemView.setOnClickListener {
@@ -63,6 +68,14 @@ class ProductRotateXLAdapter: PagedListAdapter<ProductEntity, ProductRotateXLAda
                             .error(R.drawable.ic_error_img)
                     )
                     .into(rvProductImg)
+            }
+        }
+
+        private fun setFavoriteState(btn:ImageButton, state: Boolean){
+            if (state) {
+                btn.setImageResource(R.drawable.ic_baseline_favorite_red)
+            } else {
+                btn.setImageResource(R.drawable.ic_baseline_favorite_border_black)
             }
         }
     }

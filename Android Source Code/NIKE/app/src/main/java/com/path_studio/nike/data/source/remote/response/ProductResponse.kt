@@ -3,23 +3,18 @@ package com.path_studio.nike.data.source.remote.response
 import com.google.gson.annotations.SerializedName
 
 data class ProductResponse(
-	@field:SerializedName("status")
-	val status: Int,
 
 	@field:SerializedName("results")
-	val results: List<ProductResponseItem>
+	val results: List<ProductResponseItem>,
+
+	@field:SerializedName("status")
+	val status: Int
 )
 
 data class ProductResponseItem(
 
 	@field:SerializedName("type_name")
 	val typeName: String,
-
-	@field:SerializedName("photo_01")
-	val photo01: String,
-
-	@field:SerializedName("photo_02")
-	val photo02: String? = null,
 
 	@field:SerializedName("category_name")
 	val categoryName: String,
@@ -36,11 +31,17 @@ data class ProductResponseItem(
 	@field:SerializedName("description")
 	val description: String,
 
+	@field:SerializedName("created_at")
+	val createdAt: Long,
+
 	@field:SerializedName("color_id")
 	val colorId: Int,
 
 	@field:SerializedName("category_id")
 	val categoryId: Int,
+
+	@field:SerializedName("updated_at")
+	val updatedAt: Long,
 
 	@field:SerializedName("price")
 	val price: Double,
@@ -57,17 +58,23 @@ data class ProductResponseItem(
 	@field:SerializedName("stock")
 	val stock: Int,
 
+	@field:SerializedName("photo_01")
+	val photo01: String,
+
+	@field:SerializedName("photo_02")
+	val photo02: String,
+
 	@field:SerializedName("photo_03")
-	val photo03: String? = null,
+	val photo03: String?,
 
 	@field:SerializedName("photo_04")
-	val photo04: String? = null,
+	val photo04: String?,
+
+	@field:SerializedName("photo_05")
+	val photo05: String?,
 
 	@field:SerializedName("product_detail_id")
 	val productDetailId: Int,
-
-	@field:SerializedName("photo_05")
-	val photo05: String? = null,
 
 	@field:SerializedName("color_code")
 	val colorCode: String

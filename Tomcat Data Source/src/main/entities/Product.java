@@ -1,5 +1,7 @@
 package main.entities;
 
+import java.sql.Timestamp;
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 
@@ -27,6 +29,9 @@ public class Product{
 	private String category_name;
 	private String color_code;
 	
+	private Timestamp created_at;
+	private Timestamp updated_at;
+	
 	public Product(int id, int product_detail_id, int category_id, String name, float price, String description,
 			double rating, String style, String color_description, int color_id, int stock, String photo_01,
 			String photo_02, String photo_03, String photo_04, String photo_05) {
@@ -52,7 +57,8 @@ public class Product{
 	public Product(int id, int product_detail_id, int category_id, String name, float price, String description,
 			double rating, String style, String color_description, int stock, String photo_01,
 			String photo_02, String photo_03, String photo_04, String photo_05,
-			String category_name, String color_code, int type_id, String type_name) {
+			String category_name, String color_code, int type_id, String type_name,
+			Timestamp created_at, Timestamp updated_at) {
 		super();
 		this.id = id;
 		this.product_detail_id = product_detail_id;
@@ -73,5 +79,7 @@ public class Product{
 		this.color_code = color_code;
 		this.type_id = type_id;
 		this.type_name = type_name;
+		this.created_at = created_at;
+		this.updated_at = updated_at;
 	}
 }

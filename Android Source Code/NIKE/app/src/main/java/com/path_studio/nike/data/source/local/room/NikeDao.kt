@@ -13,6 +13,9 @@ interface NikeDao {
     @Query("SELECT * FROM product_entities ORDER BY id ASC")
     fun getAllProduct(): DataSource.Factory<Int, ProductEntity>
 
+    @Query("SELECT * FROM product_entities WHERE categoryId = :categoryId ORDER BY updated_at DESC LIMIT :limit")
+    fun getLatestProductWithLimit(categoryId: Int, limit: Int): DataSource.Factory<Int, ProductEntity>
+
     @Query("SELECT * FROM product_entities WHERE categoryId = :categoryId")
     fun getProductByCategory(categoryId: Int): DataSource.Factory<Int, ProductEntity>
 

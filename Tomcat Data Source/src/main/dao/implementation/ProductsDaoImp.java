@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +22,7 @@ public class ProductsDaoImp implements Dao{
 				+ "product_details.rating, product_details.style, product_details.color_description, "
 				+ "product_details.stock, product_details.photo_01, product_details.photo_02, "
 				+ "product_details.photo_03, product_details.photo_04, product_details.photo_05, "
+				+ "product_details.created_at, product_details.updated_at, "
 				+ "categories.name as categories_name, colors.color_code, types.name as type_name FROM products "
 				+ "INNER JOIN product_details ON "
 				+ "products.id = product_details.product_id "
@@ -55,8 +57,11 @@ public class ProductsDaoImp implements Dao{
 			String categories_name = rs.getString("categories_name");
 			String color_code = rs.getString("color_code");
 			
+			Timestamp created_at = rs.getTimestamp("created_at");
+			Timestamp updated_at = rs.getTimestamp("updated_at");
+			
 			main.entities.Product product = new main.entities.Product(id, product_detail_id, category_id, name, price, description, rating, style, color_description,
-					stocks, photo_01, photo_02, photo_03, photo_04, photo_05, categories_name, color_code, type_id, type_name);
+					stocks, photo_01, photo_02, photo_03, photo_04, photo_05, categories_name, color_code, type_id, type_name, created_at, updated_at);
 			products.add(product);
 		}
 		JDBCUtil.close(conn, st, rs);
@@ -73,6 +78,7 @@ public class ProductsDaoImp implements Dao{
 				+ "product_details.rating, product_details.style, product_details.color_description, "
 				+ "product_details.stock, product_details.photo_01, product_details.photo_02, "
 				+ "product_details.photo_03, product_details.photo_04, product_details.photo_05, "
+				+ "product_details.created_at, product_details.updated_at, "
 				+ "categories.name as categories_name, colors.color_code, types.name as type_name FROM products "
 				+ "INNER JOIN product_details ON "
 				+ "products.id = product_details.product_id "
@@ -107,8 +113,11 @@ public class ProductsDaoImp implements Dao{
 			String categories_name = rs.getString("categories_name");
 			String color_code = rs.getString("color_code");
 			
+			Timestamp created_at = rs.getTimestamp("created_at");
+			Timestamp updated_at = rs.getTimestamp("updated_at");
+			
 			main.entities.Product product = new main.entities.Product(res_id, product_detail_id, category_id, name, price, description, rating, style, color_description,
-					stocks, photo_01, photo_02, photo_03, photo_04, photo_05, categories_name, color_code, type_id, type_name);
+					stocks, photo_01, photo_02, photo_03, photo_04, photo_05, categories_name, color_code, type_id, type_name, created_at, updated_at);
 			products.add(product);
 		}
 		JDBCUtil.close(conn, st, rs);
@@ -125,6 +134,7 @@ public class ProductsDaoImp implements Dao{
 				+ "product_details.rating, product_details.style, product_details.color_description, "
 				+ "product_details.stock, product_details.photo_01, product_details.photo_02, "
 				+ "product_details.photo_03, product_details.photo_04, product_details.photo_05, "
+				+ "product_details.created_at, product_details.updated_at, "
 				+ "categories.name as categories_name, colors.color_code, types.name as type_name FROM products "
 				+ "INNER JOIN product_details ON "
 				+ "products.id = product_details.product_id "
@@ -159,8 +169,11 @@ public class ProductsDaoImp implements Dao{
 			String categories_name = rs.getString("categories_name");
 			String color_code = rs.getString("color_code");
 			
+			Timestamp created_at = rs.getTimestamp("created_at");
+			Timestamp updated_at = rs.getTimestamp("updated_at");
+			
 			main.entities.Product product = new main.entities.Product(id, product_detail_id, category_id, res_name, price, description, rating, style, color_description,
-					stocks, photo_01, photo_02, photo_03, photo_04, photo_05, categories_name, color_code, type_id, type_name);
+					stocks, photo_01, photo_02, photo_03, photo_04, photo_05, categories_name, color_code, type_id, type_name, created_at, updated_at);
 			products.add(product);
 		}
 		JDBCUtil.close(conn, st, rs);
@@ -176,6 +189,7 @@ public class ProductsDaoImp implements Dao{
 				+ "product_details.rating, product_details.style, product_details.color_description, "
 				+ "product_details.stock, product_details.photo_01, product_details.photo_02, "
 				+ "product_details.photo_03, product_details.photo_04, product_details.photo_05, "
+				+ "product_details.created_at, product_details.updated_at, "
 				+ "categories.name as categories_name, colors.color_code, types.name as type_name FROM products "
 				+ "INNER JOIN product_details ON "
 				+ "products.id = product_details.product_id "
@@ -210,8 +224,11 @@ public class ProductsDaoImp implements Dao{
 			String categories_name = rs.getString("categories_name");
 			String color_code = rs.getString("color_code");
 			
+			Timestamp created_at = rs.getTimestamp("created_at");
+			Timestamp updated_at = rs.getTimestamp("updated_at");
+			
 			product = new main.entities.Product(res_id, product_detail_id, category_id, name, price, description, rating, style, color_description,
-					stocks, photo_01, photo_02, photo_03, photo_04, photo_05, categories_name, color_code, type_id, type_name);
+					stocks, photo_01, photo_02, photo_03, photo_04, photo_05, categories_name, color_code, type_id, type_name, created_at, updated_at);
 		}
 		JDBCUtil.close(conn, st, rs);
 		return (Product) product;
@@ -226,6 +243,7 @@ public class ProductsDaoImp implements Dao{
 				+ "product_details.rating, product_details.style, product_details.color_description, "
 				+ "product_details.stock, product_details.photo_01, product_details.photo_02, "
 				+ "product_details.photo_03, product_details.photo_04, product_details.photo_05, "
+				+ "product_details.created_at, product_details.updated_at, "
 				+ "categories.name as categories_name, colors.color_code, types.name as type_name FROM products "
 				+ "INNER JOIN product_details ON "
 				+ "products.id = product_details.product_id "
@@ -260,8 +278,11 @@ public class ProductsDaoImp implements Dao{
 			String categories_name = rs.getString("categories_name");
 			String color_code = rs.getString("color_code");
 			
+			Timestamp created_at = rs.getTimestamp("created_at");
+			Timestamp updated_at = rs.getTimestamp("updated_at");
+			
 			main.entities.Product product = new main.entities.Product(id, product_detail_id, res_category_id, name, price, description, rating, style, color_description,
-					stocks, photo_01, photo_02, photo_03, photo_04, photo_05, categories_name, color_code, type_id, type_name);
+					stocks, photo_01, photo_02, photo_03, photo_04, photo_05, categories_name, color_code, type_id, type_name, created_at, updated_at);
 			products.add(product);
 		}
 		JDBCUtil.close(conn, st, rs);
@@ -277,6 +298,7 @@ public class ProductsDaoImp implements Dao{
 				+ "product_details.rating, product_details.style, product_details.color_description, "
 				+ "product_details.stock, product_details.photo_01, product_details.photo_02, "
 				+ "product_details.photo_03, product_details.photo_04, product_details.photo_05, "
+				+ "product_details.created_at, product_details.updated_at, "
 				+ "categories.name as categories_name, colors.color_code, types.name as type_name FROM products "
 				+ "INNER JOIN product_details ON "
 				+ "products.id = product_details.product_id "
@@ -311,8 +333,11 @@ public class ProductsDaoImp implements Dao{
 			String categories_name = rs.getString("categories_name");
 			String color_code = rs.getString("color_code");
 			
+			Timestamp created_at = rs.getTimestamp("created_at");
+			Timestamp updated_at = rs.getTimestamp("updated_at");
+			
 			main.entities.Product product = new main.entities.Product(id, product_detail_id, res_category_id, name, price, description, rating, style, color_description,
-					stocks, photo_01, photo_02, photo_03, photo_04, photo_05, categories_name, color_code, res_type_id, res_type_name);
+					stocks, photo_01, photo_02, photo_03, photo_04, photo_05, categories_name, color_code, res_type_id, res_type_name, created_at, updated_at);
 			products.add(product);
 		}
 		JDBCUtil.close(conn, st, rs);
@@ -338,6 +363,7 @@ public class ProductsDaoImp implements Dao{
 				+ "product_details.rating, product_details.style, product_details.color_description, "
 				+ "product_details.stock, product_details.photo_01, product_details.photo_02, "
 				+ "product_details.photo_03, product_details.photo_04, product_details.photo_05, "
+				+ "product_details.created_at, product_details.updated_at, "
 				+ "categories.name as categories_name, colors.color_code, types.name as type_name FROM products "
 				+ "INNER JOIN product_details ON "
 				+ "products.id = product_details.product_id "
@@ -373,8 +399,11 @@ public class ProductsDaoImp implements Dao{
 			String categories_name = rs.getString("categories_name");
 			String color_code = rs.getString("color_code");
 			
+			Timestamp created_at = rs.getTimestamp("created_at");
+			Timestamp updated_at = rs.getTimestamp("updated_at");
+			
 			main.entities.Product product = new main.entities.Product(id, product_detail_id, category_id, name, price, description, rating, style, color_description,
-					stocks, photo_01, photo_02, photo_03, photo_04, photo_05, categories_name, color_code, type_id, type_name);
+					stocks, photo_01, photo_02, photo_03, photo_04, photo_05, categories_name, color_code, type_id, type_name, created_at, updated_at);
 			products.add(product);
 		}
 		JDBCUtil.close(conn, st, rs);
@@ -390,6 +419,7 @@ public class ProductsDaoImp implements Dao{
 				+ "product_details.rating, product_details.style, product_details.color_description, "
 				+ "product_details.stock, product_details.photo_01, product_details.photo_02, "
 				+ "product_details.photo_03, product_details.photo_04, product_details.photo_05, "
+				+ "product_details.created_at, product_details.updated_at, "
 				+ "categories.name as categories_name, colors.color_code, types.name as type_name FROM products "
 				+ "INNER JOIN product_details ON "
 				+ "products.id = product_details.product_id "
@@ -425,8 +455,11 @@ public class ProductsDaoImp implements Dao{
 			String categories_name = rs.getString("categories_name");
 			String color_code = rs.getString("color_code");
 			
+			Timestamp created_at = rs.getTimestamp("created_at");
+			Timestamp updated_at = rs.getTimestamp("updated_at");
+			
 			main.entities.Product product = new main.entities.Product(id, product_detail_id, res_category_id, name, price, description, rating, style, color_description,
-					stocks, photo_01, photo_02, photo_03, photo_04, photo_05, categories_name, color_code, type_id, type_name);
+					stocks, photo_01, photo_02, photo_03, photo_04, photo_05, categories_name, color_code, type_id, type_name, created_at, updated_at);
 			products.add(product);
 		}
 		JDBCUtil.close(conn, st, rs);
@@ -442,6 +475,7 @@ public class ProductsDaoImp implements Dao{
 				+ "product_details.rating, product_details.style, product_details.color_description, "
 				+ "product_details.stock, product_details.photo_01, product_details.photo_02, "
 				+ "product_details.photo_03, product_details.photo_04, product_details.photo_05, "
+				+ "product_details.created_at, product_details.updated_at, "
 				+ "categories.name as categories_name, colors.color_code, types.name as type_name FROM products "
 				+ "INNER JOIN product_details ON "
 				+ "products.id = product_details.product_id "
@@ -477,8 +511,11 @@ public class ProductsDaoImp implements Dao{
 			String categories_name = rs.getString("categories_name");
 			String color_code = rs.getString("color_code");
 			
+			Timestamp created_at = rs.getTimestamp("created_at");
+			Timestamp updated_at = rs.getTimestamp("updated_at");
+			
 			main.entities.Product product = new main.entities.Product(id, product_detail_id, res_category_id, name, price, description, rating, style, color_description,
-					stocks, photo_01, photo_02, photo_03, photo_04, photo_05, categories_name, color_code, res_type_id, res_type_name);
+					stocks, photo_01, photo_02, photo_03, photo_04, photo_05, categories_name, color_code, res_type_id, res_type_name, created_at, updated_at);
 			products.add(product);
 		}
 		JDBCUtil.close(conn, st, rs);

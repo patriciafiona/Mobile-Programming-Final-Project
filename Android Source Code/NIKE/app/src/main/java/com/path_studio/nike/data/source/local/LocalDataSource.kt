@@ -18,6 +18,7 @@ class LocalDataSource private constructor(private val mNikeDao: NikeDao) {
     //-------------------------------------------------------------------------------------
     //Product Section
     fun getAllProduct(): DataSource.Factory<Int, ProductEntity> = mNikeDao.getAllProduct()
+    fun getLatestProductWithLimit(categoryId:Int, limit: Int): DataSource.Factory<Int, ProductEntity> = mNikeDao.getLatestProductWithLimit(categoryId, limit)
     fun getProductByCategory(categoryId: Int): DataSource.Factory<Int, ProductEntity> = mNikeDao.getProductByCategory(categoryId)
     fun getProductByCategoryWithLimit(categoryId: Int, limit: Int):
             DataSource.Factory<Int, ProductEntity> = mNikeDao.getProductByCategoryWithLimit(categoryId, limit)
