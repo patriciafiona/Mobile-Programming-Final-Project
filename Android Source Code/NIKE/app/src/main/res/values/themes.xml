@@ -14,10 +14,9 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="ThinnerChip" parent="Widget.MaterialComponents.Chip.Action">
-        <item name="chipCornerRadius">20dp</item>
-        <item name="chipMinHeight">10dp</item>
-        <item name="android:textSize">12sp</item>
+    <style name="CustomChipChoice" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="chipBackgroundColor">@color/background_color_chip_state_list</item>
+        <item name="android:textColor">@color/text_color_chip_state_list</item>
     </style>
 
 </resources>
