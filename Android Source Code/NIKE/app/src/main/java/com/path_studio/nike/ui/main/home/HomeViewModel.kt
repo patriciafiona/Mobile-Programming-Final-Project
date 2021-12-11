@@ -9,6 +9,9 @@ import com.path_studio.nike.data.source.local.entity.CategoryEntity
 import com.path_studio.nike.data.source.local.entity.ProductEntity
 
 class HomeViewModel(private val nikeRepository: NikeRepository): ViewModel() {
-    fun getProductsByCategory(categoryId: Int): LiveData<Resource<PagedList<ProductEntity>>> = nikeRepository.getProductByCategory(categoryId)
     fun getAllCategory(): LiveData<Resource<PagedList<CategoryEntity>>> = nikeRepository.getAllCategory()
+    fun getProductsByCategoryWithLimit(categoryId: Int, limit: Int):
+            LiveData<Resource<PagedList<ProductEntity>>> = nikeRepository.getProductByCategoryWithLimit(categoryId, limit)
+    fun getProductsByCategoryAndTypeWithLimit(categoryId: Int, type_name: String, limit: Int):
+            LiveData<Resource<PagedList<ProductEntity>>> = nikeRepository.getProductsByCategoryAndTypeWithLimit(categoryId, type_name, limit)
 }

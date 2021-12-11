@@ -60,6 +60,16 @@
     <url-pattern>/product/category_id/*</url-pattern>
   </servlet-mapping>
   
+  <!-- Find Product By Category ID & Type Name -->
+  <servlet>
+    <servlet-name>FindProductByCategoryAndType</servlet-name>
+    <servlet-class>main.RESTfulWebService.FindProductByCategoryAndType</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>FindProductByCategoryAndType</servlet-name>
+    <url-pattern>/product/category_type</url-pattern>
+  </servlet-mapping>
+  
   <!-- Find All Category -->
   <servlet>
     <servlet-name>FindAllCategories</servlet-name>

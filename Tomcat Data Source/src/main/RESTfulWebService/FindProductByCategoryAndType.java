@@ -21,32 +21,40 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import main.entities.Product;
 import main.service.implementation.ProductsServiceImpl;
 
-public class FindProductByCategoryID extends HttpServlet {
+
+public class FindProductByCategoryAndType extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    public FindProductByCategoryID() {
+    public FindProductByCategoryAndType() {
         super();
     }
 
+    
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-ProductsServiceImpl ps = new ProductsServiceImpl();
+		response.setHeader("Access-Control-Allow-Origin", "*");
 		
+		ProductsServiceImpl ps = new ProductsServiceImpl();
 		try {
-			String URI = request.getRequestURI();
-			int category_id = Integer.valueOf(URI.substring(URI.lastIndexOf('/') + 1) );
-			
 			//check if have query
+			String category_id = request.getParameter("category_id"); 
+			String type_name = request.getParameter("type_name"); 
 			String limit_request = request.getParameter("limit"); 
 			
 			List<Product> listProduct = Collections.<Product>emptyList();
-			if(limit_request == null) {
-				listProduct = ps.findByCategory(category_id);
-				request.setAttribute("product", listProduct);
-			}else {
-				listProduct = ps.findByCategoryLimit(category_id, Integer.valueOf(limit_request));
-				request.setAttribute("product", listProduct);
+			if(category_id != null && type_name!=null) {
+				if(limit_request == null) {
+					listProduct = ps.findByCategoryAndType(
+							Integer.valueOf(category_id), 
+							type_name);
+					request.setAttribute("product", listProduct);
+				}else {
+					listProduct = ps.findByCategoryAndTypeLimit(
+							Integer.valueOf(category_id), 
+							type_name, 
+							Integer.valueOf(limit_request));
+					request.setAttribute("product", listProduct);
+				}
 			}
-			
 			
 			ObjectMapper objectMapper = new ObjectMapper();
 			objectMapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
@@ -65,9 +73,9 @@ ProductsServiceImpl ps = new ProductsServiceImpl();
 	        response.setCharacterEncoding("UTF-8");
 	        out.print(finalObj);
 	        out.flush();   
-		}catch (SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
-		}
+		}	
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

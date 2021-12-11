@@ -5,6 +5,7 @@ import com.path_studio.nike.data.source.remote.response.ProductResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ApiService {
 
@@ -28,4 +29,16 @@ interface ApiService {
 
     @GET("category")
     fun getAllCategories(): Call<CategoryResponse>
+
+    //Limit Result
+    @GET("product")
+    fun getAllProductWithLimit(
+        @Query("limit") limit: Int
+    ): Call<ProductResponse>
+
+    @GET("product/category_id/{category_id}")
+    fun getProductByCategoryWithLimit(
+        @Path("category_id") category_id: String,
+        @Query("limit") limit: Int
+    ): Call<ProductResponse>
 }

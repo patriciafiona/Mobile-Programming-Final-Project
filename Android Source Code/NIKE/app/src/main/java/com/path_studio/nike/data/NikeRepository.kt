@@ -132,6 +132,104 @@ class NikeRepository private constructor(private val remoteDataSource: RemoteDat
         }.asLiveData()
     }
 
+    override fun getProductByCategoryWithLimit(categoryId: Int, limit: Int): LiveData<Resource<PagedList<ProductEntity>>> {
+        return object: NetworkBoundResource<PagedList<ProductEntity>, List<ProductResponseItem>>(appExecutors) {
+            public override fun loadFromDB(): LiveData<PagedList<ProductEntity>> {
+                val config = PagedList.Config.Builder()
+                    .setEnablePlaceholders(false)
+                    .setInitialLoadSizeHint(4)
+                    .setPageSize(4)
+                    .build()
+                return LivePagedListBuilder(localDataSource.getProductByCategoryWithLimit(categoryId, limit), config).build()
+            }
+
+            override fun shouldFetch(data: PagedList<ProductEntity>?): Boolean =
+                data == null || data.isEmpty()
+
+            public override fun createCall(): LiveData<ApiResponse<List<ProductResponseItem>>> =
+                remoteDataSource.getAllProduct()
+
+            public override fun saveCallResult(data: List<ProductResponseItem>) {
+                val products = ArrayList<ProductEntity>()
+                for(response in data){
+                    val product = ProductEntity(
+                        response.id.toLong(),
+                        response.productDetailId,
+                        response.typeName,
+                        response.categoryName,
+                        response.typeId,
+                        response.colorDescription,
+                        response.rating,
+                        response.description,
+                        response.colorId,
+                        response.categoryId,
+                        response.price,
+                        response.name,
+                        response.style,
+                        response.stock,
+                        response.colorCode,
+                        response.photo01,
+                        response.photo02,
+                        response.photo03,
+                        response.photo04,
+                        response.photo05,
+                    )
+                    products.add(product)
+                }
+                localDataSource.insertProducts(products)
+            }
+        }.asLiveData()
+    }
+
+    override fun getProductsByCategoryAndTypeWithLimit(categoryId: Int, type_name: String, limit: Int): LiveData<Resource<PagedList<ProductEntity>>> {
+        return object: NetworkBoundResource<PagedList<ProductEntity>, List<ProductResponseItem>>(appExecutors) {
+            public override fun loadFromDB(): LiveData<PagedList<ProductEntity>> {
+                val config = PagedList.Config.Builder()
+                    .setEnablePlaceholders(false)
+                    .setInitialLoadSizeHint(4)
+                    .setPageSize(4)
+                    .build()
+                return LivePagedListBuilder(localDataSource.getProductsByCategoryAndTypeWithLimit(categoryId, type_name, limit), config).build()
+            }
+
+            override fun shouldFetch(data: PagedList<ProductEntity>?): Boolean =
+                data == null || data.isEmpty()
+
+            public override fun createCall(): LiveData<ApiResponse<List<ProductResponseItem>>> =
+                remoteDataSource.getAllProduct()
+
+            public override fun saveCallResult(data: List<ProductResponseItem>) {
+                val products = ArrayList<ProductEntity>()
+                for(response in data){
+                    val product = ProductEntity(
+                        response.id.toLong(),
+                        response.productDetailId,
+                        response.typeName,
+                        response.categoryName,
+                        response.typeId,
+                        response.colorDescription,
+                        response.rating,
+                        response.description,
+                        response.colorId,
+                        response.categoryId,
+                        response.price,
+                        response.name,
+                        response.style,
+                        response.stock,
+                        response.colorCode,
+                        response.photo01,
+                        response.photo02,
+                        response.photo03,
+                        response.photo04,
+                        response.photo05,
+                    )
+                    products.add(product)
+                }
+                localDataSource.insertProducts(products)
+            }
+        }.asLiveData()
+    }
+
     override fun getAllCategory(): LiveData<Resource<PagedList<CategoryEntity>>> {
         return object: NetworkBoundResource<PagedList<CategoryEntity>, List<CategoryResponseItem>>(appExecutors) {
             public override fun loadFromDB(): LiveData<PagedList<CategoryEntity>> {

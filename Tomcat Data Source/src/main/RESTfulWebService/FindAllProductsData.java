@@ -3,6 +3,7 @@ package main.RESTfulWebService;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -34,8 +35,17 @@ public class FindAllProductsData extends HttpServlet {
 		
 		ProductsServiceImpl ps = new ProductsServiceImpl();
 		try {
-			List<Product> listProduct = ps.findAll();
-			request.setAttribute("listProduct", listProduct);
+			//check if have query
+			String limit_request = request.getParameter("limit"); 
+			
+			List<Product> listProduct = Collections.<Product>emptyList();
+			if(limit_request == null) {
+				listProduct = ps.findAll();
+				request.setAttribute("product", listProduct);
+			}else {
+				listProduct = ps.findAllLimit(Integer.valueOf(limit_request));
+				request.setAttribute("product", listProduct);
+			}
 			
 			ObjectMapper objectMapper = new ObjectMapper();
 			objectMapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);

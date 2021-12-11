@@ -1,34 +1,24 @@
 package com.path_studio.nike.ui.main.home
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.view.ContextThemeWrapper
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
 import android.widget.Toast
-import androidx.core.content.ContextCompat
-import androidx.core.graphics.ColorUtils
-import androidx.core.view.iterator
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.faltenreich.skeletonlayout.Skeleton
-import com.faltenreich.skeletonlayout.applySkeleton
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import com.path_studio.moviecatalogue.vo.Status
 import com.path_studio.nike.databinding.FragmentHomeBinding
-import com.path_studio.nike.ui.main.home.adapter.CollectionAdapter
+import com.path_studio.nike.ui.main.home.adapter.ProductRotateXLAdapter
 import com.path_studio.nike.viewModel.ViewModelFactory
 
 import com.google.android.material.chip.ChipDrawable
 import com.path_studio.nike.R
+import com.path_studio.nike.ui.main.home.adapter.ProductMDAdapter
 
 
 class HomeFragment : Fragment() {
@@ -73,9 +63,15 @@ class HomeFragment : Fragment() {
         }
 
         //chip group listener
-        binding.categoriesChipsContainer.setOnCheckedChangeListener { chipGroup, id ->
-            prepareCollectionRV(viewModel, chipGroup.checkedChipId)
+        with(binding){
+            categoriesChipsContainer.setOnCheckedChangeListener { chipGroup, id ->
+                prepareCollectionRV(viewModel, chipGroup.checkedChipId)
+                prepareTypeRV(rvBasketballShoes, "basket", viewModel, chipGroup.checkedChipId, "%basket%")
+                prepareTypeRV(rvHighTopShoes, "high tops", viewModel, chipGroup.checkedChipId, "%high tops%")
+                prepareTypeRV(rvSneakersShoes, "sneakers", viewModel, chipGroup.checkedChipId, "%sneakers%")
+            }
         }
+
     }
 
     @SuppressLint("UseCompatLoadingForColorStateLists")
@@ -130,14 +126,17 @@ class HomeFragment : Fragment() {
     }
 
     private fun prepareCollectionRV(viewModel: HomeViewModel, categoryId: Int){
-        val collectionAdapter = CollectionAdapter()
-        viewModel.getProductsByCategory(categoryId).observe(requireActivity(), { products ->
+        val collectionAdapter = ProductRotateXLAdapter()
+
+        viewModel.getProductsByCategoryWithLimit(categoryId, 5).observe(requireActivity(), { products ->
             if (products != null) {
                 when (products.status) {
                     Status.LOADING -> binding.progressBarCollection.visibility = View.VISIBLE
                     Status.SUCCESS -> {
                         showHideDataIndicator("collection", true)
                         binding.progressBarCollection.visibility = View.GONE
+
+                        //add empty data for show more button
                         collectionAdapter.submitList(products.data)
                     }
                     Status.ERROR -> {
@@ -157,25 +156,38 @@ class HomeFragment : Fragment() {
         }
     }
 
+    private fun prepareTypeRV(rv: RecyclerView, status: String, viewModel: HomeViewModel, categoryId: Int, typeName: String){
+        val adapter = ProductMDAdapter()
+
+        viewModel.getProductsByCategoryAndTypeWithLimit(categoryId, typeName, 5).observe(requireActivity(), { products ->
+            if (products != null) {
+                when (products.status) {
+                    Status.LOADING -> binding.progressBarBasketball.visibility = View.VISIBLE
+                    Status.SUCCESS -> {
+                        showHideDataIndicator(status, true)
+                        binding.progressBarBasketball.visibility = View.GONE
+
+                        //add empty data for show more button
+                        adapter.submitList(products.data)
+                    }
+                    Status.ERROR -> {
+                        binding.progressBarBasketball.visibility = View.GONE
+                        Toast.makeText(context, "Something Error", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }else{
+                showHideDataIndicator(status, false)
+            }
+        })
+
+        rv.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
+        rv.setHasFixedSize(true)
+        rv.adapter = adapter
+    }
+
     private fun showHideDataIndicator(status: String, hide: Boolean){
         with(binding){
             when(status){
-                "all" ->{
-                    noCollectionIcon.visibility = View.VISIBLE
-                    noCollectionTxt.visibility = View.VISIBLE
-
-                    noLatestIcon.visibility = View.VISIBLE
-                    noLatestTxt.visibility = View.VISIBLE
-
-                    noBasketIcon.visibility = View.VISIBLE
-                    noBasketTxt.visibility = View.VISIBLE
-
-                    noHighTopIcon.visibility = View.VISIBLE
-                    noHighTopTxt.visibility = View.VISIBLE
-
-                    noSneakerIcon.visibility = View.VISIBLE
-                    noSneakerTxt.visibility = View.VISIBLE
-                }
                 "collection" ->{
                     if (hide){
                         noCollectionIcon.visibility = View.GONE
@@ -192,6 +204,33 @@ class HomeFragment : Fragment() {
                     }else{
                         noLatestIcon.visibility = View.VISIBLE
                         noLatestTxt.visibility = View.VISIBLE
+                    }
+                }
+                "basket" ->{
+                    if (hide){
+                        noBasketIcon.visibility = View.GONE
+                        noBasketTxt.visibility = View.GONE
+                    }else{
+                        noBasketIcon.visibility = View.VISIBLE
+                        noBasketTxt.visibility = View.VISIBLE
+                    }
+                }
+                "high tops" ->{
+                    if (hide){
+                        noHighTopIcon.visibility = View.GONE
+                        noHighTopTxt.visibility = View.GONE
+                    }else{
+                        noHighTopIcon.visibility = View.VISIBLE
+                        noHighTopTxt.visibility = View.VISIBLE
+                    }
+                }
+                "sneakers" ->{
+                    if (hide){
+                        noSneakerIcon.visibility = View.GONE
+                        noSneakerTxt.visibility = View.GONE
+                    }else{
+                        noSneakerIcon.visibility = View.VISIBLE
+                        noSneakerTxt.visibility = View.VISIBLE
                     }
                 }
                 else ->{}

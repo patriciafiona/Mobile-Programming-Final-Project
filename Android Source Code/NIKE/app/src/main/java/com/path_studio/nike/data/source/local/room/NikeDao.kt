@@ -16,6 +16,12 @@ interface NikeDao {
     @Query("SELECT * FROM product_entities WHERE categoryId = :categoryId")
     fun getProductByCategory(categoryId: Int): DataSource.Factory<Int, ProductEntity>
 
+    @Query("SELECT * FROM product_entities WHERE categoryId = :categoryId LIMIT :limit")
+    fun getProductByCategoryWithLimit(categoryId: Int, limit: Int): DataSource.Factory<Int, ProductEntity>
+
+    @Query("SELECT * FROM product_entities WHERE categoryId = :categoryId AND typeName LIKE :type_name LIMIT :limit")
+    fun getProductsByCategoryAndTypeWithLimit(categoryId: Int, type_name: String, limit: Int): DataSource.Factory<Int, ProductEntity>
+
     @Query("SELECT * FROM product_entities where favorite = 1")
     fun getFavoriteProduct(): DataSource.Factory<Int, ProductEntity>
 

@@ -30,4 +30,22 @@ public class ProductsServiceImpl implements Service{
 	public <Product> List<Product> findByCategory(int category_id) throws SQLException{
 		return dao.findByCategory(category_id);
 	}
+	
+	public <Product> List<Product> findByCategoryAndType(int category_id, String type_name) throws SQLException{
+		return dao.findByCategoryAndType(category_id, type_name);
+	}
+	
+	
+	//Using limit
+	public <Product> List<Product> findAllLimit(int limit) throws SQLException {
+		return dao.findAllLimit(limit);
+	}
+	
+	public <Product> List<Product> findByCategoryLimit(int category_id, int limit) throws SQLException{
+		return dao.findByCategoryLimit(category_id, limit);
+	}
+	
+	public <Product> List<Product> findByCategoryAndTypeLimit(int category_id, String type_name, int limit) throws SQLException{
+		return dao.findByCategoryAndTypeLimit(category_id, type_name, limit);
+	}
 }

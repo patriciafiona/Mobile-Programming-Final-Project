@@ -1,7 +1,6 @@
 package com.path_studio.nike.ui.main.home.adapter
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
@@ -14,7 +13,7 @@ import com.path_studio.nike.data.source.local.entity.ProductEntity
 import com.path_studio.nike.databinding.ItemRowProductRotateXlBinding
 import com.path_studio.nike.utils.Utils.getNumberThousandFormat
 
-class CollectionAdapter: PagedListAdapter<ProductEntity, CollectionAdapter.ItemViewHolder>(DIFF_CALLBACK) {
+class ProductRotateXLAdapter: PagedListAdapter<ProductEntity, ProductRotateXLAdapter.ItemViewHolder>(DIFF_CALLBACK) {
     companion object {
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ProductEntity>() {
             override fun areItemsTheSame(oldItem: ProductEntity, newItem: ProductEntity): Boolean {
@@ -33,9 +32,9 @@ class CollectionAdapter: PagedListAdapter<ProductEntity, CollectionAdapter.ItemV
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        val movie = getItem(position)
-        if (movie != null) {
-            holder.bind(movie)
+        val product = getItem(position)
+        if (product != null) {
+            holder.bind(product)
         }
     }
 
@@ -55,12 +54,14 @@ class CollectionAdapter: PagedListAdapter<ProductEntity, CollectionAdapter.ItemV
                     // logic
                 }
 
-                val posterURL = "http://10.0.2.2:8080/NIKE/assets/images/products/${product.photo01}"
+                val posterURL =
+                    "http://10.0.2.2:8080/NIKE/assets/images/products/${product.photo01}"
                 Glide.with(itemView.context)
                     .load(posterURL)
                     .apply(
                         RequestOptions.placeholderOf(R.drawable.ic_loading)
-                            .error(R.drawable.ic_error_img))
+                            .error(R.drawable.ic_error_img)
+                    )
                     .into(rvProductImg)
             }
         }
