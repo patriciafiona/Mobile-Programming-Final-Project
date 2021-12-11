@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.path_studio.nike.data.NikeRepository
 import com.path_studio.nike.di.Injection
+import com.path_studio.nike.ui.main.favorite.FavoriteViewModel
 import com.path_studio.nike.ui.main.home.HomeViewModel
 
 class ViewModelFactory private constructor(private val mNikeRepository: NikeRepository) : ViewModelProvider.NewInstanceFactory() {
@@ -26,6 +27,9 @@ class ViewModelFactory private constructor(private val mNikeRepository: NikeRepo
         return when {
             modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
                 HomeViewModel(mNikeRepository) as T
+            }
+            modelClass.isAssignableFrom(FavoriteViewModel::class.java) -> {
+                FavoriteViewModel(mNikeRepository) as T
             }
             else -> throw Throwable("Unknown ViewModel class: " + modelClass.name)
         }

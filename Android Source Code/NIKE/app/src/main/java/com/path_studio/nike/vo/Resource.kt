@@ -1,4 +1,4 @@
-package com.path_studio.moviecatalogue.vo
+package com.path_studio.nike.vo
 
 data class Resource<T>(val status: Status, val data: T?, val message: String?) {
     companion object {

@@ -2,9 +2,9 @@ package com.path_studio.nike.data
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
-import com.path_studio.moviecatalogue.vo.Resource
+import androidx.paging.LivePagedListBuilder
+import com.path_studio.nike.vo.Resource
 import com.path_studio.nike.data.source.local.LocalDataSource
 import com.path_studio.nike.data.source.local.entity.CategoryEntity
 import com.path_studio.nike.data.source.local.entity.ProductEntity
@@ -321,6 +321,15 @@ class NikeRepository private constructor(private val remoteDataSource: RemoteDat
                 localDataSource.insertProducts(products)
             }
         }.asLiveData()
+    }
+
+    override fun getFavoriteProducts(): LiveData<PagedList<ProductEntity>> {
+        val config = PagedList.Config.Builder()
+            .setEnablePlaceholders(false)
+            .setInitialLoadSizeHint(4)
+            .setPageSize(4)
+            .build()
+        return LivePagedListBuilder(localDataSource.getFavoriteProducts(), config).build()
     }
 
     override fun setFavoriteProduct(product: ProductEntity, newState: Boolean){

@@ -26,7 +26,7 @@ interface NikeDao {
     fun getProductsByCategoryAndTypeWithLimit(categoryId: Int, type_name: String, limit: Int): DataSource.Factory<Int, ProductEntity>
 
     @Query("SELECT * FROM product_entities where favorite = 1")
-    fun getFavoriteProduct(): DataSource.Factory<Int, ProductEntity>
+    fun getFavoriteProducts(): DataSource.Factory<Int, ProductEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertProducts(product: List<ProductEntity>)

@@ -1,4 +1,4 @@
-package com.path_studio.moviecatalogue.vo
+package com.path_studio.nike.vo
 
 enum class Status {
     SUCCESS,

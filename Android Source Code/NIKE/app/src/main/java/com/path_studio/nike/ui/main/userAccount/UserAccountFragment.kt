@@ -24,5 +24,17 @@ class UserAccountFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        //scroll listener
+        binding.scrollContainer.viewTreeObserver.addOnScrollChangedListener {
+            val scrollY: Int = binding.scrollContainer.scrollY
+            val navView = activity?.findViewById<View>(R.id.top_nav_container)
+
+            if (scrollY in 0..70) {
+                navView?.visibility = View.VISIBLE
+            }else{
+                navView?.visibility = View.INVISIBLE
+            }
+        }
     }
 }

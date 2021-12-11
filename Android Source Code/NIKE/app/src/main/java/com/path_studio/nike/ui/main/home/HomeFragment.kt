@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
-import com.path_studio.moviecatalogue.vo.Status
+import com.path_studio.nike.vo.Status
 import com.path_studio.nike.databinding.FragmentHomeBinding
 import com.path_studio.nike.ui.main.home.adapter.ProductRotateXLAdapter
 import com.path_studio.nike.viewModel.ViewModelFactory
@@ -19,7 +19,8 @@ import com.path_studio.nike.viewModel.ViewModelFactory
 import com.google.android.material.chip.ChipDrawable
 import com.path_studio.nike.R
 import com.path_studio.nike.ui.main.home.adapter.ProductMDAdapter
-
+import android.content.Intent
+import android.net.Uri
 
 class HomeFragment : Fragment() {
 
@@ -28,6 +29,8 @@ class HomeFragment : Fragment() {
 
     private lateinit var viewModel:HomeViewModel
     private var selectedCategory = 1
+
+    private val officialWebLink = "https://www.nike.com/"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -71,6 +74,12 @@ class HomeFragment : Fragment() {
                 prepareTypeRV(rvHighTopShoes, "high tops", viewModel, chipGroup.checkedChipId, "%high tops%")
                 prepareTypeRV(rvSneakersShoes, "sneakers", viewModel, chipGroup.checkedChipId, "%sneakers%")
             }
+        }
+
+        //bottom banner button link
+        binding.buttonOfficialWebsite.setOnClickListener {
+            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(officialWebLink))
+            startActivity(browserIntent)
         }
 
     }
@@ -136,8 +145,6 @@ class HomeFragment : Fragment() {
                     Status.SUCCESS -> {
                         showHideDataIndicator("collection", true)
                         binding.progressBarCollection.visibility = View.GONE
-
-                        //add empty data for show more button
                         collectionAdapter.submitList(products.data)
                     }
                     Status.ERROR -> {
@@ -167,8 +174,6 @@ class HomeFragment : Fragment() {
                     Status.SUCCESS -> {
                         showHideDataIndicator("latest", true)
                         binding.progressBarBasketball.visibility = View.GONE
-
-                        //add empty data for show more button
                         adapter.submitList(products.data)
                     }
                     Status.ERROR -> {
@@ -199,8 +204,6 @@ class HomeFragment : Fragment() {
                     Status.SUCCESS -> {
                         showHideDataIndicator(status, true)
                         binding.progressBarBasketball.visibility = View.GONE
-
-                        //add empty data for show more button
                         adapter.submitList(products.data)
                     }
                     Status.ERROR -> {

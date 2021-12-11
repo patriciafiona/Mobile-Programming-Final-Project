@@ -2,7 +2,7 @@ package com.path_studio.nike.data
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
-import com.path_studio.moviecatalogue.vo.Resource
+import com.path_studio.nike.vo.Resource
 import com.path_studio.nike.data.source.remote.ApiResponse
 import com.path_studio.nike.data.source.remote.StatusResponse
 import com.path_studio.nike.utils.AppExecutors
