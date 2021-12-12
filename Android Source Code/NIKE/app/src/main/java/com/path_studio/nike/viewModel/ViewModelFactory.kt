@@ -16,7 +16,7 @@ class ViewModelFactory private constructor(private val mNikeRepository: NikeRepo
 
         fun getInstance(context: Context): ViewModelFactory =
             instance ?: synchronized(this) {
-                ViewModelFactory(Injection.provideImdbRepository(context)).apply {
+                ViewModelFactory(Injection.provideNikeRepository(context)).apply {
                     instance = this
                 }
             }

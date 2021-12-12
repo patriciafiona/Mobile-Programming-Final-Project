@@ -338,4 +338,50 @@ class NikeRepository private constructor(private val remoteDataSource: RemoteDat
         }
     }
 
+    override fun getSearchResult(name: String): LiveData<List<ProductEntity>> {
+        _isLoading.value = true
+        val listOfResult = MutableLiveData<List<ProductEntity>>()
+        CoroutineScope(Dispatchers.IO).launch{
+            remoteDataSource.getSearchResult(name, object : RemoteDataSource.CallbackLoadSearchResult{
+                override fun onSearchResultReceived(showResponse: List<ProductResponseItem?>?) {
+                    val products = ArrayList<ProductEntity>()
+                    if (showResponse != null) {
+                        for(responseSearch in showResponse){
+                            if (responseSearch != null) {
+                                val product = ProductEntity(
+                                    responseSearch.id.toLong(),
+                                    responseSearch.productDetailId,
+                                    responseSearch.typeName,
+                                    responseSearch.categoryName,
+                                    responseSearch.typeId,
+                                    responseSearch.colorDescription,
+                                    responseSearch.rating,
+                                    responseSearch.description,
+                                    responseSearch.colorId,
+                                    responseSearch.categoryId,
+                                    responseSearch.price,
+                                    responseSearch.name,
+                                    responseSearch.style,
+                                    responseSearch.stock,
+                                    responseSearch.colorCode,
+                                    responseSearch.photo01,
+                                    responseSearch.photo02,
+                                    responseSearch.photo03,
+                                    responseSearch.photo04,
+                                    responseSearch.photo05,
+                                    responseSearch.createdAt,
+                                    responseSearch.updatedAt
+                                )
+                                products.add(product)
+                            }
+                        }
+                    }
+                    _isLoading.postValue(false)
+                    listOfResult.postValue(products)
+                }
+            })
+        }
+        return listOfResult
+    }
+
 }

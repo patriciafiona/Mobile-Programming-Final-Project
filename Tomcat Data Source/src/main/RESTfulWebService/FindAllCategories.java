@@ -47,7 +47,11 @@ response.setHeader("Access-Control-Allow-Origin", "*");
 		    
 		    //adding status & convert to JSON object
 		    JSONObject finalObj=new JSONObject(); 
-		    finalObj.put("status", 200); 
+		    if(listCategories!=null) {
+		    	finalObj.put("status", 200); 
+		    }else {
+		    	finalObj.put("status", 400); 
+		    }
 		    finalObj.put("results", actualObj);
 			
 		    PrintWriter out = response.getWriter();

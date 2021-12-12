@@ -8,7 +8,7 @@ import com.path_studio.nike.data.source.remote.RemoteDataSource
 import com.path_studio.nike.utils.AppExecutors
 
 object Injection {
-    fun provideImdbRepository(context: Context): NikeRepository {
+    fun provideNikeRepository(context: Context): NikeRepository {
         val database = NikeDatabase.getInstance(context)
 
         val remoteDataSource = RemoteDataSource.getInstance()

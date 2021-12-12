@@ -24,6 +24,21 @@ class RemoteDataSource {
             }
     }
 
+    //No need to connect to Room, so keep the code
+    suspend fun getSearchResult(name: String, callback: CallbackLoadSearchResult) {
+        EspressoIdlingResource.increment()
+        ApiConfig.getApiService().getSearchResult(name).await().results.let{
+                listResult -> callback.onSearchResultReceived((
+                    listResult
+                ))
+            EspressoIdlingResource.decrement()
+        }
+    }
+
+    interface CallbackLoadSearchResult{
+        fun onSearchResultReceived(showResponse: List<ProductResponseItem?>?)
+    }
+
     fun getAllProduct(): LiveData<ApiResponse<List<ProductResponseItem>>> {
         EspressoIdlingResource.increment()
         val resultProductResponse = MutableLiveData<ApiResponse<List<ProductResponseItem>>>()
@@ -64,26 +79,5 @@ class RemoteDataSource {
         }
         EspressoIdlingResource.decrement()
         return  resultCategoryResponse
-    }
-
-    fun getProductByCategory(category_id: Int): LiveData<ApiResponse<List<ProductResponseItem>>> {
-        EspressoIdlingResource.increment()
-        val resultProductResponse = MutableLiveData<ApiResponse<List<ProductResponseItem>>>()
-        CoroutineScope(Dispatchers.IO).launch {
-            try{
-                val response = ApiConfig.getApiService().getProductByCategory(category_id.toString()).await()
-                resultProductResponse.postValue(ApiResponse.success(response.results))
-            }catch (e: IOException){
-                Log.e("getAllProduct Error", e.message.toString())
-                resultProductResponse.postValue(
-                    ApiResponse.error(
-                        e.message.toString(),
-                        mutableListOf()
-                    )
-                )
-            }
-        }
-        EspressoIdlingResource.decrement()
-        return  resultProductResponse
     }
 }

@@ -41,4 +41,9 @@ interface ApiService {
         @Path("category_id") category_id: String,
         @Query("limit") limit: Int
     ): Call<ProductResponse>
+
+    @GET("product/name/{name}")
+    fun getSearchResult(
+        @Path("name") name: String
+    ): Call<ProductResponse>
 }

@@ -65,7 +65,11 @@ public class FindProductByCategoryAndType extends HttpServlet {
 		    
 		    //adding status & convert to JSON object
 		    JSONObject finalObj=new JSONObject(); 
-		    finalObj.put("status", 200); 
+		    if(listProduct!=null) {
+		    	finalObj.put("status", 200); 
+		    }else {
+		    	finalObj.put("status", 400); 
+		    }
 		    finalObj.put("results", actualObj);
 			
 		    PrintWriter out = response.getWriter();
