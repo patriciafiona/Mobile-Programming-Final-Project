@@ -46,7 +46,7 @@ class FavoriteFragment : Fragment() {
                     showHideDataIndicator(true)
                 else
                     showHideDataIndicator(false)
-                favAdapter.setFavMovies(products)
+                favAdapter.setFavProducts(products)
                 favAdapter.notifyDataSetChanged()
             })
 

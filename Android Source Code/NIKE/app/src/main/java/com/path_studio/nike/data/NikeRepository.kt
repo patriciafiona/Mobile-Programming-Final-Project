@@ -11,11 +11,13 @@ import com.path_studio.nike.data.source.local.entity.ProductEntity
 import com.path_studio.nike.data.source.remote.ApiResponse
 import com.path_studio.nike.data.source.remote.RemoteDataSource
 import com.path_studio.nike.data.source.remote.response.CategoryResponseItem
+import com.path_studio.nike.data.source.remote.response.ProductResponse
 import com.path_studio.nike.data.source.remote.response.ProductResponseItem
 import com.path_studio.nike.utils.AppExecutors
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.json.JSONArray
 
 class NikeRepository private constructor(private val remoteDataSource: RemoteDataSource,
                                          private val localDataSource: LocalDataSource,
@@ -382,6 +384,57 @@ class NikeRepository private constructor(private val remoteDataSource: RemoteDat
             })
         }
         return listOfResult
+    }
+
+    override fun getProductById(id: Int): LiveData<Resource<PagedList<ProductEntity>>> {
+        return object: NetworkBoundResource<PagedList<ProductEntity>, List<ProductResponseItem>>(appExecutors) {
+            public override fun loadFromDB(): LiveData<PagedList<ProductEntity>> {
+                val config = PagedList.Config.Builder()
+                    .setEnablePlaceholders(false)
+                    .setInitialLoadSizeHint(4)
+                    .setPageSize(4)
+                    .build()
+                return LivePagedListBuilder(localDataSource.getProductById(id), config).build()
+            }
+
+            override fun shouldFetch(data: PagedList<ProductEntity>?): Boolean =
+                data == null || data.isEmpty()
+
+            public override fun createCall(): LiveData<ApiResponse<List<ProductResponseItem>>> =
+                remoteDataSource.getAllProduct()
+
+            public override fun saveCallResult(data: List<ProductResponseItem>) {
+                val products = ArrayList<ProductEntity>()
+                for(response in data){
+                    val product = ProductEntity(
+                        response.id.toLong(),
+                        response.productDetailId,
+                        response.typeName,
+                        response.categoryName,
+                        response.typeId,
+                        response.colorDescription,
+                        response.rating,
+                        response.description,
+                        response.colorId,
+                        response.categoryId,
+                        response.price,
+                        response.name,
+                        response.style,
+                        response.stock,
+                        response.colorCode,
+                        response.photo01,
+                        response.photo02,
+                        response.photo03,
+                        response.photo04,
+                        response.photo05,
+                        response.createdAt,
+                        response.updatedAt
+                    )
+                    products.add(product)
+                }
+                localDataSource.insertProducts(products)
+            }
+        }.asLiveData()
     }
 
 }

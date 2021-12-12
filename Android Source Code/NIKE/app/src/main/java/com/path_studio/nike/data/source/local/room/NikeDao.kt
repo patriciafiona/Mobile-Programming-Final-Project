@@ -1,5 +1,6 @@
 package com.path_studio.nike.data.source.local.room
 
+import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
 import androidx.room.*
 import com.path_studio.nike.data.source.local.entity.CategoryEntity
@@ -18,6 +19,9 @@ interface NikeDao {
 
     @Query("SELECT * FROM product_entities WHERE categoryId = :categoryId")
     fun getProductByCategory(categoryId: Int): DataSource.Factory<Int, ProductEntity>
+
+    @Query("SELECT * FROM product_entities WHERE id = :id")
+    fun getProductById(id: Int): DataSource.Factory<Int, ProductEntity>
 
     @Query("SELECT * FROM product_entities WHERE categoryId = :categoryId LIMIT :limit")
     fun getProductByCategoryWithLimit(categoryId: Int, limit: Int): DataSource.Factory<Int, ProductEntity>

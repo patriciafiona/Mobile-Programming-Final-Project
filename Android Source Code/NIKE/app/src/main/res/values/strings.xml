@@ -25,11 +25,16 @@
     <string name="check_our_official_store">Check Our \nOfficial Store</string>
     <string name="check_now">Check Now</string>
     <string name="no_data">No Data</string>
-    <string name="see_more">See more</string>
     <string name="save_your_favorite_to_buy_later">Save your favorite \nto buy later</string>
     <string name="you_don_t_have_any_favorite_product">You don\'t have any favorite product</string>
     <string name="you_can_add_an_item_to_favorites_by_click_the_heart_icon_in_product">You can add an item to favorites by click the heart icon in product</string>
     <string name="check_our_shoes">Check Our Shoes</string>
     <string name="find_our_masterpiece_in_one_hand">Find our masterpiece \nin One Hand</string>
     <string name="search_result_of">Search result of</string>
+    <string name="all_incredible_shoes_can_be_seen_here">All Incredible Shoes \nCan Be Seen Here</string>
+    <string name="see_all">See All</string>
+    <string name="all_product">All Product</string>
+    <string name="show_indicator">container show indicator</string>
+    <string name="color">Color</string>
+    <string name="temp_rating">4.8</string>
 </resources>

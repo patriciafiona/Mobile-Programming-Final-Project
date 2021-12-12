@@ -1,6 +1,7 @@
 package com.path_studio.nike.ui.main.home.adapter
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageButton
@@ -12,6 +13,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.path_studio.nike.R
 import com.path_studio.nike.data.source.local.entity.ProductEntity
 import com.path_studio.nike.databinding.ItemRowProductRotateXlBinding
+import com.path_studio.nike.ui.detailProduct.DetailProductActivity
 import com.path_studio.nike.ui.main.home.HomeViewModel
 import com.path_studio.nike.utils.Utils.getNumberThousandFormat
 
@@ -56,7 +58,9 @@ class ProductRotateXLAdapter(private val homeViewModel: HomeViewModel): PagedLis
                 }
 
                 itemView.setOnClickListener {
-                    // logic
+                    val intent = Intent(itemView.context, DetailProductActivity::class.java)
+                    intent.putExtra(DetailProductActivity.EXTRA_PRODUCT, product.id)
+                    itemView.context.startActivity(intent)
                 }
 
                 val posterURL =

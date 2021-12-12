@@ -9,6 +9,7 @@ import com.path_studio.nike.data.source.local.entity.ProductEntity
 interface NikeDataSource {
     fun getAllProduct(): LiveData<Resource<PagedList<ProductEntity>>>
     fun getSearchResult(name: String): LiveData<List<ProductEntity>>
+    fun getProductById(id: Int): LiveData<Resource<PagedList<ProductEntity>>>
     fun getLatestProductWithLimit(categoryId: Int, limit: Int): LiveData<Resource<PagedList<ProductEntity>>>
     fun getProductByCategory(categoryId: Int): LiveData<Resource<PagedList<ProductEntity>>>
     fun getProductByCategoryWithLimit(categoryId: Int, limit:Int): LiveData<Resource<PagedList<ProductEntity>>>

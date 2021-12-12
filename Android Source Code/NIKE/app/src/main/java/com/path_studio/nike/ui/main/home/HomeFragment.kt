@@ -21,6 +21,8 @@ import com.path_studio.nike.R
 import com.path_studio.nike.ui.main.home.adapter.ProductMDAdapter
 import android.content.Intent
 import android.net.Uri
+import com.path_studio.nike.ui.main.MainActivity
+import com.path_studio.nike.ui.seeAllProduct.SeeAllProductActivity
 
 class HomeFragment : Fragment() {
 
@@ -67,13 +69,19 @@ class HomeFragment : Fragment() {
 
         //chip group listener
         with(binding){
-            categoriesChipsContainer.setOnCheckedChangeListener { chipGroup, id ->
+            categoriesChipsContainer.setOnCheckedChangeListener { chipGroup, _ ->
                 prepareCollectionRV(viewModel, chipGroup.checkedChipId)
                 prepareLatestRV(viewModel, chipGroup.checkedChipId)
                 prepareTypeRV(rvBasketballShoes, "basket", viewModel, chipGroup.checkedChipId, "%basket%")
                 prepareTypeRV(rvHighTopShoes, "high tops", viewModel, chipGroup.checkedChipId, "%high tops%")
                 prepareTypeRV(rvSneakersShoes, "sneakers", viewModel, chipGroup.checkedChipId, "%sneakers%")
             }
+        }
+
+        //see all button listener
+        binding.btnSeeAll.setOnClickListener {
+            val intent = Intent(requireActivity(), SeeAllProductActivity::class.java)
+            startActivity(intent)
         }
 
         //bottom banner button link
