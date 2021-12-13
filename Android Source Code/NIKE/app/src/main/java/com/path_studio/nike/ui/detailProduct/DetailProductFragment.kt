@@ -5,6 +5,7 @@ import android.app.ActionBar
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.text.Editable
 import android.util.Log
 import android.util.TypedValue
 import androidx.fragment.app.Fragment
@@ -17,6 +18,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipDrawable
 import com.path_studio.nike.R
 import com.path_studio.nike.data.source.local.entity.ProductEntity
 import com.path_studio.nike.databinding.FragmentDetailProductBinding
@@ -25,6 +28,8 @@ import com.path_studio.nike.ui.main.MainActivity
 import com.path_studio.nike.utils.Utils.getNumberThousandFormat
 import com.path_studio.nike.viewModel.ViewModelFactory
 import com.path_studio.nike.vo.Status
+import android.text.InputFilter
+import android.text.TextWatcher
 
 
 class DetailProductFragment : BottomSheetDialogFragment(), OnBottomSheetCallbacks {
@@ -35,6 +40,10 @@ class DetailProductFragment : BottomSheetDialogFragment(), OnBottomSheetCallback
     private var nCurrentProductDetailPos = 0
     private var productId: Long = 0L
     private var isColorLoaded = false
+
+    private var selectedSize = 0
+    private var currentQuantity = 1
+    private var isFirstSize = true
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -77,9 +86,6 @@ class DetailProductFragment : BottomSheetDialogFragment(), OnBottomSheetCallback
                                 val productData = products.data!!
 
                                 with(binding) {
-                                    //main
-                                    val navView = requireActivity().findViewById<View>(R.id.top_nav_container)
-
                                     //details
                                     productName.text = productData[nCurrentProductDetailPos]?.name ?: ""
                                     productCategory.text = "${productData[nCurrentProductDetailPos]?.categoryName}'s Shoes"
@@ -146,6 +152,68 @@ class DetailProductFragment : BottomSheetDialogFragment(), OnBottomSheetCallback
                                         }
                                         isColorLoaded = true
                                     }
+
+                                    //show product sizes
+                                    if(productData[nCurrentProductDetailPos]?.categoryId == 3 || productData[nCurrentProductDetailPos]?.categoryId == 4) {
+                                        //kids size
+                                        for (num in 23..35) {
+                                            createChips(num)
+                                        }
+                                    }else if(productData[nCurrentProductDetailPos]?.categoryId == 1){
+                                        //mens shoes
+                                        for (num in 38..51) {
+                                            createChips(num)
+                                        }
+                                    }else if(productData[nCurrentProductDetailPos]?.categoryId == 1){
+                                        //womens shoes
+                                        for (num in 34..46) {
+                                            createChips(num)
+                                        }
+                                    }
+
+                                    productDetail.text = productData[nCurrentProductDetailPos]?.description
+
+                                    //Quantity listener
+                                    binding.quantityField.addTextChangedListener(object : TextWatcher {
+                                        override fun afterTextChanged(s: Editable) {}
+
+                                        override fun beforeTextChanged(s: CharSequence, start: Int,
+                                                                       count: Int, after: Int) {
+                                        }
+
+                                        override fun onTextChanged(s: CharSequence, start: Int,
+                                                                   before: Int, count: Int) {
+                                            val quantity = s.toString()
+                                            if(quantity.isNotEmpty()) {
+                                                if (quantity.toInt() > 0 && quantity.toInt() <= productData[nCurrentProductDetailPos]?.stock!!) {
+                                                    currentQuantity = s.toString().toInt()
+                                                }else if(quantity.toInt() == 0){
+                                                    currentQuantity = 1
+                                                }else if(quantity.toInt() == productData[nCurrentProductDetailPos]?.stock!!.toInt() + 1){
+                                                    currentQuantity = productData[nCurrentProductDetailPos]?.stock!!
+                                                }
+                                            }
+
+                                        }
+                                    })
+
+                                    binding.btnRemove.setOnClickListener {
+                                        val currentQuantity = binding.quantityField.text.toString().toInt()
+                                        if(currentQuantity > 1){
+                                            binding.quantityField.setText((currentQuantity - 1).toString())
+                                        }else{
+                                            binding.quantityField.setText("1")
+                                        }
+                                    }
+
+                                    binding.btnAdd.setOnClickListener {
+                                        val currentQuantity = binding.quantityField.text.toString().toInt()
+                                        if(currentQuantity < productData[nCurrentProductDetailPos]?.stock!!){
+                                            binding.quantityField.setText((currentQuantity + 1).toString())
+                                        }else{
+                                            binding.quantityField.setText(productData[nCurrentProductDetailPos]?.stock!!.toString())
+                                        }
+                                    }
                                 }
                             }
                             Status.ERROR -> {
@@ -166,6 +234,42 @@ class DetailProductFragment : BottomSheetDialogFragment(), OnBottomSheetCallback
             }
         }
 
+        binding.sizeChipsContainer.setOnCheckedChangeListener { chipGroup, _ ->
+            selectedSize = chipGroup.checkedChipId
+        }
+
+    }
+
+    private fun createChips(num: Int){
+        val chip = Chip(requireActivity())
+        val chipDrawable = ChipDrawable.createFromAttributes(
+            requireActivity(),
+            null,
+            0,
+            R.style.CustomChipChoice
+        )
+        chip.setChipDrawable(chipDrawable)
+        chip.isClickable = true
+
+        val chipId = num
+        chip.id = chipId
+        chip.tag = chipId
+
+        chip.text = num.toString()
+        chip.setTextColor(resources.getColorStateList(R.color.text_color_chip_state_list))
+        chip.isCloseIconVisible = false
+
+        chip.setOnClickListener {
+            binding.sizeChipsContainer.check(chipId)
+        }
+
+        binding.sizeChipsContainer.addView(chip)
+
+        if(isFirstSize){
+            selectedSize = chipId
+            binding.sizeChipsContainer.check(chip.id)
+            isFirstSize = false
+        }
     }
 
     override fun onStateChanged(bottomSheet: View, newState: Int) {

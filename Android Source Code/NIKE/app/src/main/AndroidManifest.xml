@@ -13,6 +13,12 @@
         android:theme="@style/Theme.NIKE"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ui.about.AboutActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.setting.SettingActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.detailProduct.imagePreview.ImageViewActivity"
             android:exported="false" />
         <activity

@@ -12,7 +12,7 @@
         android:layout_width="50dp"
         android:layout_height="0dp"
         android:background="@null"
-        android:src="@drawable/ic_baseline_arrow_back_24"
+        android:src="@drawable/ic_baseline_arrow_back_white"
         app:layout_constraintHeight_percent="0.07"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

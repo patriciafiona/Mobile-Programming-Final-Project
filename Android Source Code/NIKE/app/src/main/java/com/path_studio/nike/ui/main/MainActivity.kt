@@ -1,5 +1,6 @@
 package com.path_studio.nike.ui.main
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -13,6 +14,8 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.path_studio.nike.R
 import com.path_studio.nike.databinding.ActivityMainBinding
+import com.path_studio.nike.ui.about.AboutActivity
+import com.path_studio.nike.ui.setting.SettingActivity
 import kotlin.system.exitProcess
 
 class MainActivity : AppCompatActivity() {
@@ -28,6 +31,12 @@ class MainActivity : AppCompatActivity() {
 
         //Setting the Bottom Navigator
         setBottomNav()
+
+        //setting btn
+        binding.btnSetting.setOnClickListener {
+            val intent = Intent(this, SettingActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun setBottomNav(){
