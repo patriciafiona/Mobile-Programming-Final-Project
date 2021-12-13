@@ -6,8 +6,7 @@ import androidx.paging.PagedList
 import androidx.paging.LivePagedListBuilder
 import com.path_studio.nike.vo.Resource
 import com.path_studio.nike.data.source.local.LocalDataSource
-import com.path_studio.nike.data.source.local.entity.CategoryEntity
-import com.path_studio.nike.data.source.local.entity.ProductEntity
+import com.path_studio.nike.data.source.local.entity.*
 import com.path_studio.nike.data.source.remote.ApiResponse
 import com.path_studio.nike.data.source.remote.RemoteDataSource
 import com.path_studio.nike.data.source.remote.response.CategoryResponseItem
@@ -442,6 +441,69 @@ class NikeRepository private constructor(private val remoteDataSource: RemoteDat
                 localDataSource.insertProducts(products)
             }
         }.asLiveData()
+    }
+
+    override fun getProductInCart(): LiveData<PagedList<CartDetailEntity>> {
+        val config = PagedList.Config.Builder()
+            .setEnablePlaceholders(false)
+            .setInitialLoadSizeHint(4)
+            .setPageSize(4)
+            .build()
+        return LivePagedListBuilder(localDataSource.getShoppingCart(), config).build()
+    }
+
+    override fun getProductInCartById(productDetailId: Int): LiveData<PagedList<CartDetailEntity>> {
+        val config = PagedList.Config.Builder()
+            .setEnablePlaceholders(false)
+            .setInitialLoadSizeHint(4)
+            .setPageSize(4)
+            .build()
+        return LivePagedListBuilder(localDataSource.getProductInCartById(productDetailId), config).build()
+    }
+
+    override fun insertProductToCart(data: CartEntity){
+        CoroutineScope(Dispatchers.IO).launch {
+            localDataSource.insertCartProduct(arrayListOf(data))
+        }
+    }
+
+    override fun updateProductToCart(data: CartEntity){
+        CoroutineScope(Dispatchers.IO).launch {
+            localDataSource.updateCartProduct(data)
+        }
+    }
+
+    override fun deleteProductToCart(id: Int){
+        CoroutineScope(Dispatchers.IO).launch {
+            localDataSource.deleteCartProduct(id)
+        }
+    }
+
+    override fun getUserData(): LiveData<PagedList<UserEntity>> {
+        val config = PagedList.Config.Builder()
+            .setEnablePlaceholders(false)
+            .setInitialLoadSizeHint(4)
+            .setPageSize(4)
+            .build()
+        return LivePagedListBuilder(localDataSource.getUserData(), config).build()
+    }
+
+    override fun insertUserData(data: UserEntity){
+        CoroutineScope(Dispatchers.IO).launch {
+            localDataSource.insertUserData(arrayListOf(data))
+        }
+    }
+
+    override fun updateUserData(data: UserEntity){
+        CoroutineScope(Dispatchers.IO).launch {
+            localDataSource.updateUserData(data)
+        }
+    }
+
+    override fun deleteUserdata(id: Int){
+        CoroutineScope(Dispatchers.IO).launch {
+            localDataSource.deleteUserData(id)
+        }
     }
 
 }

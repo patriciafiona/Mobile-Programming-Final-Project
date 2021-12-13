@@ -3,8 +3,7 @@ package com.path_studio.nike.data.source.local.room
 import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
 import androidx.room.*
-import com.path_studio.nike.data.source.local.entity.CategoryEntity
-import com.path_studio.nike.data.source.local.entity.ProductEntity
+import com.path_studio.nike.data.source.local.entity.*
 
 @Dao
 interface NikeDao {
@@ -48,4 +47,42 @@ interface NikeDao {
 
     @Update
     fun updateCategory(category: CategoryEntity)
+
+    //-------------------------------------------------------------------------------------
+    //Category Section
+    @Query("SELECT cart_entities.id, cart_entities.product_detail_id AS productDetailId, cart_entities.quantity, " +
+            "cart_entities.size, product_entities.name, product_entities.productId, product_entities.typeName, " +
+            "product_entities.categoryName, product_entities.price, product_entities.colorCode, product_entities.photo01 " +
+            "FROM cart_entities INNER JOIN product_entities ON product_entities.productDetailId = cart_entities.product_detail_id")
+    fun getShoppingCart(): DataSource.Factory<Int, CartDetailEntity>
+
+    @Query("SELECT cart_entities.id, cart_entities.product_detail_id AS productDetailId, cart_entities.quantity, " +
+            "cart_entities.size, product_entities.name, product_entities.productId, product_entities.typeName, " +
+            "product_entities.categoryName, product_entities.price, product_entities.colorCode, product_entities.photo01 " +
+            "FROM cart_entities INNER JOIN product_entities ON product_entities.productDetailId = cart_entities.product_detail_id " +
+            "WHERE cart_entities.product_detail_id = :productDetailId")
+    fun getProductInCartById(productDetailId: Int): DataSource.Factory<Int, CartDetailEntity>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertCartProduct(product: List<CartEntity>)
+
+    @Update
+    fun updateCartProduct(product: CartEntity)
+
+    @Query("DELETE FROM cart_entities WHERE id = :id")
+    fun deleteCartProduct(id: Int)
+
+    //-------------------------------------------------------------------------------------
+    //User Section
+    @Query("SELECT * FROM user_entities")
+    fun getUserData(): DataSource.Factory<Int, UserEntity>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertUserData(data: List<UserEntity>)
+
+    @Update
+    fun updateUserData(data: UserEntity)
+
+    @Query("DELETE FROM user_entities WHERE id = :userId")
+    fun deleteUserData(userId: Int)
 }

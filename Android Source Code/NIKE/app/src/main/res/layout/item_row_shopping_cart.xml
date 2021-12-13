@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_bg"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        app:cardBackgroundColor="@color/white_smoke"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="20dp"
+        app:layout_constraintHeight_percent=".4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent=".25" />
+
+    <ImageView
+        android:id="@+id/rv_product_img"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="-30dp"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/img_desc"
+        android:elevation="20dp"
+        android:rotation="-30"
+        android:src="@drawable/shoes_temp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent=".3" />
+
+    <TextView
+        android:id="@+id/rv_product_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/roboto_bold"
+        android:maxLines="2"
+        android:text="@string/temp_title"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@+id/rv_product_img"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent=".5" />
+
+    <TextView
+        android:id="@+id/rv_product_category_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/roboto_regular"
+        android:lines="1"
+        android:text="@string/temp_category"
+        android:textColor="@color/dim_gray_1"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@+id/rv_product_img"
+        app:layout_constraintTop_toBottomOf="@+id/rv_product_name"
+        app:layout_constraintWidth_percent=".5" />
+
+    <TextView
+        android:id="@+id/textView20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/roboto_regular"
+        android:lines="1"
+        android:text="@string/size"
+        android:textColor="@color/dim_gray_1"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@+id/rv_product_img"
+        app:layout_constraintTop_toBottomOf="@+id/rv_product_category_name" />
+
+    <TextView
+        android:id="@+id/rv_product_size"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/roboto_bold"
+        android:maxLines="1"
+        android:text="@string/temp_shoes_size"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@+id/textView20"
+        app:layout_constraintTop_toBottomOf="@+id/rv_product_category_name"
+        app:layout_constraintWidth_percent=".15" />
+
+    <TextView
+        android:id="@+id/textView21"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:fontFamily="@font/roboto_regular"
+        android:lines="1"
+        android:text="@string/color_2"
+        android:textColor="@color/dim_gray_1"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@+id/rv_product_size"
+        app:layout_constraintTop_toBottomOf="@+id/rv_product_category_name" />
+
+    <TextView
+        android:id="@+id/rv_product_color_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/roboto_bold"
+        android:maxLines="1"
+        android:text="@string/temp_color_name"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@+id/textView21"
+        app:layout_constraintTop_toBottomOf="@+id/rv_product_category_name"
+        app:layout_constraintWidth_percent=".3" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="16dp"
+        app:cardBackgroundColor="@color/black"
+        app:cardCornerRadius="50dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/rv_product_name"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/rv_product_price_before"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/roboto_regular"
+        android:lines="1"
+        android:text="@string/temp_price"
+        android:textColor="@color/nobel"
+        android:textSize="12sp"
+        android:visibility="invisible"
+        app:layout_constraintStart_toEndOf="@+id/rv_product_img"
+        app:layout_constraintTop_toBottomOf="@+id/rv_product_size"
+        app:layout_constraintWidth_percent=".5" />
+
+    <TextView
+        android:id="@+id/rv_product_price_after"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/roboto_bold"
+        android:maxLines="2"
+        android:text="@string/temp_price"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/rv_product_img"
+        app:layout_constraintTop_toBottomOf="@+id/rv_product_price_before"
+        app:layout_constraintWidth_percent=".5" />
+
+    <ImageButton
+        android:id="@+id/rv_btn_delete"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="16dp"
+        android:background="@null"
+        android:src="@drawable/ic_baseline_delete_gray"
+        app:layout_constraintBottom_toBottomOf="@+id/rv_btn_remove"
+        app:layout_constraintEnd_toStartOf="@+id/rv_btn_remove"
+        app:layout_constraintTop_toTopOf="@+id/rv_btn_remove" />
+
+    <ImageButton
+        android:id="@+id/rv_btn_remove"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/rounded_black_container"
+        android:contentDescription="@string/img_desc"
+        android:src="@drawable/ic_baseline_remove_white"
+        app:layout_constraintBottom_toBottomOf="@+id/quantity_container"
+        app:layout_constraintEnd_toStartOf="@+id/quantity_container"
+        app:layout_constraintTop_toTopOf="@+id/quantity_container"
+        app:layout_constraintWidth_percent=".1" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/quantity_container"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="24dp"
+        app:cardBackgroundColor="@color/whisper"
+        app:cardCornerRadius="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/rv_btn_add"
+        app:layout_constraintTop_toBottomOf="@+id/rv_product_price_after"
+        app:layout_constraintWidth_percent=".2">
+
+        <EditText
+            android:id="@+id/rv_quantity_field"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:importantForAutofill="no"
+            android:inputType="number"
+            android:text="@string/temp_quantity"
+            android:textColor="@color/black"
+            tools:ignore="LabelFor" />
+
+    </androidx.cardview.widget.CardView>
+
+    <ImageButton
+        android:id="@+id/rv_btn_add"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/rounded_black_container"
+        android:contentDescription="@string/img_desc"
+        android:src="@drawable/ic_baseline_add_white"
+        app:layout_constraintBottom_toBottomOf="@+id/quantity_container"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/quantity_container"
+        app:layout_constraintWidth_percent=".1" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

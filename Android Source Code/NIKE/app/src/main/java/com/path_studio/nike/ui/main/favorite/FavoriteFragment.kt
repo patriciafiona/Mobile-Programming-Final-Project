@@ -1,6 +1,7 @@
 package com.path_studio.nike.ui.main.favorite
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,6 +14,7 @@ import com.path_studio.nike.vo.Status
 import com.path_studio.nike.R
 import com.path_studio.nike.databinding.FragmentFavoriteBinding
 import com.path_studio.nike.ui.main.MainActivity
+import com.path_studio.nike.ui.seeAllProduct.SeeAllProductActivity
 import com.path_studio.nike.viewModel.ViewModelFactory
 
 class FavoriteFragment : Fragment() {
@@ -67,6 +69,12 @@ class FavoriteFragment : Fragment() {
             }else{
                 navView?.visibility = View.INVISIBLE
             }
+        }
+
+        //check all product listener
+        binding.btnCheckAll.setOnClickListener {
+            val intent = Intent(requireActivity(), SeeAllProductActivity::class.java)
+            startActivity(intent)
         }
     }
 

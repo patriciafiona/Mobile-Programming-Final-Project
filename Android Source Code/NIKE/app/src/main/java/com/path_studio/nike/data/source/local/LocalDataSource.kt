@@ -2,8 +2,7 @@ package com.path_studio.nike.data.source.local
 
 import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
-import com.path_studio.nike.data.source.local.entity.CategoryEntity
-import com.path_studio.nike.data.source.local.entity.ProductEntity
+import com.path_studio.nike.data.source.local.entity.*
 import com.path_studio.nike.data.source.local.room.NikeDao
 
 class LocalDataSource private constructor(private val mNikeDao: NikeDao) {
@@ -36,7 +35,21 @@ class LocalDataSource private constructor(private val mNikeDao: NikeDao) {
     //-------------------------------------------------------------------------------------
     //Category Section
     fun getAllCategory(): DataSource.Factory<Int, CategoryEntity> = mNikeDao.getAllCategory()
-
     fun insertCategories(categories: ArrayList<CategoryEntity>) = mNikeDao.insertCategories(categories)
+
+    //-------------------------------------------------------------------------------------
+    //Cart Section
+    fun getShoppingCart(): DataSource.Factory<Int, CartDetailEntity> = mNikeDao.getShoppingCart()
+    fun getProductInCartById(productDetailId: Int): DataSource.Factory<Int, CartDetailEntity> = mNikeDao.getProductInCartById(productDetailId)
+    fun insertCartProduct(products: ArrayList<CartEntity>) = mNikeDao.insertCartProduct(products)
+    fun updateCartProduct(product : CartEntity) = mNikeDao.updateCartProduct(product)
+    fun deleteCartProduct(id : Int) = mNikeDao.deleteCartProduct(id)
+
+    //-------------------------------------------------------------------------------------
+    //User Section
+    fun getUserData(): DataSource.Factory<Int, UserEntity> = mNikeDao.getUserData()
+    fun insertUserData(data: ArrayList<UserEntity>) = mNikeDao.insertUserData(data)
+    fun updateUserData(data : UserEntity) = mNikeDao.updateUserData(data)
+    fun deleteUserData(userId : Int) = mNikeDao.deleteUserData(userId)
 
 }

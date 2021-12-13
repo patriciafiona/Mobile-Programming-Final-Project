@@ -30,6 +30,9 @@ import com.path_studio.nike.viewModel.ViewModelFactory
 import com.path_studio.nike.vo.Status
 import android.text.InputFilter
 import android.text.TextWatcher
+import androidx.paging.PagedList
+import androidx.recyclerview.widget.GridLayoutManager
+import com.path_studio.nike.data.source.local.entity.CartEntity
 
 
 class DetailProductFragment : BottomSheetDialogFragment(), OnBottomSheetCallbacks {
@@ -43,7 +46,7 @@ class DetailProductFragment : BottomSheetDialogFragment(), OnBottomSheetCallback
 
     private var selectedSize = 0
     private var currentQuantity = 1
-    private var isFirstSize = true
+    private var isAddProduct = true
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,7 +61,6 @@ class DetailProductFragment : BottomSheetDialogFragment(), OnBottomSheetCallback
         return view
     }
 
-    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -75,146 +77,110 @@ class DetailProductFragment : BottomSheetDialogFragment(), OnBottomSheetCallback
                 val factory = ViewModelFactory.getInstance(requireActivity())
                 val viewModel = ViewModelProvider(this, factory)[DetailProductViewModel::class.java]
 
+                //get product details
                 viewModel.getProductsByID(productId.toInt()).observe(this, { products ->
                     if (products != null) {
                         when (products.status) {
                             Status.LOADING -> binding.skeletonData.showSkeleton()
                             Status.SUCCESS -> {
-                                binding.skeletonData.showOriginal()
-
-                                //show data to UI
                                 val productData = products.data!!
 
-                                with(binding) {
-                                    //details
-                                    productName.text = productData[nCurrentProductDetailPos]?.name ?: ""
-                                    productCategory.text = "${productData[nCurrentProductDetailPos]?.categoryName}'s Shoes"
-                                    productType.text = "${productData[nCurrentProductDetailPos]?.categoryName}'s Shoes"
-                                    productStock.text = productData[nCurrentProductDetailPos]?.stock.toString()
-                                    productProductColorDesc.text = productData[nCurrentProductDetailPos]?.colorDescription
-                                    productPriceAfter.text = "Rp ${productData[nCurrentProductDetailPos]?.let {
-                                        getNumberThousandFormat(
-                                            it.price)
-                                    }}"
-                                    productRating.text = productData[nCurrentProductDetailPos]?.rating.toString()
+                                //check product in cart
+                                viewModel.checkProductInCart(productData[nCurrentProductDetailPos]?.productDetailId!!)
+                                    .observe(requireActivity(), { products ->
+                                        isAddProduct = products.isEmpty()
 
-                                    //show color selection
-                                    if(!isColorLoaded) {
-                                        val listColor = ArrayList<String>()
-                                        for (d in productData) {
-                                            listColor.add(d.colorCode)
-                                        }
+                                        if (products.isNotEmpty() && products.size > 0) {
+                                            binding.quantityField.setText(products[0]?.quantity.toString())
 
-                                        colorContainer.removeAllViews()
-                                        for (i in 0 until listColor.size) {
-                                            val colorView = CardView(requireActivity())
+                                            currentQuantity = products[0]?.quantity ?: 1
 
-                                            val params: RelativeLayout.LayoutParams =
-                                                RelativeLayout.LayoutParams(30, 30)
-                                            params.setMargins(0, 0, 25, 10)
-
-                                            colorView.layoutParams =
-                                                RelativeLayout.LayoutParams(params)
-                                            colorView.minimumHeight = 10
-
-                                            colorView.layoutParams.height = 100
-                                            colorView.layoutParams.width = 100
-                                            colorView.radius = TypedValue.applyDimension(
-                                                TypedValue.COMPLEX_UNIT_DIP, 50f,
-                                                context?.resources?.displayMetrics
-                                            )
-                                            colorView.setCardBackgroundColor(
-                                                Color.parseColor(
-                                                    listColor[i]
-                                                )
-                                            )
-
-                                            colorView.setOnClickListener {
-                                                //show category result
-                                                val intent = Intent(
-                                                    requireActivity(),
-                                                    DetailProductActivity::class.java
-                                                )
-                                                intent.putExtra(
-                                                    DetailProductActivity.EXTRA_PRODUCT,
-                                                    productId
-                                                )
-                                                intent.putExtra(
-                                                    DetailProductActivity.EXTRA_PRODUCT_POS,
-                                                    i
-                                                )
-                                                requireActivity().finish()
-                                                requireActivity().overridePendingTransition(0, 0)
-                                                requireActivity().startActivity(intent)
-                                            }
-
-                                            colorContainer.addView(colorView)
-                                        }
-                                        isColorLoaded = true
-                                    }
-
-                                    //show product sizes
-                                    if(productData[nCurrentProductDetailPos]?.categoryId == 3 || productData[nCurrentProductDetailPos]?.categoryId == 4) {
-                                        //kids size
-                                        for (num in 23..35) {
-                                            createChips(num)
-                                        }
-                                    }else if(productData[nCurrentProductDetailPos]?.categoryId == 1){
-                                        //mens shoes
-                                        for (num in 38..51) {
-                                            createChips(num)
-                                        }
-                                    }else if(productData[nCurrentProductDetailPos]?.categoryId == 1){
-                                        //womens shoes
-                                        for (num in 34..46) {
-                                            createChips(num)
-                                        }
-                                    }
-
-                                    productDetail.text = productData[nCurrentProductDetailPos]?.description
-
-                                    //Quantity listener
-                                    binding.quantityField.addTextChangedListener(object : TextWatcher {
-                                        override fun afterTextChanged(s: Editable) {}
-
-                                        override fun beforeTextChanged(s: CharSequence, start: Int,
-                                                                       count: Int, after: Int) {
-                                        }
-
-                                        override fun onTextChanged(s: CharSequence, start: Int,
-                                                                   before: Int, count: Int) {
-                                            val quantity = s.toString()
-                                            if(quantity.isNotEmpty()) {
-                                                if (quantity.toInt() > 0 && quantity.toInt() <= productData[nCurrentProductDetailPos]?.stock!!) {
-                                                    currentQuantity = s.toString().toInt()
-                                                }else if(quantity.toInt() == 0){
-                                                    currentQuantity = 1
-                                                }else if(quantity.toInt() == productData[nCurrentProductDetailPos]?.stock!!.toInt() + 1){
-                                                    currentQuantity = productData[nCurrentProductDetailPos]?.stock!!
+                                            //show product sizes with database checking
+                                            if(productData[nCurrentProductDetailPos]?.categoryId == 3 || productData[nCurrentProductDetailPos]?.categoryId == 4) {
+                                                //kids size
+                                                selectedSize = products[0]?.size ?: 25
+                                                for (num in 23..35) {
+                                                    createChips(num)
+                                                }
+                                            }else if(productData[nCurrentProductDetailPos]?.categoryId == 1){
+                                                //mens shoes
+                                                selectedSize = products[0]?.size ?: 40
+                                                for (num in 38..51) {
+                                                    createChips(num)
+                                                }
+                                            }else if(productData[nCurrentProductDetailPos]?.categoryId == 1){
+                                                //womens shoes
+                                                selectedSize = products[0]?.size ?: 38
+                                                for (num in 34..46) {
+                                                    createChips(num)
                                                 }
                                             }
-
-                                        }
-                                    })
-
-                                    binding.btnRemove.setOnClickListener {
-                                        val currentQuantity = binding.quantityField.text.toString().toInt()
-                                        if(currentQuantity > 1){
-                                            binding.quantityField.setText((currentQuantity - 1).toString())
                                         }else{
-                                            binding.quantityField.setText("1")
+                                            //show product sizes without checking database
+                                            if(productData[nCurrentProductDetailPos]?.categoryId == 3 || productData[nCurrentProductDetailPos]?.categoryId == 4) {
+                                                //kids size
+                                                selectedSize = 23
+                                                for (num in 23..35) {
+                                                    createChips(num)
+                                                }
+                                            }else if(productData[nCurrentProductDetailPos]?.categoryId == 1){
+                                                //mens shoes
+                                                selectedSize = 38
+                                                for (num in 38..51) {
+                                                    createChips(num)
+                                                }
+                                            }else if(productData[nCurrentProductDetailPos]?.categoryId == 1){
+                                                //womens shoes
+                                                selectedSize = 34
+                                                for (num in 34..46) {
+                                                    createChips(num)
+                                                }
+                                            }
                                         }
-                                    }
 
-                                    binding.btnAdd.setOnClickListener {
-                                        val currentQuantity = binding.quantityField.text.toString().toInt()
-                                        if(currentQuantity < productData[nCurrentProductDetailPos]?.stock!!){
-                                            binding.quantityField.setText((currentQuantity + 1).toString())
+                                        if(isAddProduct) {
+                                            binding.btnAddRemove.text = requireActivity().resources.getString(R.string.add_to_bag)
                                         }else{
-                                            binding.quantityField.setText(productData[nCurrentProductDetailPos]?.stock!!.toString())
+                                            binding.btnAddRemove.text = requireActivity().resources.getString(R.string.update_to_bag)
                                         }
-                                    }
-                                }
+
+                                        binding.btnAddRemove.setOnClickListener {
+                                            currentQuantity = binding.quantityField.text.toString().toInt()
+
+                                            val cartData: CartEntity
+                                            if (products.isNotEmpty() && products.size > 0) {
+                                                cartData =
+                                                    CartEntity(
+                                                        products[0]?.id?.toLong() ?: 0,
+                                                        productData[nCurrentProductDetailPos]?.productDetailId!!,
+                                                        currentQuantity,
+                                                        selectedSize
+                                                    )
+                                            }else{
+                                                cartData =
+                                                    CartEntity(
+                                                         0,
+                                                        productData[nCurrentProductDetailPos]?.productDetailId!!,
+                                                        currentQuantity,
+                                                        selectedSize
+                                                    )
+                                            }
+
+                                            if(isAddProduct){
+                                                viewModel.insertProductToCart(cartData)
+                                                binding.btnAddRemove.text = requireActivity().resources.getString(R.string.update_to_bag)
+                                                isAddProduct = false
+                                                Toast.makeText(requireContext(),"Product Added to Cart",Toast. LENGTH_SHORT).show()
+                                            }else{
+                                                viewModel.updateProductToCart(cartData)
+                                                Toast.makeText(requireContext(),"Product Updated to Cart",Toast. LENGTH_SHORT).show()
+                                            }
+                                        }
+                                })
+
+                                //show data to UI
+                                showDatatoUI(productData)
+                                binding.skeletonData.showOriginal()
                             }
                             Status.ERROR -> {
                                 binding.skeletonData.showOriginal()
@@ -238,6 +204,122 @@ class DetailProductFragment : BottomSheetDialogFragment(), OnBottomSheetCallback
             selectedSize = chipGroup.checkedChipId
         }
 
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun showDatatoUI(productData: PagedList<ProductEntity>){
+        with(binding) {
+            //details
+            productName.text = productData[nCurrentProductDetailPos]?.name ?: ""
+            productCategory.text = "${productData[nCurrentProductDetailPos]?.categoryName}'s Shoes"
+            productType.text = "${productData[nCurrentProductDetailPos]?.categoryName}'s Shoes"
+            productStock.text = productData[nCurrentProductDetailPos]?.stock.toString()
+            productProductColorDesc.text = productData[nCurrentProductDetailPos]?.colorDescription
+            productPriceAfter.text = "Rp ${productData[nCurrentProductDetailPos]?.let {
+                getNumberThousandFormat(
+                    it.price)
+            }}"
+            productRating.text = productData[nCurrentProductDetailPos]?.rating.toString()
+
+            //show color selection
+            if(!isColorLoaded) {
+                val listColor = ArrayList<String>()
+                for (d in productData) {
+                    listColor.add(d.colorCode)
+                }
+
+                colorContainer.removeAllViews()
+                for (i in 0 until listColor.size) {
+                    val colorView = CardView(requireActivity())
+
+                    val params: RelativeLayout.LayoutParams =
+                        RelativeLayout.LayoutParams(30, 30)
+                    params.setMargins(0, 0, 25, 10)
+
+                    colorView.layoutParams =
+                        RelativeLayout.LayoutParams(params)
+                    colorView.minimumHeight = 10
+
+                    colorView.layoutParams.height = 100
+                    colorView.layoutParams.width = 100
+                    colorView.radius = TypedValue.applyDimension(
+                        TypedValue.COMPLEX_UNIT_DIP, 50f,
+                        context?.resources?.displayMetrics
+                    )
+                    colorView.setCardBackgroundColor(
+                        Color.parseColor(
+                            listColor[i]
+                        )
+                    )
+
+                    colorView.setOnClickListener {
+                        //show category result
+                        val intent = Intent(
+                            requireActivity(),
+                            DetailProductActivity::class.java
+                        )
+                        intent.putExtra(
+                            DetailProductActivity.EXTRA_PRODUCT,
+                            productId
+                        )
+                        intent.putExtra(
+                            DetailProductActivity.EXTRA_PRODUCT_POS,
+                            i
+                        )
+                        requireActivity().finish()
+                        requireActivity().overridePendingTransition(0, 0)
+                        requireActivity().startActivity(intent)
+                    }
+
+                    colorContainer.addView(colorView)
+                }
+                isColorLoaded = true
+            }
+
+            productDetail.text = productData[nCurrentProductDetailPos]?.description
+
+            //Quantity listener
+            binding.quantityField.addTextChangedListener(object : TextWatcher {
+                override fun afterTextChanged(s: Editable) {}
+
+                override fun beforeTextChanged(s: CharSequence, start: Int,
+                                               count: Int, after: Int) {
+                }
+
+                override fun onTextChanged(s: CharSequence, start: Int,
+                                           before: Int, count: Int) {
+                    val quantity = s.toString()
+                    if(quantity.isNotEmpty()) {
+                        if (quantity.toInt() > 0 && quantity.toInt() <= productData[nCurrentProductDetailPos]?.stock!!) {
+                            currentQuantity = s.toString().toInt()
+                        }else if(quantity.toInt() == 0){
+                            currentQuantity = 1
+                        }else if(quantity.toInt() == productData[nCurrentProductDetailPos]?.stock!!.toInt() + 1){
+                            currentQuantity = productData[nCurrentProductDetailPos]?.stock!!
+                        }
+                    }
+
+                }
+            })
+
+            binding.btnRemove.setOnClickListener {
+                val currentQuantity = binding.quantityField.text.toString().toInt()
+                if(currentQuantity > 1){
+                    binding.quantityField.setText((currentQuantity - 1).toString())
+                }else{
+                    binding.quantityField.setText("1")
+                }
+            }
+
+            binding.btnAdd.setOnClickListener {
+                val currentQuantity = binding.quantityField.text.toString().toInt()
+                if(currentQuantity < productData[nCurrentProductDetailPos]?.stock!!){
+                    binding.quantityField.setText((currentQuantity + 1).toString())
+                }else{
+                    binding.quantityField.setText(productData[nCurrentProductDetailPos]?.stock!!.toString())
+                }
+            }
+        }
     }
 
     private fun createChips(num: Int){
@@ -265,10 +347,8 @@ class DetailProductFragment : BottomSheetDialogFragment(), OnBottomSheetCallback
 
         binding.sizeChipsContainer.addView(chip)
 
-        if(isFirstSize){
-            selectedSize = chipId
+        if(num == selectedSize){
             binding.sizeChipsContainer.check(chip.id)
-            isFirstSize = false
         }
     }
 

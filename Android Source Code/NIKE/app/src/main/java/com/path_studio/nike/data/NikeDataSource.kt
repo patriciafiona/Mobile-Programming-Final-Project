@@ -2,9 +2,8 @@ package com.path_studio.nike.data
 
 import androidx.lifecycle.LiveData
 import androidx.paging.PagedList
+import com.path_studio.nike.data.source.local.entity.*
 import com.path_studio.nike.vo.Resource
-import com.path_studio.nike.data.source.local.entity.CategoryEntity
-import com.path_studio.nike.data.source.local.entity.ProductEntity
 
 interface NikeDataSource {
     fun getAllProduct(): LiveData<Resource<PagedList<ProductEntity>>>
@@ -19,4 +18,15 @@ interface NikeDataSource {
 
     fun getFavoriteProducts(): LiveData<PagedList<ProductEntity>>
     fun setFavoriteProduct(product: ProductEntity, newState: Boolean)
+
+    fun getProductInCart(): LiveData<PagedList<CartDetailEntity>>
+    fun getProductInCartById(productDetailId: Int): LiveData<PagedList<CartDetailEntity>>
+    fun insertProductToCart(data: CartEntity)
+    fun updateProductToCart(data: CartEntity)
+    fun deleteProductToCart(id: Int)
+
+    fun getUserData(): LiveData<PagedList<UserEntity>>
+    fun insertUserData(data: UserEntity)
+    fun updateUserData(data: UserEntity)
+    fun deleteUserdata(id: Int)
 }

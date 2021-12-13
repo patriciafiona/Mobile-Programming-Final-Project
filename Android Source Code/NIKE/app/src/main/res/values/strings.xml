@@ -64,4 +64,15 @@
     <string name="add_to_bag">Add to Bag</string>
     <string name="details">Details</string>
     <string name="temp_quantity">1</string>
+    <string name="temp_address">Rose St. Number 21, Southampton, England</string>
+    <string name="oh_no_your_shopping_basket_is_empty">Oh no, your shopping \nbasket is empty</string>
+    <string name="come_on_fill_it_with_the_shoes_of_you_dreams">Come on, fill it with the \nshoes of you dreams!</string>
+    <string name="size">Size:</string>
+    <string name="temp_shoes_size">40 Euro</string>
+    <string name="color_2">Color:</string>
+    <string name="temp_color_name">Blue Sea</string>
+    <string name="total_price">Total Price</string>
+    <string name="checkout">Checkout</string>
+    <string name="remove_from_bag">Remove From Bag</string>
+    <string name="update_to_bag">Update to Bag</string>
 </resources>
