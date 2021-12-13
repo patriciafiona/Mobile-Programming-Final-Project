@@ -50,7 +50,8 @@ class SearchAdapter: RecyclerView.Adapter<SearchAdapter.SuggestionHolder>() {
 
                 itemView.setOnClickListener {
                     val intent = Intent(itemView.context, DetailProductActivity::class.java)
-                    intent.putExtra(DetailProductActivity.EXTRA_PRODUCT, product.id)
+                    intent.putExtra(DetailProductActivity.EXTRA_PRODUCT, product.productId)
+                    intent.putExtra(DetailProductActivity.EXTRA_PRODUCT_POS, 0)
                     itemView.context.startActivity(intent)
                 }
 

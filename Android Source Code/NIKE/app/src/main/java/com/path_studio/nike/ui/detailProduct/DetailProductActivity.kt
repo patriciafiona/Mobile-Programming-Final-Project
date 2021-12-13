@@ -2,16 +2,14 @@ package com.path_studio.nike.ui.detailProduct
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,6 +24,7 @@ import com.path_studio.nike.data.source.remote.response.ProductResponseItem
 import com.path_studio.nike.databinding.ActivityDetailProductBinding
 import com.path_studio.nike.databinding.ActivityMainBinding
 import com.path_studio.nike.ui.detailProduct.bottomSheet.OnBottomSheetCallbacks
+import com.path_studio.nike.ui.detailProduct.imagePreview.ImageViewActivity
 import com.path_studio.nike.ui.main.home.HomeViewModel
 import com.path_studio.nike.ui.main.home.adapter.ProductRotateXLAdapter
 import com.path_studio.nike.viewModel.ViewModelFactory
@@ -42,6 +41,8 @@ class DetailProductActivity : AppCompatActivity() {
     private lateinit var mPager: ViewPager
     private lateinit var mDotLayout: LinearLayout
     private lateinit var mDosts: Array<TextView>
+
+    private var nCurrentProductDetailPos = 0
 
     companion object {
         const val EXTRA_PRODUCT = "extra_product"
@@ -70,6 +71,7 @@ class DetailProductActivity : AppCompatActivity() {
 
         if (extras != null) {
             val productId = extras.getLong(EXTRA_PRODUCT)
+            nCurrentProductDetailPos = extras.getInt(EXTRA_PRODUCT_POS)
             if (productId != 0L) {
                 val factory = ViewModelFactory.getInstance(this)
                 val viewModel = ViewModelProvider(this, factory)[DetailProductViewModel::class.java]
@@ -84,36 +86,51 @@ class DetailProductActivity : AppCompatActivity() {
                                 //show data to UI
                                 val productData = products.data!!
                                 with(binding) {
-                                    topCategoryText.text = "${productData[0]?.categoryName}'s Shoes"
-                                    productData[0]?.let { setFavoriteStateColor(it.favorite) }
+                                    topCategoryText.text = "${productData[nCurrentProductDetailPos]?.categoryName}'s Shoes"
+                                    productData[nCurrentProductDetailPos]?.let { setFavoriteStateColor(it.favorite) }
+
+                                    btnFavorite.setOnClickListener {
+                                        //clear the color btn
+                                        val detailFragment =
+                                            supportFragmentManager.findFragmentById(R.id.productDetailContainer) as DetailProductFragment?
+                                        val colorView = detailFragment?.view?.findViewById<GridView>(R.id.color_container)
+                                        colorView?.removeAllViews()
+
+                                        productData[nCurrentProductDetailPos]?.let { it1 ->
+                                            viewModel.setFavorite(
+                                                it1
+                                            )
+                                        }
+                                        setFavoriteStateColor(!productData[nCurrentProductDetailPos]?.favorite!!)
+                                    }
 
                                     // The pager adapter, which provides the pages to the view pager widget.
                                     var imagesArr = arrayListOf<String?>()
-                                    if (!productData[0]?.photo05.isNullOrBlank()){
+                                    if (!productData[nCurrentProductDetailPos]?.photo05.isNullOrBlank()){
                                         imagesArr = arrayListOf(
-                                            productData[0]?.photo01,
-                                            productData[0]?.photo02,
-                                            productData[0]?.photo03,
-                                            productData[0]?.photo04,
-                                            productData[0]?.photo05
+                                            productData[nCurrentProductDetailPos]?.photo01,
+                                            productData[nCurrentProductDetailPos]?.photo02,
+                                            productData[nCurrentProductDetailPos]?.photo03,
+                                            productData[nCurrentProductDetailPos]?.photo04,
+                                            productData[nCurrentProductDetailPos]?.photo05
                                         )
-                                    }else if(!productData[0]?.photo04.isNullOrBlank()){
+                                    }else if(!productData[nCurrentProductDetailPos]?.photo04.isNullOrBlank()){
                                         imagesArr = arrayListOf(
-                                            productData[0]?.photo01,
-                                            productData[0]?.photo02,
-                                            productData[0]?.photo03,
-                                            productData[0]?.photo04
+                                            productData[nCurrentProductDetailPos]?.photo01,
+                                            productData[nCurrentProductDetailPos]?.photo02,
+                                            productData[nCurrentProductDetailPos]?.photo03,
+                                            productData[nCurrentProductDetailPos]?.photo04
                                         )
-                                    }else if(!productData[0]?.photo03.isNullOrBlank()){
+                                    }else if(!productData[nCurrentProductDetailPos]?.photo03.isNullOrBlank()){
                                         imagesArr = arrayListOf(
-                                            productData[0]?.photo01,
-                                            productData[0]?.photo02,
-                                            productData[0]?.photo03
+                                            productData[nCurrentProductDetailPos]?.photo01,
+                                            productData[nCurrentProductDetailPos]?.photo02,
+                                            productData[nCurrentProductDetailPos]?.photo03
                                         )
-                                    }else if(!productData[0]?.photo02.isNullOrBlank()){
+                                    }else if(!productData[nCurrentProductDetailPos]?.photo02.isNullOrBlank()){
                                         imagesArr = arrayListOf(
-                                            productData[0]?.photo01,
-                                            productData[0]?.photo02
+                                            productData[nCurrentProductDetailPos]?.photo01,
+                                            productData[nCurrentProductDetailPos]?.photo02
                                         )
                                     }
 
@@ -231,6 +248,12 @@ class DetailProductActivity : AppCompatActivity() {
                         .error(R.drawable.ic_error_img)
                 )
                 .into(img)
+
+            img.setOnClickListener {
+                val intent = Intent(this@DetailProductActivity, ImageViewActivity::class.java)
+                intent.putExtra("img_url", posterURL)
+                startActivity(intent)
+            }
 
             Objects.requireNonNull(container).addView(itemView)
             return itemView

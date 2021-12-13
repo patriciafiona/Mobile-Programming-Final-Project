@@ -37,4 +37,8 @@
     <string name="show_indicator">container show indicator</string>
     <string name="color">Color</string>
     <string name="temp_rating">4.8</string>
+    <string name="stock">Stock</string>
+    <string name="temp_stock">190</string>
+    <string name="type">Type</string>
+    <string name="back">Back</string>
 </resources>

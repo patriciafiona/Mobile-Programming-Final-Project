@@ -17,7 +17,7 @@ public class ProductsDaoImp implements Dao{
 		Connection conn = JDBCUtil.getConnection();
 		
 		Statement st = conn.createStatement();
-		String sql = "SELECT products.id as id, product_details.id as product_detail_id, categories.id as category_id, "
+		String sql = "SELECT products.id as productId, product_details.id as product_detail_id, categories.id as category_id, "
 				+ "types.id as type_id, products.name, products.price, products.description, "
 				+ "product_details.rating, product_details.style, product_details.color_description, "
 				+ "product_details.stock, product_details.photo_01, product_details.photo_02, "
@@ -31,13 +31,12 @@ public class ProductsDaoImp implements Dao{
 				+ "INNER JOIN colors ON "
 				+ "colors.id = product_details.color_id "
 				+ "INNER JOIN types ON "
-				+ "types.id = products.type_id "
-				+ "GROUP BY products.id";
+				+ "types.id = products.type_id ";
 		ResultSet rs = st.executeQuery(sql);
 		
 		ArrayList<main.entities.Product> products = new ArrayList<main.entities.Product>();
 		while (rs.next()) {
-			int id = rs.getInt("id");
+			int id = rs.getInt("productId");
 			int product_detail_id = rs.getInt("product_detail_id");
 			int category_id = rs.getInt("category_id");
 			int type_id = rs.getInt("type_id");
@@ -73,7 +72,7 @@ public class ProductsDaoImp implements Dao{
 		Connection conn = JDBCUtil.getConnection();
 		
 		Statement st = conn.createStatement();
-		String sql = "SELECT products.id as id, product_details.id as product_detail_id, categories.id as category_id,  "
+		String sql = "SELECT products.id as productId, product_details.id as product_detail_id, categories.id as category_id,  "
 				+ "types.id as type_id, products.name, products.price, products.description, "
 				+ "product_details.rating, product_details.style, product_details.color_description, "
 				+ "product_details.stock, product_details.photo_01, product_details.photo_02, "
@@ -93,7 +92,7 @@ public class ProductsDaoImp implements Dao{
 		
 		ArrayList<main.entities.Product> products = new ArrayList<main.entities.Product>();
 		while (rs.next()) {
-			int res_id = rs.getInt("id");
+			int res_id = rs.getInt("productId");
 			int product_detail_id = rs.getInt("product_detail_id");
 			int category_id = rs.getInt("category_id");
 			int type_id = rs.getInt("type_id");
@@ -129,7 +128,7 @@ public class ProductsDaoImp implements Dao{
 		Connection conn = JDBCUtil.getConnection();
 		
 		Statement st = conn.createStatement();
-		String sql = "SELECT products.id as id, product_details.id as product_detail_id, categories.id as category_id, "
+		String sql = "SELECT products.id as productId, product_details.id as product_detail_id, categories.id as category_id, "
 				+ "types.id as type_id, products.name, products.price, products.description, "
 				+ "product_details.rating, product_details.style, product_details.color_description, "
 				+ "product_details.stock, product_details.photo_01, product_details.photo_02, "
@@ -144,12 +143,13 @@ public class ProductsDaoImp implements Dao{
 				+ "colors.id = product_details.color_id "
 				+ "INNER JOIN types ON "
 				+ "types.id = products.type_id "
-				+ "WHERE products.name LIKE '%"+ name +"%'";
+				+ "WHERE products.name LIKE '%"+ name +"%' "
+				+ "GROUP BY products.id";
 		ResultSet rs = st.executeQuery(sql);
 		
 		ArrayList<main.entities.Product> products = new ArrayList<main.entities.Product>();
 		while (rs.next()) {
-			int id = rs.getInt("id");
+			int id = rs.getInt("productId");
 			int product_detail_id = rs.getInt("product_detail_id");
 			int category_id = rs.getInt("category_id");
 			int type_id = rs.getInt("type_id");
@@ -184,7 +184,7 @@ public class ProductsDaoImp implements Dao{
 		Connection conn = JDBCUtil.getConnection();
 		
 		Statement st = conn.createStatement();
-		String sql = "SELECT products.id as id, product_details.id as product_detail_id, categories.id as category_id, "
+		String sql = "SELECT products.id as productId, product_details.id as product_detail_id, categories.id as category_id, "
 				+ "types.id as type_id, products.name, products.price, products.description, "
 				+ "product_details.rating, product_details.style, product_details.color_description, "
 				+ "product_details.stock, product_details.photo_01, product_details.photo_02, "
@@ -204,7 +204,7 @@ public class ProductsDaoImp implements Dao{
 		
 		main.entities.Product product = null;
 		if (rs.next()) {
-			int res_id = rs.getInt("id");
+			int res_id = rs.getInt("productId");
 			int product_detail_id = rs.getInt("product_detail_id");
 			int category_id = rs.getInt("category_id");
 			int type_id = rs.getInt("type_id");
@@ -238,7 +238,7 @@ public class ProductsDaoImp implements Dao{
 		Connection conn = JDBCUtil.getConnection();
 		
 		Statement st = conn.createStatement();
-		String sql = "SELECT products.id as id, product_details.id as product_detail_id, categories.id as category_id,  "
+		String sql = "SELECT products.id as productId, product_details.id as product_detail_id, categories.id as category_id,  "
 				+ "types.id as type_id, products.name, products.price, products.description, "
 				+ "product_details.rating, product_details.style, product_details.color_description, "
 				+ "product_details.stock, product_details.photo_01, product_details.photo_02, "
@@ -258,7 +258,7 @@ public class ProductsDaoImp implements Dao{
 		
 		ArrayList<main.entities.Product> products = new ArrayList<main.entities.Product>();
 		while (rs.next()) {
-			int id = rs.getInt("id");
+			int id = rs.getInt("productId");
 			int product_detail_id = rs.getInt("product_detail_id");
 			int res_category_id = rs.getInt("category_id");
 			int type_id = rs.getInt("type_id");
@@ -293,7 +293,7 @@ public class ProductsDaoImp implements Dao{
 		Connection conn = JDBCUtil.getConnection();
 		
 		Statement st = conn.createStatement();
-		String sql = "SELECT products.id as id, product_details.id as product_detail_id, categories.id as category_id,  "
+		String sql = "SELECT products.id as productId, product_details.id as product_detail_id, categories.id as category_id,  "
 				+ "types.id as type_id, products.name, products.price, products.description, "
 				+ "product_details.rating, product_details.style, product_details.color_description, "
 				+ "product_details.stock, product_details.photo_01, product_details.photo_02, "
@@ -313,7 +313,7 @@ public class ProductsDaoImp implements Dao{
 		
 		ArrayList<main.entities.Product> products = new ArrayList<main.entities.Product>();
 		while (rs.next()) {
-			int id = rs.getInt("id");
+			int id = rs.getInt("productId");
 			int product_detail_id = rs.getInt("product_detail_id");
 			int res_category_id = rs.getInt("category_id");
 			int res_type_id = rs.getInt("type_id");
@@ -358,7 +358,7 @@ public class ProductsDaoImp implements Dao{
 		Connection conn = JDBCUtil.getConnection();
 		
 		Statement st = conn.createStatement();
-		String sql = "SELECT products.id as id, product_details.id as product_detail_id, categories.id as category_id, "
+		String sql = "SELECT products.id as productId, product_details.id as product_detail_id, categories.id as category_id, "
 				+ "types.id as type_id, products.name, products.price, products.description, "
 				+ "product_details.rating, product_details.style, product_details.color_description, "
 				+ "product_details.stock, product_details.photo_01, product_details.photo_02, "
@@ -373,13 +373,12 @@ public class ProductsDaoImp implements Dao{
 				+ "colors.id = product_details.color_id "
 				+ "INNER JOIN types ON "
 				+ "types.id = products.type_id "
-				+ "GROUP BY products.id "
 				+ "LIMIT "+ limit;
 		ResultSet rs = st.executeQuery(sql);
 		
 		ArrayList<main.entities.Product> products = new ArrayList<main.entities.Product>();
 		while (rs.next()) {
-			int id = rs.getInt("id");
+			int id = rs.getInt("productId");
 			int product_detail_id = rs.getInt("product_detail_id");
 			int category_id = rs.getInt("category_id");
 			int type_id = rs.getInt("type_id");
@@ -414,7 +413,7 @@ public class ProductsDaoImp implements Dao{
 		Connection conn = JDBCUtil.getConnection();
 		
 		Statement st = conn.createStatement();
-		String sql = "SELECT products.id as id, product_details.id as product_detail_id, categories.id as category_id,  "
+		String sql = "SELECT products.id as productId, product_details.id as product_detail_id, categories.id as category_id,  "
 				+ "types.id as type_id, products.name, products.price, products.description, "
 				+ "product_details.rating, product_details.style, product_details.color_description, "
 				+ "product_details.stock, product_details.photo_01, product_details.photo_02, "
@@ -435,7 +434,7 @@ public class ProductsDaoImp implements Dao{
 		
 		ArrayList<main.entities.Product> products = new ArrayList<main.entities.Product>();
 		while (rs.next()) {
-			int id = rs.getInt("id");
+			int id = rs.getInt("productId");
 			int product_detail_id = rs.getInt("product_detail_id");
 			int res_category_id = rs.getInt("category_id");
 			int type_id = rs.getInt("type_id");
@@ -470,7 +469,7 @@ public class ProductsDaoImp implements Dao{
 		Connection conn = JDBCUtil.getConnection();
 		
 		Statement st = conn.createStatement();
-		String sql = "SELECT products.id as id, product_details.id as product_detail_id, categories.id as category_id,  "
+		String sql = "SELECT products.id as productId, product_details.id as product_detail_id, categories.id as category_id,  "
 				+ "types.id as type_id, products.name, products.price, products.description, "
 				+ "product_details.rating, product_details.style, product_details.color_description, "
 				+ "product_details.stock, product_details.photo_01, product_details.photo_02, "
@@ -491,7 +490,7 @@ public class ProductsDaoImp implements Dao{
 		
 		ArrayList<main.entities.Product> products = new ArrayList<main.entities.Product>();
 		while (rs.next()) {
-			int id = rs.getInt("id");
+			int id = rs.getInt("productId");
 			int product_detail_id = rs.getInt("product_detail_id");
 			int res_category_id = rs.getInt("category_id");
 			int res_type_id = rs.getInt("type_id");

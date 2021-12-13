@@ -52,8 +52,8 @@ data class ProductResponseItem(
 	@field:SerializedName("style")
 	val style: String,
 
-	@field:SerializedName("id")
-	val id: Int,
+	@field:SerializedName("productId")
+	val productId: Int,
 
 	@field:SerializedName("stock")
 	val stock: Int,

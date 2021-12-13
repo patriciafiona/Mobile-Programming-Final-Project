@@ -20,7 +20,7 @@ class ProductMDAdapter : PagedListAdapter<ProductEntity, ProductMDAdapter.ItemVi
     companion object {
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ProductEntity>() {
             override fun areItemsTheSame(oldItem: ProductEntity, newItem: ProductEntity): Boolean {
-                return oldItem.id == newItem.id
+                return oldItem.productId == newItem.productId
             }
 
             override fun areContentsTheSame(oldItem: ProductEntity, newItem: ProductEntity): Boolean {
@@ -50,7 +50,8 @@ class ProductMDAdapter : PagedListAdapter<ProductEntity, ProductMDAdapter.ItemVi
 
                 itemView.setOnClickListener {
                     val intent = Intent(itemView.context, DetailProductActivity::class.java)
-                    intent.putExtra(DetailProductActivity.EXTRA_PRODUCT, product.id)
+                    intent.putExtra(DetailProductActivity.EXTRA_PRODUCT, product.productId)
+                    intent.putExtra(DetailProductActivity.EXTRA_PRODUCT_POS, 0)
                     itemView.context.startActivity(intent)
                 }
 

@@ -13,6 +13,9 @@
         android:theme="@style/Theme.NIKE"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ui.detailProduct.imagePreview.ImageViewActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.detailProduct.DetailProductActivity"
             android:exported="false" />
         <activity

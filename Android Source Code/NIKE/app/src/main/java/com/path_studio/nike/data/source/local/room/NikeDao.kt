@@ -11,25 +11,25 @@ interface NikeDao {
 
     //-------------------------------------------------------------------------------------
     //Product Section
-    @Query("SELECT * FROM product_entities ORDER BY id ASC")
+    @Query("SELECT * FROM product_entities GROUP BY productId ORDER BY productId ASC")
     fun getAllProduct(): DataSource.Factory<Int, ProductEntity>
 
-    @Query("SELECT * FROM product_entities WHERE categoryId = :categoryId ORDER BY updated_at DESC LIMIT :limit")
+    @Query("SELECT * FROM product_entities WHERE categoryId = :categoryId GROUP BY productId ORDER BY updated_at DESC LIMIT :limit")
     fun getLatestProductWithLimit(categoryId: Int, limit: Int): DataSource.Factory<Int, ProductEntity>
 
-    @Query("SELECT * FROM product_entities WHERE categoryId = :categoryId")
+    @Query("SELECT * FROM product_entities WHERE categoryId = :categoryId GROUP BY productId")
     fun getProductByCategory(categoryId: Int): DataSource.Factory<Int, ProductEntity>
 
-    @Query("SELECT * FROM product_entities WHERE id = :id")
+    @Query("SELECT * FROM product_entities WHERE productId = :id")
     fun getProductById(id: Int): DataSource.Factory<Int, ProductEntity>
 
-    @Query("SELECT * FROM product_entities WHERE categoryId = :categoryId LIMIT :limit")
+    @Query("SELECT * FROM product_entities WHERE categoryId = :categoryId GROUP BY productId LIMIT :limit")
     fun getProductByCategoryWithLimit(categoryId: Int, limit: Int): DataSource.Factory<Int, ProductEntity>
 
-    @Query("SELECT * FROM product_entities WHERE categoryId = :categoryId AND typeName LIKE :type_name LIMIT :limit")
+    @Query("SELECT * FROM product_entities WHERE categoryId = :categoryId AND typeName LIKE :type_name GROUP BY productId LIMIT :limit")
     fun getProductsByCategoryAndTypeWithLimit(categoryId: Int, type_name: String, limit: Int): DataSource.Factory<Int, ProductEntity>
 
-    @Query("SELECT * FROM product_entities where favorite = 1")
+    @Query("SELECT * FROM product_entities where favorite = 1 GROUP BY productId")
     fun getFavoriteProducts(): DataSource.Factory<Int, ProductEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

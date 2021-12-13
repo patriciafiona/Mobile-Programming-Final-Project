@@ -1,6 +1,7 @@
 package com.path_studio.nike.ui.seeAllProduct
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageButton
@@ -10,6 +11,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.path_studio.nike.R
 import com.path_studio.nike.data.source.local.entity.ProductEntity
 import com.path_studio.nike.databinding.ItemGridProductRotateMdBinding
+import com.path_studio.nike.ui.detailProduct.DetailProductActivity
 import com.path_studio.nike.ui.main.favorite.FavoriteAdapter
 import com.path_studio.nike.ui.main.favorite.FavoriteViewModel
 import com.path_studio.nike.utils.Utils
@@ -64,7 +66,9 @@ class SeeAllProductAdapter(private val viewModel: SeeAllViewModel): RecyclerView
                 }
 
                 itemView.setOnClickListener {
-                    // logic
+                    val intent = Intent(itemView.context, DetailProductActivity::class.java)
+                    intent.putExtra(DetailProductActivity.EXTRA_PRODUCT, product.productId)
+                    itemView.context.startActivity(intent)
                 }
 
                 val posterURL =

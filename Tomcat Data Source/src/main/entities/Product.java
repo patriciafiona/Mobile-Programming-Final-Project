@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 
 @JsonAutoDetect(fieldVisibility = Visibility.ANY)
 public class Product{
-	private int id;
+	private int productId;
 	private int product_detail_id;
 	private int category_id;
 	private int type_id;
@@ -32,11 +32,11 @@ public class Product{
 	private Timestamp created_at;
 	private Timestamp updated_at;
 	
-	public Product(int id, int product_detail_id, int category_id, String name, float price, String description,
+	public Product(int productId, int product_detail_id, int category_id, String name, float price, String description,
 			double rating, String style, String color_description, int color_id, int stock, String photo_01,
 			String photo_02, String photo_03, String photo_04, String photo_05) {
 		super();
-		this.id = id;
+		this.productId = productId;
 		this.product_detail_id = product_detail_id;
 		this.category_id = category_id;
 		this.name = name;
@@ -54,13 +54,13 @@ public class Product{
 		this.photo_05 = photo_05;
 	}
 	
-	public Product(int id, int product_detail_id, int category_id, String name, float price, String description,
+	public Product(int productId, int product_detail_id, int category_id, String name, float price, String description,
 			double rating, String style, String color_description, int stock, String photo_01,
 			String photo_02, String photo_03, String photo_04, String photo_05,
 			String category_name, String color_code, int type_id, String type_name,
 			Timestamp created_at, Timestamp updated_at) {
 		super();
-		this.id = id;
+		this.productId = productId;
 		this.product_detail_id = product_detail_id;
 		this.category_id = category_id;
 		this.name = name;

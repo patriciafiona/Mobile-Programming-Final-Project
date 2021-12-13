@@ -43,6 +43,7 @@ class FavoriteAdapter(private val viewModel: FavoriteViewModel): RecyclerView.Ad
 
     inner class FavoriteViewHolder(private val viewModel:FavoriteViewModel,
                                    private val binding: ItemGridProductRotateMdBinding): RecyclerView.ViewHolder(binding.root) {
+        @SuppressLint("SetTextI18n")
         fun bind(product: ProductEntity) {
             with(binding) {
                 rvProductName.text = product.name
@@ -58,7 +59,8 @@ class FavoriteAdapter(private val viewModel: FavoriteViewModel): RecyclerView.Ad
 
                 itemView.setOnClickListener {
                     val intent = Intent(itemView.context, DetailProductActivity::class.java)
-                    intent.putExtra(DetailProductActivity.EXTRA_PRODUCT, product.id)
+                    intent.putExtra(DetailProductActivity.EXTRA_PRODUCT, product.productId)
+                    intent.putExtra(DetailProductActivity.EXTRA_PRODUCT_POS, 0)
                     itemView.context.startActivity(intent)
                 }
 

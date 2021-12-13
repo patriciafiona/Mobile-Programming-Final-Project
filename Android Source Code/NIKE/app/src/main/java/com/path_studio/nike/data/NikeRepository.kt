@@ -60,7 +60,8 @@ class NikeRepository private constructor(private val remoteDataSource: RemoteDat
                 val products = ArrayList<ProductEntity>()
                 for(response in data){
                     val product = ProductEntity(
-                        response.id.toLong(),
+                        0,
+                        response.productId.toLong(),
                         response.productDetailId,
                         response.typeName,
                         response.categoryName,
@@ -111,7 +112,8 @@ class NikeRepository private constructor(private val remoteDataSource: RemoteDat
                 val products = ArrayList<ProductEntity>()
                 for(response in data){
                     val product = ProductEntity(
-                        response.id.toLong(),
+                        0,
+                        response.productId.toLong(),
                         response.productDetailId,
                         response.typeName,
                         response.categoryName,
@@ -162,7 +164,8 @@ class NikeRepository private constructor(private val remoteDataSource: RemoteDat
                 val products = ArrayList<ProductEntity>()
                 for(response in data){
                     val product = ProductEntity(
-                        response.id.toLong(),
+                        0,
+                        response.productId.toLong(),
                         response.productDetailId,
                         response.typeName,
                         response.categoryName,
@@ -213,7 +216,8 @@ class NikeRepository private constructor(private val remoteDataSource: RemoteDat
                 val products = ArrayList<ProductEntity>()
                 for(response in data){
                     val product = ProductEntity(
-                        response.id.toLong(),
+                        0,
+                        response.productId.toLong(),
                         response.productDetailId,
                         response.typeName,
                         response.categoryName,
@@ -295,7 +299,8 @@ class NikeRepository private constructor(private val remoteDataSource: RemoteDat
                 val products = ArrayList<ProductEntity>()
                 for(response in data){
                     val product = ProductEntity(
-                        response.id.toLong(),
+                        0,
+                        response.productId.toLong(),
                         response.productDetailId,
                         response.typeName,
                         response.categoryName,
@@ -351,7 +356,8 @@ class NikeRepository private constructor(private val remoteDataSource: RemoteDat
                         for(responseSearch in showResponse){
                             if (responseSearch != null) {
                                 val product = ProductEntity(
-                                    responseSearch.id.toLong(),
+                                    0,
+                                    responseSearch.productId.toLong(),
                                     responseSearch.productDetailId,
                                     responseSearch.typeName,
                                     responseSearch.categoryName,
@@ -407,7 +413,8 @@ class NikeRepository private constructor(private val remoteDataSource: RemoteDat
                 val products = ArrayList<ProductEntity>()
                 for(response in data){
                     val product = ProductEntity(
-                        response.id.toLong(),
+                        0,
+                        response.productId.toLong(),
                         response.productDetailId,
                         response.typeName,
                         response.categoryName,
