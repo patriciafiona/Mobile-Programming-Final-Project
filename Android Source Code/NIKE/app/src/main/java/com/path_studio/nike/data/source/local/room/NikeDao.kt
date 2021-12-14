@@ -28,7 +28,7 @@ interface NikeDao {
     @Query("SELECT * FROM product_entities WHERE categoryId = :categoryId AND typeName LIKE :type_name GROUP BY productId LIMIT :limit")
     fun getProductsByCategoryAndTypeWithLimit(categoryId: Int, type_name: String, limit: Int): DataSource.Factory<Int, ProductEntity>
 
-    @Query("SELECT * FROM product_entities where favorite = 1 GROUP BY productId")
+    @Query("SELECT * FROM product_entities where favorite = 1")
     fun getFavoriteProducts(): DataSource.Factory<Int, ProductEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -50,15 +50,17 @@ interface NikeDao {
 
     //-------------------------------------------------------------------------------------
     //Category Section
-    @Query("SELECT cart_entities.id, cart_entities.product_detail_id AS productDetailId, cart_entities.quantity, " +
+    @Query("SELECT DISTINCT cart_entities.id, cart_entities.product_detail_id AS productDetailId, cart_entities.quantity, " +
             "cart_entities.size, product_entities.name, product_entities.productId, product_entities.typeName, " +
-            "product_entities.categoryName, product_entities.price, product_entities.colorCode, product_entities.photo01 " +
-            "FROM cart_entities INNER JOIN product_entities ON product_entities.productDetailId = cart_entities.product_detail_id")
+            "product_entities.categoryName, product_entities.price, product_entities.colorCode, product_entities.colorDescription, " +
+            "product_entities.photo01, product_entities.stock " +
+            "FROM cart_entities INNER JOIN product_entities ON cart_entities.product_detail_id = product_entities.productDetailId ")
     fun getShoppingCart(): DataSource.Factory<Int, CartDetailEntity>
 
-    @Query("SELECT cart_entities.id, cart_entities.product_detail_id AS productDetailId, cart_entities.quantity, " +
+    @Query("SELECT DISTINCT cart_entities.id, cart_entities.product_detail_id AS productDetailId, cart_entities.quantity, " +
             "cart_entities.size, product_entities.name, product_entities.productId, product_entities.typeName, " +
-            "product_entities.categoryName, product_entities.price, product_entities.colorCode, product_entities.photo01 " +
+            "product_entities.categoryName, product_entities.price, product_entities.colorCode, product_entities.colorDescription, " +
+            "product_entities.photo01, product_entities.stock " +
             "FROM cart_entities INNER JOIN product_entities ON product_entities.productDetailId = cart_entities.product_detail_id " +
             "WHERE cart_entities.product_detail_id = :productDetailId")
     fun getProductInCartById(productDetailId: Int): DataSource.Factory<Int, CartDetailEntity>

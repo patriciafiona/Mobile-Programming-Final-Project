@@ -90,6 +90,8 @@ class DetailProductFragment : BottomSheetDialogFragment(), OnBottomSheetCallback
                                     .observe(requireActivity(), { products ->
                                         isAddProduct = products.isEmpty()
 
+                                        Log.e("Cart data", products.toString())
+
                                         if (products.isNotEmpty() && products.size > 0) {
                                             binding.quantityField.setText(products[0]?.quantity.toString())
 
@@ -108,7 +110,7 @@ class DetailProductFragment : BottomSheetDialogFragment(), OnBottomSheetCallback
                                                 for (num in 38..51) {
                                                     createChips(num)
                                                 }
-                                            }else if(productData[nCurrentProductDetailPos]?.categoryId == 1){
+                                            }else if(productData[nCurrentProductDetailPos]?.categoryId == 2){
                                                 //womens shoes
                                                 selectedSize = products[0]?.size ?: 38
                                                 for (num in 34..46) {
@@ -129,7 +131,7 @@ class DetailProductFragment : BottomSheetDialogFragment(), OnBottomSheetCallback
                                                 for (num in 38..51) {
                                                     createChips(num)
                                                 }
-                                            }else if(productData[nCurrentProductDetailPos]?.categoryId == 1){
+                                            }else if(productData[nCurrentProductDetailPos]?.categoryId == 2){
                                                 //womens shoes
                                                 selectedSize = 34
                                                 for (num in 34..46) {

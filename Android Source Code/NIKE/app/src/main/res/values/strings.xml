@@ -75,4 +75,6 @@
     <string name="checkout">Checkout</string>
     <string name="remove_from_bag">Remove From Bag</string>
     <string name="update_to_bag">Update to Bag</string>
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
 </resources>

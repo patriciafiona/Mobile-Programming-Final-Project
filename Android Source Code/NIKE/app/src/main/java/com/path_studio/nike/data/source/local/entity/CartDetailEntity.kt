@@ -18,5 +18,7 @@ data class CartDetailEntity(
     val categoryName: String,
     val price: Double,
     val colorCode: String,
+    val colorDescription: String,
     val photo01: String,
+    val stock: Int
 ):Parcelable

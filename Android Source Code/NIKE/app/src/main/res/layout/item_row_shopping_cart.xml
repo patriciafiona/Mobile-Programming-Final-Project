@@ -123,6 +123,7 @@
         app:layout_constraintWidth_percent=".3" />
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/rv_product_color"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginTop="16dp"
