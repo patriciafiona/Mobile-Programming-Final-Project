@@ -74,24 +74,37 @@
                 app:layout_constraintTop_toBottomOf="@+id/rv_product_name" />
 
             <TextView
-                android:id="@+id/rv_product_price"
+                android:id="@+id/rv_product_price_before"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginBottom="16dp"
-                android:ellipsize="end"
                 android:fontFamily="@font/roboto_bold"
                 android:gravity="right"
-                android:maxLines="2"
                 android:text="@string/temp_price"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:visibility="invisible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rv_product_category_name"
+                tools:ignore="RtlHardcoded" />
+
+            <TextView
+                android:id="@+id/rv_product_price_after"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="16dp"
+                android:fontFamily="@font/roboto_bold"
+                android:gravity="right"
+                android:text="@string/temp_price"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rv_product_price_before"
                 tools:ignore="RtlHardcoded" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

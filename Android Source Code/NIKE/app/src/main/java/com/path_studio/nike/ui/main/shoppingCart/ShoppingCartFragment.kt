@@ -2,20 +2,14 @@ package com.path_studio.nike.ui.main.shoppingCart
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.path_studio.nike.R
-import com.path_studio.nike.databinding.FragmentSearchBinding
 import com.path_studio.nike.databinding.FragmentShoppingCartBinding
-import com.path_studio.nike.ui.main.MainActivity
-import com.path_studio.nike.ui.main.favorite.FavoriteAdapter
-import com.path_studio.nike.ui.main.favorite.FavoriteViewModel
 import com.path_studio.nike.utils.Utils.getNumberThousandFormat
 import com.path_studio.nike.viewModel.ViewModelFactory
 
@@ -23,6 +17,8 @@ class ShoppingCartFragment : Fragment() {
 
     private var _binding: FragmentShoppingCartBinding? = null
     private val binding get() = _binding as FragmentShoppingCartBinding
+
+    private var tempTotal = 0.0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,13 +48,16 @@ class ShoppingCartFragment : Fragment() {
                 }else {
                     showHideDataIndicator(false)
 
-                    var tempTotal = 0.0
+                    tempTotal = 0.0
                     for(data in products){
-                        tempTotal += data.quantity.toDouble() * data.price
+                        if(data.discount > 0){
+                            tempTotal += data.quantity.toDouble() * (data.price - (data.price * data.discount / 100))
+                        }else if(data.discount == 0) {
+                            tempTotal += data.quantity.toDouble() * data.price
+                        }
                     }
                     binding.totalPrice.text = "Rp ${getNumberThousandFormat(tempTotal)}"
                 }
-                Log.e("Cart data", products.toString())
                 cartAdapter.setProducts(products)
                 cartAdapter.notifyDataSetChanged()
             })

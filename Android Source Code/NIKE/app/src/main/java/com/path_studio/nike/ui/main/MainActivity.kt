@@ -1,20 +1,16 @@
 package com.path_studio.nike.ui.main
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.widget.Toast
-import androidx.navigation.Navigation
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.path_studio.nike.R
 import com.path_studio.nike.databinding.ActivityMainBinding
-import com.path_studio.nike.ui.about.AboutActivity
 import com.path_studio.nike.ui.setting.SettingActivity
 import kotlin.system.exitProcess
 

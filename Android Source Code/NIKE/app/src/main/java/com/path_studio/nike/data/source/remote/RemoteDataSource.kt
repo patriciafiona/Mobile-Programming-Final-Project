@@ -3,10 +3,10 @@ package com.path_studio.nike.data.source.remote
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.path_studio.nike.data.source.remote.response.CategoryResponseItem
-import com.path_studio.nike.data.source.remote.response.ProductResponseItem
 import com.path_studio.nike.data.source.remote.api.ApiConfig
+import com.path_studio.nike.data.source.remote.response.CategoryResponseItem
 import com.path_studio.nike.data.source.remote.response.ProductResponse
+import com.path_studio.nike.data.source.remote.response.ProductResponseItem
 import com.path_studio.nike.utils.EspressoIdlingResource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

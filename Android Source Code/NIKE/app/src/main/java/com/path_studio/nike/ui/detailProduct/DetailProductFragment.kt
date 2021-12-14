@@ -1,38 +1,33 @@
 package com.path_studio.nike.ui.detailProduct
 
 import android.annotation.SuppressLint
-import android.app.ActionBar
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.util.TypedValue
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.RelativeLayout
+import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.lifecycle.ViewModelProvider
-import androidx.viewpager.widget.ViewPager
+import androidx.paging.PagedList
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipDrawable
 import com.path_studio.nike.R
+import com.path_studio.nike.data.source.local.entity.CartEntity
 import com.path_studio.nike.data.source.local.entity.ProductEntity
 import com.path_studio.nike.databinding.FragmentDetailProductBinding
 import com.path_studio.nike.ui.detailProduct.bottomSheet.OnBottomSheetCallbacks
-import com.path_studio.nike.ui.main.MainActivity
 import com.path_studio.nike.utils.Utils.getNumberThousandFormat
 import com.path_studio.nike.viewModel.ViewModelFactory
 import com.path_studio.nike.vo.Status
-import android.text.InputFilter
-import android.text.TextWatcher
-import androidx.paging.PagedList
-import androidx.recyclerview.widget.GridLayoutManager
-import com.path_studio.nike.data.source.local.entity.CartEntity
 
 
 class DetailProductFragment : BottomSheetDialogFragment(), OnBottomSheetCallbacks {
@@ -89,8 +84,6 @@ class DetailProductFragment : BottomSheetDialogFragment(), OnBottomSheetCallback
                                 viewModel.checkProductInCart(productData[nCurrentProductDetailPos]?.productDetailId!!)
                                     .observe(requireActivity(), { products ->
                                         isAddProduct = products.isEmpty()
-
-                                        Log.e("Cart data", products.toString())
 
                                         if (products.isNotEmpty() && products.size > 0) {
                                             binding.quantityField.setText(products[0]?.quantity.toString())
@@ -181,7 +174,8 @@ class DetailProductFragment : BottomSheetDialogFragment(), OnBottomSheetCallback
                                 })
 
                                 //show data to UI
-                                showDatatoUI(productData)
+                                Log.e("PRODUCT DATA", productData.toString())
+                                showDataToUI(productData)
                                 binding.skeletonData.showOriginal()
                             }
                             Status.ERROR -> {
@@ -209,7 +203,7 @@ class DetailProductFragment : BottomSheetDialogFragment(), OnBottomSheetCallback
     }
 
     @SuppressLint("SetTextI18n")
-    private fun showDatatoUI(productData: PagedList<ProductEntity>){
+    private fun showDataToUI(productData: PagedList<ProductEntity>){
         with(binding) {
             //details
             productName.text = productData[nCurrentProductDetailPos]?.name ?: ""
@@ -217,11 +211,17 @@ class DetailProductFragment : BottomSheetDialogFragment(), OnBottomSheetCallback
             productType.text = "${productData[nCurrentProductDetailPos]?.categoryName}'s Shoes"
             productStock.text = productData[nCurrentProductDetailPos]?.stock.toString()
             productProductColorDesc.text = productData[nCurrentProductDetailPos]?.colorDescription
-            productPriceAfter.text = "Rp ${productData[nCurrentProductDetailPos]?.let {
-                getNumberThousandFormat(
-                    it.price)
-            }}"
             productRating.text = productData[nCurrentProductDetailPos]?.rating.toString()
+
+            if(productData[nCurrentProductDetailPos]?.discount!! > 0){
+                val afterDiscount: Double = productData[nCurrentProductDetailPos]?.price!! - (productData[nCurrentProductDetailPos]?.price!! * productData[nCurrentProductDetailPos]?.discount!! / 100)
+                productPriceBefore.text = "Rp ${getNumberThousandFormat(productData[nCurrentProductDetailPos]?.price!!)}"
+                productPriceAfter.text = "Rp ${getNumberThousandFormat(afterDiscount)}"
+                productPriceBefore.visibility = View.VISIBLE
+            }else{
+                productPriceAfter.text = "Rp ${getNumberThousandFormat(productData[nCurrentProductDetailPos]?.price!!)}"
+                productPriceBefore.visibility = View.INVISIBLE
+            }
 
             //show color selection
             if(!isColorLoaded) {

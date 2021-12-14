@@ -1,8 +1,6 @@
 package com.path_studio.nike.data.source.local.entity
 
 import android.os.Parcelable
-import androidx.annotation.NonNull
-import androidx.room.ColumnInfo
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -20,5 +18,6 @@ data class CartDetailEntity(
     val colorCode: String,
     val colorDescription: String,
     val photo01: String,
-    val stock: Int
+    val stock: Int,
+    val discount: Int
 ):Parcelable

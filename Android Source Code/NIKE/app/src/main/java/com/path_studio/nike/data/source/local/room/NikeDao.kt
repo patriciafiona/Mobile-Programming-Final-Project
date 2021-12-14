@@ -1,6 +1,5 @@
 package com.path_studio.nike.data.source.local.room
 
-import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
 import androidx.room.*
 import com.path_studio.nike.data.source.local.entity.*
@@ -53,14 +52,14 @@ interface NikeDao {
     @Query("SELECT DISTINCT cart_entities.id, cart_entities.product_detail_id AS productDetailId, cart_entities.quantity, " +
             "cart_entities.size, product_entities.name, product_entities.productId, product_entities.typeName, " +
             "product_entities.categoryName, product_entities.price, product_entities.colorCode, product_entities.colorDescription, " +
-            "product_entities.photo01, product_entities.stock " +
+            "product_entities.photo01, product_entities.stock, product_entities.discount " +
             "FROM cart_entities INNER JOIN product_entities ON cart_entities.product_detail_id = product_entities.productDetailId ")
     fun getShoppingCart(): DataSource.Factory<Int, CartDetailEntity>
 
     @Query("SELECT DISTINCT cart_entities.id, cart_entities.product_detail_id AS productDetailId, cart_entities.quantity, " +
             "cart_entities.size, product_entities.name, product_entities.productId, product_entities.typeName, " +
             "product_entities.categoryName, product_entities.price, product_entities.colorCode, product_entities.colorDescription, " +
-            "product_entities.photo01, product_entities.stock " +
+            "product_entities.photo01, product_entities.stock, product_entities.discount " +
             "FROM cart_entities INNER JOIN product_entities ON product_entities.productDetailId = cart_entities.product_detail_id " +
             "WHERE cart_entities.product_detail_id = :productDetailId")
     fun getProductInCartById(productDetailId: Int): DataSource.Factory<Int, CartDetailEntity>

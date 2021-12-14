@@ -3,11 +3,9 @@ package com.path_studio.nike.ui.splash
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
-import com.path_studio.nike.R
-import com.path_studio.nike.databinding.ActivityMainBinding
+import androidx.appcompat.app.AppCompatActivity
 import com.path_studio.nike.databinding.ActivitySplashBinding
 import com.path_studio.nike.ui.main.MainActivity
 import com.path_studio.nike.ui.welcome.WelcomeActivity

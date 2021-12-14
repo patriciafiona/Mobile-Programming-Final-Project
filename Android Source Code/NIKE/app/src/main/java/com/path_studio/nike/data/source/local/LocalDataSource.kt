@@ -1,6 +1,5 @@
 package com.path_studio.nike.data.source.local
 
-import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
 import com.path_studio.nike.data.source.local.entity.*
 import com.path_studio.nike.data.source.local.room.NikeDao

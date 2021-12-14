@@ -3,10 +3,10 @@ package com.path_studio.nike.ui.main.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.paging.PagedList
-import com.path_studio.nike.vo.Resource
 import com.path_studio.nike.data.NikeRepository
 import com.path_studio.nike.data.source.local.entity.CategoryEntity
 import com.path_studio.nike.data.source.local.entity.ProductEntity
+import com.path_studio.nike.vo.Resource
 
 class HomeViewModel(private val nikeRepository: NikeRepository): ViewModel() {
     fun getAllCategory(): LiveData<Resource<PagedList<CategoryEntity>>> = nikeRepository.getAllCategory()

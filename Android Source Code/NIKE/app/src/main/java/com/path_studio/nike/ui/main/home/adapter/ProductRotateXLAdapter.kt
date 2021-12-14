@@ -3,6 +3,7 @@ package com.path_studio.nike.ui.main.home.adapter
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import androidx.paging.PagedListAdapter
@@ -48,7 +49,6 @@ class ProductRotateXLAdapter(private val homeViewModel: HomeViewModel): PagedLis
             with(binding) {
                 rvProductName.text = product.name
                 rvProductCategoryName.text = "${product.categoryName} Shoes"
-                rvProductPriceAfter.text = "Rp ${getNumberThousandFormat(product.price)}"
 
                 setFavoriteState(rvFavBtn, product.favorite)
 
@@ -62,6 +62,16 @@ class ProductRotateXLAdapter(private val homeViewModel: HomeViewModel): PagedLis
                     intent.putExtra(DetailProductActivity.EXTRA_PRODUCT, product.productId)
                     intent.putExtra(DetailProductActivity.EXTRA_PRODUCT_POS, 0)
                     itemView.context.startActivity(intent)
+                }
+
+                if(product.discount > 0){
+                    val afterDiscount: Double = product.price - (product.price * product.discount / 100)
+                    rvProductPriceBefore.text = "Rp ${getNumberThousandFormat(product.price)}"
+                    rvProductPriceAfter.text = "Rp ${getNumberThousandFormat(afterDiscount)}"
+                    rvProductPriceBefore.visibility = View.VISIBLE
+                }else{
+                    rvProductPriceAfter.text = "Rp ${getNumberThousandFormat(product.price)}"
+                    rvProductPriceBefore.visibility = View.INVISIBLE
                 }
 
                 val posterURL =

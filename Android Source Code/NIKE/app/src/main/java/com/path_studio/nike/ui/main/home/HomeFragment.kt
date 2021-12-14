@@ -1,28 +1,26 @@
 package com.path_studio.nike.ui.main.home
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
-import com.path_studio.nike.vo.Status
-import com.path_studio.nike.databinding.FragmentHomeBinding
-import com.path_studio.nike.ui.main.home.adapter.ProductRotateXLAdapter
-import com.path_studio.nike.viewModel.ViewModelFactory
-
 import com.google.android.material.chip.ChipDrawable
 import com.path_studio.nike.R
+import com.path_studio.nike.databinding.FragmentHomeBinding
 import com.path_studio.nike.ui.main.home.adapter.ProductMDAdapter
-import android.content.Intent
-import android.net.Uri
-import com.path_studio.nike.ui.main.MainActivity
+import com.path_studio.nike.ui.main.home.adapter.ProductRotateXLAdapter
 import com.path_studio.nike.ui.seeAllProduct.SeeAllProductActivity
+import com.path_studio.nike.viewModel.ViewModelFactory
+import com.path_studio.nike.vo.Status
 
 class HomeFragment : Fragment() {
 

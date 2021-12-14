@@ -1,13 +1,10 @@
 package com.path_studio.nike.ui.setting
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.path_studio.nike.R
-import com.path_studio.nike.databinding.ActivityMainBinding
+import androidx.appcompat.app.AppCompatActivity
 import com.path_studio.nike.databinding.ActivitySettingBinding
 import com.path_studio.nike.ui.about.AboutActivity
-import com.path_studio.nike.ui.welcome.WelcomeActivity
 
 class SettingActivity : AppCompatActivity() {
 

@@ -2,21 +2,19 @@ package com.path_studio.nike.data
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.paging.PagedList
 import androidx.paging.LivePagedListBuilder
-import com.path_studio.nike.vo.Resource
+import androidx.paging.PagedList
 import com.path_studio.nike.data.source.local.LocalDataSource
 import com.path_studio.nike.data.source.local.entity.*
 import com.path_studio.nike.data.source.remote.ApiResponse
 import com.path_studio.nike.data.source.remote.RemoteDataSource
 import com.path_studio.nike.data.source.remote.response.CategoryResponseItem
-import com.path_studio.nike.data.source.remote.response.ProductResponse
 import com.path_studio.nike.data.source.remote.response.ProductResponseItem
 import com.path_studio.nike.utils.AppExecutors
+import com.path_studio.nike.vo.Resource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.json.JSONArray
 
 class NikeRepository private constructor(private val remoteDataSource: RemoteDataSource,
                                          private val localDataSource: LocalDataSource,
@@ -81,7 +79,8 @@ class NikeRepository private constructor(private val remoteDataSource: RemoteDat
                         response.photo04,
                         response.photo05,
                         response.createdAt,
-                        response.updatedAt
+                        response.updatedAt,
+                        response.discount
                     )
                     products.add(product)
                 }
@@ -133,7 +132,8 @@ class NikeRepository private constructor(private val remoteDataSource: RemoteDat
                         response.photo04,
                         response.photo05,
                         response.createdAt,
-                        response.updatedAt
+                        response.updatedAt,
+                        response.discount
                     )
                     products.add(product)
                 }
@@ -185,7 +185,8 @@ class NikeRepository private constructor(private val remoteDataSource: RemoteDat
                         response.photo04,
                         response.photo05,
                         response.createdAt,
-                        response.updatedAt
+                        response.updatedAt,
+                        response.discount
                     )
                     products.add(product)
                 }
@@ -237,7 +238,8 @@ class NikeRepository private constructor(private val remoteDataSource: RemoteDat
                         response.photo04,
                         response.photo05,
                         response.createdAt,
-                        response.updatedAt
+                        response.updatedAt,
+                        response.discount
                     )
                     products.add(product)
                 }
@@ -320,7 +322,8 @@ class NikeRepository private constructor(private val remoteDataSource: RemoteDat
                         response.photo04,
                         response.photo05,
                         response.createdAt,
-                        response.updatedAt
+                        response.updatedAt,
+                        response.discount
                     )
                     products.add(product)
                 }
@@ -377,7 +380,8 @@ class NikeRepository private constructor(private val remoteDataSource: RemoteDat
                                     responseSearch.photo04,
                                     responseSearch.photo05,
                                     responseSearch.createdAt,
-                                    responseSearch.updatedAt
+                                    responseSearch.updatedAt,
+                                    responseSearch.discount
                                 )
                                 products.add(product)
                             }
@@ -434,7 +438,8 @@ class NikeRepository private constructor(private val remoteDataSource: RemoteDat
                         response.photo04,
                         response.photo05,
                         response.createdAt,
-                        response.updatedAt
+                        response.updatedAt,
+                        response.discount
                     )
                     products.add(product)
                 }

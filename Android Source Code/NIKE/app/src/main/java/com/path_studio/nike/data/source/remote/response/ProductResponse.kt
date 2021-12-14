@@ -77,5 +77,8 @@ data class ProductResponseItem(
 	val productDetailId: Int,
 
 	@field:SerializedName("color_code")
-	val colorCode: String
+	val colorCode: String,
+
+	@field:SerializedName("discount")
+	val discount: Int,
 )

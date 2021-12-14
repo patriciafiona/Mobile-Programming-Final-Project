@@ -1,23 +1,17 @@
 package com.path_studio.nike.ui.main.search
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Intent
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import androidx.paging.PagedListAdapter
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.path_studio.nike.R
 import com.path_studio.nike.data.source.local.entity.ProductEntity
-import com.path_studio.nike.databinding.ItemRowProductRotateXlBinding
 import com.path_studio.nike.databinding.ItemRowProductWideBinding
 import com.path_studio.nike.ui.detailProduct.DetailProductActivity
-import com.path_studio.nike.ui.main.home.HomeViewModel
-import com.path_studio.nike.ui.main.home.adapter.ProductRotateXLAdapter
 import com.path_studio.nike.utils.Utils
 
 class SearchAdapter: RecyclerView.Adapter<SearchAdapter.SuggestionHolder>() {
@@ -46,7 +40,16 @@ class SearchAdapter: RecyclerView.Adapter<SearchAdapter.SuggestionHolder>() {
             with(binding) {
                 rvProductName.text = product.name
                 rvProductCategoryName.text = "${product.categoryName} Shoes"
-                rvProductPrice.text = "Rp ${Utils.getNumberThousandFormat(product.price)}"
+
+                if(product.discount > 0){
+                    val afterDiscount: Double = product.price - (product.price * product.discount / 100)
+                    rvProductPriceBefore.text = "Rp ${Utils.getNumberThousandFormat(product.price)}"
+                    rvProductPriceAfter.text = "Rp ${Utils.getNumberThousandFormat(afterDiscount)}"
+                    rvProductPriceBefore.visibility = View.VISIBLE
+                }else{
+                    rvProductPriceAfter.text = "Rp ${Utils.getNumberThousandFormat(product.price)}"
+                    rvProductPriceBefore.visibility = View.INVISIBLE
+                }
 
                 itemView.setOnClickListener {
                     val intent = Intent(itemView.context, DetailProductActivity::class.java)

@@ -79,6 +79,9 @@ data class ProductEntity(
     @ColumnInfo(name = "updated_at")
     val updated_at: Long,
 
+    @ColumnInfo(name = "discount")
+    val discount: Int,
+
     @NonNull
     @ColumnInfo(name = "favorite")
     var favorite: Boolean = false

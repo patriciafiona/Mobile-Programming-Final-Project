@@ -3,14 +3,12 @@ package com.path_studio.nike.ui.main.favorite
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import com.path_studio.nike.vo.Status
 import com.path_studio.nike.R
 import com.path_studio.nike.databinding.FragmentFavoriteBinding
 import com.path_studio.nike.ui.main.MainActivity

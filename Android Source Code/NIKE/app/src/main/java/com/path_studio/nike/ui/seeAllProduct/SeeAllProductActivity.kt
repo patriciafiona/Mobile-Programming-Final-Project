@@ -1,21 +1,16 @@
 package com.path_studio.nike.ui.seeAllProduct
 
 import android.annotation.SuppressLint
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipDrawable
 import com.path_studio.nike.R
-import com.path_studio.nike.databinding.ActivityMainBinding
 import com.path_studio.nike.databinding.ActivitySeeAllProductBinding
-import com.path_studio.nike.ui.main.favorite.FavoriteAdapter
-import com.path_studio.nike.ui.main.home.HomeViewModel
-import com.path_studio.nike.ui.main.home.adapter.ProductRotateXLAdapter
 import com.path_studio.nike.viewModel.ViewModelFactory
 import com.path_studio.nike.vo.Status
 

@@ -2,10 +2,10 @@ package com.path_studio.nike.data
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
-import com.path_studio.nike.vo.Resource
 import com.path_studio.nike.data.source.remote.ApiResponse
 import com.path_studio.nike.data.source.remote.StatusResponse
 import com.path_studio.nike.utils.AppExecutors
+import com.path_studio.nike.vo.Resource
 
 abstract class NetworkBoundResource<ResultType, RequestType>(private val mExecutors: AppExecutors) {
 

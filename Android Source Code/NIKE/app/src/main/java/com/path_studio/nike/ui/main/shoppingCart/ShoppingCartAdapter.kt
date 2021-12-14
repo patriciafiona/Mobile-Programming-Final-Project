@@ -3,31 +3,21 @@ package com.path_studio.nike.ui.main.shoppingCart
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
-import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.path_studio.nike.R
 import com.path_studio.nike.data.source.local.entity.CartDetailEntity
 import com.path_studio.nike.data.source.local.entity.CartEntity
-import com.path_studio.nike.data.source.local.entity.ProductEntity
-import com.path_studio.nike.databinding.ItemGridProductRotateMdBinding
 import com.path_studio.nike.databinding.ItemRowShoppingCartBinding
 import com.path_studio.nike.ui.detailProduct.DetailProductActivity
-import com.path_studio.nike.ui.main.favorite.FavoriteAdapter
-import com.path_studio.nike.ui.main.favorite.FavoriteViewModel
 import com.path_studio.nike.utils.Utils
-import java.util.ArrayList
-import android.widget.Toast
-
-import com.path_studio.nike.ui.main.MainActivity
-
-import android.content.DialogInterface
+import java.util.*
 
 
 class ShoppingCartAdapter(private val activity: Activity, private val viewModel: ShoppingCartViewModel): RecyclerView.Adapter<ShoppingCartAdapter.ItemViewHolder>(){
@@ -60,11 +50,20 @@ class ShoppingCartAdapter(private val activity: Activity, private val viewModel:
             with(binding) {
                 rvProductName.text = product.name
                 rvProductCategoryName.text = "${product.categoryName} Shoes"
-                rvProductPriceAfter.text = "Rp ${Utils.getNumberThousandFormat(product.price)}"
                 rvProductColorName.text = product.colorDescription
                 rvProductSize.text = "${product.size} Europe"
                 rvProductColor.setCardBackgroundColor(Color.parseColor(product.colorCode))
                 rvQuantityField.setText(product.quantity.toString())
+
+                if(product.discount > 0){
+                    val afterDiscount: Double = product.price - (product.price * product.discount / 100)
+                    rvProductPriceBefore.text = "Rp ${Utils.getNumberThousandFormat(product.price)}"
+                    rvProductPriceAfter.text = "Rp ${Utils.getNumberThousandFormat(afterDiscount)}"
+                    rvProductPriceBefore.visibility = View.VISIBLE
+                }else{
+                    rvProductPriceAfter.text = "Rp ${Utils.getNumberThousandFormat(product.price)}"
+                    rvProductPriceBefore.visibility = View.INVISIBLE
+                }
 
                 itemView.setOnClickListener {
                     val intent = Intent(itemView.context, DetailProductActivity::class.java)

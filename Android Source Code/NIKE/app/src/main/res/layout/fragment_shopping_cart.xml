@@ -119,6 +119,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textView22" />
 
         <Button
+            android:id="@+id/btn_checkout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"

@@ -3,6 +3,7 @@ package com.path_studio.nike.ui.seeAllProduct
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import androidx.recyclerview.widget.RecyclerView
@@ -12,10 +13,8 @@ import com.path_studio.nike.R
 import com.path_studio.nike.data.source.local.entity.ProductEntity
 import com.path_studio.nike.databinding.ItemGridProductRotateMdBinding
 import com.path_studio.nike.ui.detailProduct.DetailProductActivity
-import com.path_studio.nike.ui.main.favorite.FavoriteAdapter
-import com.path_studio.nike.ui.main.favorite.FavoriteViewModel
 import com.path_studio.nike.utils.Utils
-import java.util.ArrayList
+import java.util.*
 
 class SeeAllProductAdapter(private val viewModel: SeeAllViewModel): RecyclerView.Adapter<SeeAllProductAdapter.ItemViewHolder>() {
     private val listFav = ArrayList<ProductEntity>()
@@ -56,7 +55,16 @@ class SeeAllProductAdapter(private val viewModel: SeeAllViewModel): RecyclerView
             with(binding) {
                 rvProductName.text = product.name
                 rvProductCategoryName.text = "${product.categoryName} Shoes"
-                rvProductPriceAfter.text = "Rp ${Utils.getNumberThousandFormat(product.price)}"
+
+                if(product.discount > 0){
+                    val afterDiscount: Double = product.price - (product.price * product.discount / 100)
+                    rvProductPriceBefore.text = "Rp ${Utils.getNumberThousandFormat(product.price)}"
+                    rvProductPriceAfter.text = "Rp ${Utils.getNumberThousandFormat(afterDiscount)}"
+                    rvProductPriceBefore.visibility = View.VISIBLE
+                }else{
+                    rvProductPriceAfter.text = "Rp ${Utils.getNumberThousandFormat(product.price)}"
+                    rvProductPriceBefore.visibility = View.INVISIBLE
+                }
 
                 setFavoriteState(rvFavBtn, product.favorite)
 

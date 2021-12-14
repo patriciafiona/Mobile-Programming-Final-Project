@@ -1,13 +1,11 @@
 package com.path_studio.nike.ui.detailProduct.imagePreview
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.path_studio.nike.R
-import com.path_studio.nike.databinding.ActivityDetailProductBinding
 import com.path_studio.nike.databinding.ActivityImageViewBinding
-import com.path_studio.nike.ui.detailProduct.DetailProductActivity
 import com.path_studio.nike.ui.detailProduct.bottomSheet.OnBottomSheetCallbacks
 
 class ImageViewActivity : AppCompatActivity() {

@@ -3,34 +3,27 @@ package com.path_studio.nike.ui.detailProduct
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.path_studio.nike.R
-import com.path_studio.nike.data.source.local.entity.ProductEntity
-import com.path_studio.nike.data.source.remote.response.ProductResponseItem
 import com.path_studio.nike.databinding.ActivityDetailProductBinding
-import com.path_studio.nike.databinding.ActivityMainBinding
 import com.path_studio.nike.ui.detailProduct.bottomSheet.OnBottomSheetCallbacks
 import com.path_studio.nike.ui.detailProduct.imagePreview.ImageViewActivity
-import com.path_studio.nike.ui.main.home.HomeViewModel
-import com.path_studio.nike.ui.main.home.adapter.ProductRotateXLAdapter
 import com.path_studio.nike.viewModel.ViewModelFactory
 import com.path_studio.nike.vo.Status
 import java.util.*
-import kotlin.collections.ArrayList
 
 class DetailProductActivity : AppCompatActivity() {
 

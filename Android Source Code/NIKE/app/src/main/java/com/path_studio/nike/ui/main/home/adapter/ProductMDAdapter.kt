@@ -12,9 +12,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.path_studio.nike.R
 import com.path_studio.nike.data.source.local.entity.ProductEntity
 import com.path_studio.nike.databinding.ItemRowProductBinding
-import com.path_studio.nike.databinding.ItemRowProductRotateXlBinding
 import com.path_studio.nike.ui.detailProduct.DetailProductActivity
-import com.path_studio.nike.utils.Utils
 
 class ProductMDAdapter : PagedListAdapter<ProductEntity, ProductMDAdapter.ItemViewHolder>(DIFF_CALLBACK) {
     companion object {
