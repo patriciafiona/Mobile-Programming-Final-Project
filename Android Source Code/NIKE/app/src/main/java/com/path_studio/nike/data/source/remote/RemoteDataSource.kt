@@ -5,8 +5,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.path_studio.nike.data.source.remote.api.ApiConfig
 import com.path_studio.nike.data.source.remote.response.CategoryResponseItem
-import com.path_studio.nike.data.source.remote.response.ProductResponse
 import com.path_studio.nike.data.source.remote.response.ProductResponseItem
+import com.path_studio.nike.data.source.local.entity.UserEntity
+import com.path_studio.nike.data.source.remote.response.UserResponse
 import com.path_studio.nike.utils.EspressoIdlingResource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -61,27 +62,6 @@ class RemoteDataSource {
         return  resultProductResponse
     }
 
-    fun getProductById(id: Int): LiveData<ApiResponse<ProductResponse>> {
-        EspressoIdlingResource.increment()
-        val resultProductResponse = MutableLiveData<ApiResponse<ProductResponse>>()
-        CoroutineScope(Dispatchers.IO).launch {
-            try{
-                val response = ApiConfig.getApiService().getProductByID(id.toString()).await()
-                resultProductResponse.postValue(ApiResponse.success(response))
-            }catch (e: IOException){
-                Log.e("getAllProduct Error", e.message.toString())
-                resultProductResponse.postValue(
-                    ApiResponse.error(
-                        e.message.toString(),
-                        ProductResponse(results = arrayListOf(), status = 400)
-                    )
-                )
-            }
-        }
-        EspressoIdlingResource.decrement()
-        return  resultProductResponse
-    }
-
     fun getAllCategory(): LiveData<ApiResponse<List<CategoryResponseItem>>> {
         EspressoIdlingResource.increment()
         val resultCategoryResponse = MutableLiveData<ApiResponse<List<CategoryResponseItem>>>()
@@ -101,5 +81,67 @@ class RemoteDataSource {
         }
         EspressoIdlingResource.decrement()
         return  resultCategoryResponse
+    }
+
+    suspend fun insertUserData(data: UserEntity, callback: CallbackLoadInsertResult) {
+        EspressoIdlingResource.increment()
+        ApiConfig.getApiService().insertUser(
+            data.name,
+            data.email,
+            data.password,
+            data.phone_number,
+            data.address,
+            data.birthday)
+            .await().status.let{
+                listResult -> callback.onInsertResultReceived((
+                listResult
+                ))
+            EspressoIdlingResource.decrement()
+        }
+    }
+
+    interface CallbackLoadInsertResult{
+        fun onInsertResultReceived(showResponse: String?)
+    }
+
+    suspend fun updateUserLogin(email: String, password: String, isLogin: Int, callback: CallbackLoadUpdateLoginResult) {
+        EspressoIdlingResource.increment()
+        ApiConfig.getApiService().updateUserLogin(email, password, isLogin)
+            .await().status.let{
+                    listResult -> callback.onUpdateLoginResultReceived((
+                    listResult
+                    ))
+                EspressoIdlingResource.decrement()
+            }
+    }
+
+    suspend fun userLogout(email: String, isLogin: Int, callback: CallbackLoadUpdateLoginResult) {
+        EspressoIdlingResource.increment()
+        ApiConfig.getApiService().userLogout(email, isLogin)
+            .await().status.let{
+                    listResult -> callback.onUpdateLoginResultReceived((
+                    listResult
+                    ))
+                EspressoIdlingResource.decrement()
+            }
+    }
+
+    interface CallbackLoadUpdateLoginResult{
+        fun onUpdateLoginResultReceived(showResponse: String?)
+    }
+
+    suspend fun getUserData(email: String, callback: CallbackLoadGetUserResult) {
+        EspressoIdlingResource.increment()
+        ApiConfig.getApiService().getUserByEmail(email)
+            .await().results.let{
+                    listResult -> callback.onGetResultReceived((
+                    listResult
+                    ))
+                EspressoIdlingResource.decrement()
+            }
+    }
+
+    interface CallbackLoadGetUserResult{
+        fun onGetResultReceived(showResponse: UserEntity?)
     }
 }

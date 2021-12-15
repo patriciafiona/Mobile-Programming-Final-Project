@@ -2,10 +2,11 @@ package com.path_studio.nike.data.source.remote.api
 
 import com.path_studio.nike.data.source.remote.response.CategoryResponse
 import com.path_studio.nike.data.source.remote.response.ProductResponse
+import com.path_studio.nike.data.source.remote.response.StatusResponse
+import com.path_studio.nike.data.source.local.entity.UserEntity
+import com.path_studio.nike.data.source.remote.response.UserResponse
 import retrofit2.Call
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface ApiService {
 
@@ -46,4 +47,35 @@ interface ApiService {
     fun getSearchResult(
         @Path("name") name: String
     ): Call<ProductResponse>
+
+    @FormUrlEncoded
+    @POST("UserInsert")
+    fun insertUser(
+        @Field("name") name: String,
+        @Field("email") email: String,
+        @Field("password") password: String,
+        @Field("phoneNumber") phoneNumber: String,
+        @Field("address") address: String,
+        @Field("birthday") birthday: String
+    ): Call<StatusResponse>
+
+    @FormUrlEncoded
+    @POST("UserLogin")
+    fun updateUserLogin(
+        @Field("email") email: String,
+        @Field("password") password: String,
+        @Field("isLogin") isLogin: Int,
+    ): Call<StatusResponse>
+
+    @FormUrlEncoded
+    @POST("UserLogout")
+    fun userLogout(
+        @Field("email") email: String,
+        @Field("isLogin") isLogin: Int,
+    ): Call<StatusResponse>
+
+    @GET("user/email/{email}")
+    fun getUserByEmail(
+        @Path("email") email: String
+    ): Call<UserResponse>
 }

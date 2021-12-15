@@ -77,4 +77,21 @@
     <string name="update_to_bag">Update to Bag</string>
     <string name="confirm">Confirm</string>
     <string name="cancel">Cancel</string>
+    <string name="connect_to_buy_our_special_product">Connect to Buy Our Special Product</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="or">OR</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="name">Name</string>
+    <string name="address">Address</string>
+    <string name="pick_date">Pick Date</string>
+    <string name="user_name">User Name</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="my_order">My Order</string>
+    <string name="see_order_history">See Order History</string>
+    <string name="temp_date">12-12-2021</string>
+    <string name="logout">Logout</string>
 </resources>

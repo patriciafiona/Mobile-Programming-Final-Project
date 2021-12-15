@@ -1,10 +1,13 @@
 package com.path_studio.nike.ui.main.shoppingCart
 
 import android.annotation.SuppressLint
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,6 +21,7 @@ class ShoppingCartFragment : Fragment() {
     private var _binding: FragmentShoppingCartBinding? = null
     private val binding get() = _binding as FragmentShoppingCartBinding
 
+    private lateinit var prefs: SharedPreferences
     private var tempTotal = 0.0
 
     override fun onCreateView(
@@ -66,6 +70,17 @@ class ShoppingCartFragment : Fragment() {
                 layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
                 setHasFixedSize(true)
                 adapter = cartAdapter
+            }
+
+            prefs = requireActivity().getSharedPreferences("com.path_studio.nike", AppCompatActivity.MODE_PRIVATE)
+            if(prefs.getBoolean("isLogin", false) && prefs.getString("userAddress", "")?.isEmpty() == false) {
+                binding.locationIcon.isVisible = true
+                binding.userAddress.isVisible = true
+
+                binding.userAddress.text = prefs.getString("userAddress", "").toString()
+            }else{
+                binding.locationIcon.isVisible = false
+                binding.userAddress.isVisible = false
             }
         }
 

@@ -42,17 +42,17 @@
         app:layout_constraintTop_toTopOf="@+id/wave_background" />
 
     <ImageView
-        android:id="@+id/imageView8"
+        android:id="@+id/locationIcon"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:contentDescription="@string/img_desc"
         android:src="@drawable/ic_baseline_location_on_white"
-        app:layout_constraintBottom_toBottomOf="@+id/textView19"
+        app:layout_constraintBottom_toBottomOf="@+id/user_address"
         app:layout_constraintStart_toStartOf="@+id/textView8"
-        app:layout_constraintTop_toTopOf="@+id/textView19" />
+        app:layout_constraintTop_toTopOf="@+id/user_address" />
 
     <TextView
-        android:id="@+id/textView19"
+        android:id="@+id/user_address"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -63,7 +63,7 @@
         android:text="@string/temp_address"
         android:textColor="@color/white"
         app:layout_constraintWidth_percent=".85"
-        app:layout_constraintStart_toEndOf="@+id/imageView8"
+        app:layout_constraintStart_toEndOf="@+id/locationIcon"
         app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
     <androidx.recyclerview.widget.RecyclerView

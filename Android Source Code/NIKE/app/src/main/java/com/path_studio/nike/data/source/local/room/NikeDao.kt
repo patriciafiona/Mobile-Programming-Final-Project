@@ -2,7 +2,10 @@ package com.path_studio.nike.data.source.local.room
 
 import androidx.paging.DataSource
 import androidx.room.*
-import com.path_studio.nike.data.source.local.entity.*
+import com.path_studio.nike.data.source.local.entity.CartDetailEntity
+import com.path_studio.nike.data.source.local.entity.CartEntity
+import com.path_studio.nike.data.source.local.entity.CategoryEntity
+import com.path_studio.nike.data.source.local.entity.ProductEntity
 
 @Dao
 interface NikeDao {
@@ -72,18 +75,4 @@ interface NikeDao {
 
     @Query("DELETE FROM cart_entities WHERE id = :id")
     fun deleteCartProduct(id: Int)
-
-    //-------------------------------------------------------------------------------------
-    //User Section
-    @Query("SELECT * FROM user_entities")
-    fun getUserData(): DataSource.Factory<Int, UserEntity>
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertUserData(data: List<UserEntity>)
-
-    @Update
-    fun updateUserData(data: UserEntity)
-
-    @Query("DELETE FROM user_entities WHERE id = :userId")
-    fun deleteUserData(userId: Int)
 }

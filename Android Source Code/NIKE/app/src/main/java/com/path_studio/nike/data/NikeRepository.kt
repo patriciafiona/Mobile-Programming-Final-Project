@@ -5,11 +5,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.path_studio.nike.data.source.local.LocalDataSource
-import com.path_studio.nike.data.source.local.entity.*
+import com.path_studio.nike.data.source.local.entity.CartDetailEntity
+import com.path_studio.nike.data.source.local.entity.CartEntity
+import com.path_studio.nike.data.source.local.entity.CategoryEntity
+import com.path_studio.nike.data.source.local.entity.ProductEntity
 import com.path_studio.nike.data.source.remote.ApiResponse
 import com.path_studio.nike.data.source.remote.RemoteDataSource
 import com.path_studio.nike.data.source.remote.response.CategoryResponseItem
 import com.path_studio.nike.data.source.remote.response.ProductResponseItem
+import com.path_studio.nike.data.source.local.entity.UserEntity
 import com.path_studio.nike.utils.AppExecutors
 import com.path_studio.nike.vo.Resource
 import kotlinx.coroutines.CoroutineScope
@@ -484,31 +488,74 @@ class NikeRepository private constructor(private val remoteDataSource: RemoteDat
         }
     }
 
-    override fun getUserData(): LiveData<PagedList<UserEntity>> {
-        val config = PagedList.Config.Builder()
-            .setEnablePlaceholders(false)
-            .setInitialLoadSizeHint(4)
-            .setPageSize(4)
-            .build()
-        return LivePagedListBuilder(localDataSource.getUserData(), config).build()
+    override fun getUserData(email: String): LiveData<UserEntity> {
+        _isLoading.value = true
+        val result = MutableLiveData<UserEntity>()
+        CoroutineScope(Dispatchers.IO).launch{
+            remoteDataSource.getUserData(email, object : RemoteDataSource.CallbackLoadGetUserResult{
+                override fun onGetResultReceived(showResponse: UserEntity?) {
+                    if (showResponse != null) {
+                        _isLoading.postValue(false)
+                        result.postValue(showResponse!!)
+                    }
+                }
+            })
+        }
+        return result
     }
 
-    override fun insertUserData(data: UserEntity){
-        CoroutineScope(Dispatchers.IO).launch {
-            localDataSource.insertUserData(arrayListOf(data))
+    override fun insertUserData(data: UserEntity): LiveData<String>{
+        _isLoading.value = true
+        val statusResult = MutableLiveData<String>()
+        CoroutineScope(Dispatchers.IO).launch{
+            remoteDataSource.insertUserData(data, object : RemoteDataSource.CallbackLoadInsertResult{
+                override fun onInsertResultReceived(showResponse: String?) {
+                    if (showResponse != null) {
+                        _isLoading.postValue(false)
+                        statusResult.postValue(showResponse!!)
+                    }
+                }
+            })
         }
+        return statusResult
+    }
+
+    override fun updateUserLogin(email: String, password: String, isLogin: Int): LiveData<String>{
+        _isLoading.value = true
+        val statusResult = MutableLiveData<String>()
+        CoroutineScope(Dispatchers.IO).launch{
+            remoteDataSource.updateUserLogin(email, password, isLogin, object : RemoteDataSource.CallbackLoadUpdateLoginResult{
+                override fun onUpdateLoginResultReceived(showResponse: String?) {
+                    if (showResponse != null) {
+                        _isLoading.postValue(false)
+                        statusResult.postValue(showResponse!!)
+                    }
+                }
+            })
+        }
+        return statusResult
+    }
+
+    override fun updateUserLogin(email: String, isLogin: Int): LiveData<String>{
+        _isLoading.value = true
+        val statusResult = MutableLiveData<String>()
+        CoroutineScope(Dispatchers.IO).launch{
+            remoteDataSource.userLogout(email, isLogin, object : RemoteDataSource.CallbackLoadUpdateLoginResult{
+                override fun onUpdateLoginResultReceived(showResponse: String?) {
+                    if (showResponse != null) {
+                        _isLoading.postValue(false)
+                        statusResult.postValue(showResponse!!)
+                    }
+                }
+            })
+        }
+        return statusResult
     }
 
     override fun updateUserData(data: UserEntity){
-        CoroutineScope(Dispatchers.IO).launch {
-            localDataSource.updateUserData(data)
-        }
     }
 
     override fun deleteUserdata(id: Int){
-        CoroutineScope(Dispatchers.IO).launch {
-            localDataSource.deleteUserData(id)
-        }
     }
 
 }

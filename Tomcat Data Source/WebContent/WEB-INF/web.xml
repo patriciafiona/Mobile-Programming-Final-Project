@@ -79,4 +79,14 @@
     <servlet-name>FindAllCategories</servlet-name>
     <url-pattern>/category</url-pattern>
   </servlet-mapping>
+  
+  <!-- Find User by Email -->
+  <servlet>
+    <servlet-name>FindUserData</servlet-name>
+    <servlet-class>main.RESTfulWebService.FindUserData</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>FindUserData</servlet-name>
+    <url-pattern>/user/email/*</url-pattern>
+  </servlet-mapping>
 </web-app>

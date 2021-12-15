@@ -7,9 +7,8 @@ import androidx.room.RoomDatabase
 import com.path_studio.nike.data.source.local.entity.CartEntity
 import com.path_studio.nike.data.source.local.entity.CategoryEntity
 import com.path_studio.nike.data.source.local.entity.ProductEntity
-import com.path_studio.nike.data.source.local.entity.UserEntity
 
-@Database(entities = [ProductEntity::class, CategoryEntity::class, CartEntity::class, UserEntity::class],
+@Database(entities = [ProductEntity::class, CategoryEntity::class, CartEntity::class],
     version = 1,
     exportSchema = false)
 abstract class NikeDatabase : RoomDatabase() {
