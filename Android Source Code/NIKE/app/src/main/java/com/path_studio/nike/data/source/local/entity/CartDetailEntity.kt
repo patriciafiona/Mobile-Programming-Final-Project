@@ -15,6 +15,7 @@ data class CartDetailEntity(
     val typeName: String,
     val categoryName: String,
     val price: Double,
+    val colorId: Int,
     val colorCode: String,
     val colorDescription: String,
     val photo01: String,

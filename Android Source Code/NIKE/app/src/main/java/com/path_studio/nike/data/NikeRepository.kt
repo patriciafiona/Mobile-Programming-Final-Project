@@ -5,15 +5,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.path_studio.nike.data.source.local.LocalDataSource
-import com.path_studio.nike.data.source.local.entity.CartDetailEntity
-import com.path_studio.nike.data.source.local.entity.CartEntity
-import com.path_studio.nike.data.source.local.entity.CategoryEntity
-import com.path_studio.nike.data.source.local.entity.ProductEntity
+import com.path_studio.nike.data.source.local.entity.*
 import com.path_studio.nike.data.source.remote.ApiResponse
 import com.path_studio.nike.data.source.remote.RemoteDataSource
 import com.path_studio.nike.data.source.remote.response.CategoryResponseItem
 import com.path_studio.nike.data.source.remote.response.ProductResponseItem
-import com.path_studio.nike.data.source.local.entity.UserEntity
+import com.path_studio.nike.data.source.remote.response.TransactionResponseItem
 import com.path_studio.nike.utils.AppExecutors
 import com.path_studio.nike.vo.Resource
 import kotlinx.coroutines.CoroutineScope
@@ -582,6 +579,74 @@ class NikeRepository private constructor(private val remoteDataSource: RemoteDat
             })
         }
         return statusResult
+    }
+
+    override fun insertTransaction(data: TransactionEntity, email: String): LiveData<String>{
+        _isLoading.value = true
+        val statusResult = MutableLiveData<String>()
+        CoroutineScope(Dispatchers.IO).launch{
+            remoteDataSource.insertTransaction(data, email, object : RemoteDataSource.CallbackLoadInsertResult{
+                override fun onInsertResultReceived(showResponse: String?) {
+                    if (showResponse != null) {
+                        _isLoading.postValue(false)
+                        statusResult.postValue(showResponse!!)
+                    }
+                }
+            })
+        }
+        return statusResult
+    }
+
+    override fun deleteTransaction(transaction_id: String): LiveData<String>{
+        _isLoading.value = true
+        val statusResult = MutableLiveData<String>()
+        CoroutineScope(Dispatchers.IO).launch{
+            remoteDataSource.deleteTransaction(transaction_id, object : RemoteDataSource.CallbackLoadDeleteResult{
+                override fun onDeleteResultReceived(showResponse: String?) {
+                    if (showResponse != null) {
+                        _isLoading.postValue(false)
+                        statusResult.postValue(showResponse!!)
+                    }
+                }
+            })
+        }
+        return statusResult
+    }
+
+    override fun getUserTransactionByStatus(userId: Int, status: Int): LiveData<List<TransactionEntity>>{
+        _isLoading.value = true
+        val listOfResult = MutableLiveData<List<TransactionEntity>>()
+        CoroutineScope(Dispatchers.IO).launch{
+            remoteDataSource.getUserTransactionByStatus(userId, status, object: RemoteDataSource.CallbackLoadGetTransactionResult{
+                override fun onGetResultReceived(showResponse: List<TransactionResponseItem?>?) {
+                    val transactions = ArrayList<TransactionEntity>()
+                    if (showResponse != null) {
+                        for(response in showResponse){
+                            if (response != null) {
+                                val transaction = TransactionEntity(
+                                        response.id,
+                                        response.transactionId,
+                                        response.userId,
+                                        response.productId,
+                                        response.quantity,
+                                        response.colorId,
+                                        response.discount,
+                                        response.price,
+                                        response.totalAllPrice,
+                                        response.totalAllProduct,
+                                        response.size,
+                                        response.statusId
+                                )
+                                transactions.add(transaction)
+                            }
+                        }
+                    }
+                    _isLoading.postValue(false)
+                    listOfResult.postValue(transactions)
+                }
+            })
+        }
+        return listOfResult
     }
 
 }

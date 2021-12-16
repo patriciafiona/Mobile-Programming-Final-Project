@@ -174,7 +174,6 @@ class DetailProductFragment : BottomSheetDialogFragment(), OnBottomSheetCallback
                                 })
 
                                 //show data to UI
-                                Log.e("PRODUCT DATA", productData.toString())
                                 showDataToUI(productData)
                                 binding.skeletonData.showOriginal()
                             }

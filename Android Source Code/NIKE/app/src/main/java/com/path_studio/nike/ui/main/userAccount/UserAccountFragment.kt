@@ -28,6 +28,7 @@ import android.widget.EditText
 import android.R
 
 import com.path_studio.nike.ui.main.MainActivity
+import com.path_studio.nike.ui.transactionHistory.TransactionHistoryActivity
 
 
 class UserAccountFragment : Fragment() {
@@ -65,6 +66,12 @@ class UserAccountFragment : Fragment() {
         }else{
             setLayoutVisibility("afterLogin")
             setUserData()
+        }
+
+        //order history button
+        binding.orderHistoryBtn.setOnClickListener{
+            val intent = Intent(requireActivity(), TransactionHistoryActivity::class.java)
+            startActivity(intent)
         }
 
         //scroll listener
@@ -178,6 +185,7 @@ class UserAccountFragment : Fragment() {
                                         prefs.edit().putBoolean("isLogin", true).apply()
                                     }
 
+                                    prefs.edit().putInt("userId", data.id!!).apply()
                                     prefs.edit().putString("userName", data.name).apply()
                                     prefs.edit().putString("userEmail", data.email).apply()
                                     prefs.edit().putString("userAddress", data.address).apply()
@@ -258,6 +266,7 @@ class UserAccountFragment : Fragment() {
                                     prefs.edit().putBoolean("isLogin", false).apply()
 
                                     //remove user data in sharepreferences
+                                    prefs.edit().remove("userId").apply()
                                     prefs.edit().remove("userName").apply()
                                     prefs.edit().remove("userEmail").apply()
                                     prefs.edit().remove("userAddress").apply()
@@ -338,6 +347,7 @@ class UserAccountFragment : Fragment() {
                                 prefs.edit().putBoolean("isLogin", false).apply()
 
                                 //remove user data in sharepreferences
+                                prefs.edit().remove("userId").apply()
                                 prefs.edit().remove("userName").apply()
                                 prefs.edit().remove("userEmail").apply()
                                 prefs.edit().remove("userAddress").apply()

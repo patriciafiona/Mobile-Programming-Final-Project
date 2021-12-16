@@ -11,13 +11,15 @@ public class Transaction {
 	private int color_id;
 	private int discount;
 	private double price;
+	private double totalAllPrice;
+	private int totalAllProduct;
 	private int size;
 	private int status_id;
 	private Timestamp created_at;
 	private Timestamp updated_at;
 	
 	public Transaction(int id, String transaction_id, int user_id, int product_id, int quantity, int color_id,
-			int discount, double price, int size, int status_id, Timestamp created_at, Timestamp updated_at) {
+			int discount, double price, double totalAllPrice, int totalAllProduct, int size, int status_id, Timestamp created_at, Timestamp updated_at) {
 		super();
 		this.id = id;
 		this.transaction_id = transaction_id;
@@ -27,13 +29,15 @@ public class Transaction {
 		this.color_id = color_id;
 		this.discount = discount;
 		this.price = price;
+		this.totalAllPrice = totalAllPrice;
+		this.totalAllProduct = totalAllProduct;
 		this.size = size;
 		this.status_id = status_id;
 		this.created_at = created_at;
 		this.updated_at = updated_at;
 	}
 	public Transaction(int id, String transaction_id, int user_id, int product_id, int quantity, int color_id,
-			int discount, double price, int size, int status_id) {
+			int discount, double price, double totalAllPrice, int totalAllProduct, int size, int status_id) {
 		super();
 		this.id = id;
 		this.transaction_id = transaction_id;
@@ -43,6 +47,24 @@ public class Transaction {
 		this.color_id = color_id;
 		this.discount = discount;
 		this.price = price;
+		this.totalAllPrice = totalAllPrice;
+		this.totalAllProduct = totalAllProduct;
+		this.size = size;
+		this.status_id = status_id;
+	}
+	
+	public Transaction(String transaction_id, int user_id, int product_id, int quantity, int color_id, int discount,
+			double price, double totalAllPrice, int totalAllProduct, int size, int status_id) {
+		super();
+		this.transaction_id = transaction_id;
+		this.user_id = user_id;
+		this.product_id = product_id;
+		this.quantity = quantity;
+		this.color_id = color_id;
+		this.discount = discount;
+		this.price = price;
+		this.totalAllPrice = totalAllPrice;
+		this.totalAllProduct = totalAllProduct;
 		this.size = size;
 		this.status_id = status_id;
 	}
@@ -118,5 +140,18 @@ public class Transaction {
 	public void setUpdated_at(Timestamp updated_at) {
 		this.updated_at = updated_at;
 	}
+	public double getTotalAllPrice() {
+		return totalAllPrice;
+	}
+	public void setTotalAllPrice(double totalAllPrice) {
+		this.totalAllPrice = totalAllPrice;
+	}
+	public int getTotalAllProduct() {
+		return totalAllProduct;
+	}
+	public void setTotalAllProduct(int totalAllProduct) {
+		this.totalAllProduct = totalAllProduct;
+	}
+	
 	
 }

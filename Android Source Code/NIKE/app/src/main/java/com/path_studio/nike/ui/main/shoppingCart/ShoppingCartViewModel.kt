@@ -6,10 +6,14 @@ import androidx.paging.PagedList
 import com.path_studio.nike.data.NikeRepository
 import com.path_studio.nike.data.source.local.entity.CartDetailEntity
 import com.path_studio.nike.data.source.local.entity.CartEntity
+import com.path_studio.nike.data.source.local.entity.TransactionEntity
 
 class ShoppingCartViewModel(private val nikeRepository: NikeRepository): ViewModel() {
     fun getShoppingCartData():
             LiveData<PagedList<CartDetailEntity>> = nikeRepository.getProductInCart()
     fun updateProductToCart(data: CartEntity) = nikeRepository.updateProductToCart(data)
     fun deleteProductToCart(id: Int) = nikeRepository.deleteProductToCart(id)
+
+    fun insertTransaction(transactions: TransactionEntity, email: String):LiveData<String> =
+        nikeRepository.insertTransaction(transactions, email)
 }

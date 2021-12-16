@@ -6,7 +6,7 @@ import java.util.List;
 import main.dao.implementation.TransactionDaoImp;
 import main.service.Service;
 
-public class TranscationServiceImpl implements Service{
+public class TransactionServiceImpl implements Service{
 
 	TransactionDaoImp dao = new TransactionDaoImp();
 	
@@ -35,6 +35,18 @@ public class TranscationServiceImpl implements Service{
 	
 	public <Transaction> List<Transaction> findRunningTransactionByUserId(int user_id) throws SQLException {
 		return dao.findRunningTransactionByUserId(user_id);
+	}
+	
+	public int delete(String transaction_id) throws SQLException {
+		return dao.delete(transaction_id);
+	}
+	
+	public <Transaction> int insert(Transaction data) throws SQLException {
+		return dao.insert(data);
+	}
+	
+	public <Transaction> List<Transaction> findUserTransactionByUserIdAndStatus(int user_id, int status) throws SQLException {
+		return dao.findUserTransactionByUserIdAndStatus(user_id, status);
 	}
 
 }

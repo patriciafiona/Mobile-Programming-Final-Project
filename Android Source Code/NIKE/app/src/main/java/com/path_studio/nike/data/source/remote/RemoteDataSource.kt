@@ -3,11 +3,10 @@ package com.path_studio.nike.data.source.remote
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.path_studio.nike.data.source.local.entity.TransactionEntity
 import com.path_studio.nike.data.source.remote.api.ApiConfig
-import com.path_studio.nike.data.source.remote.response.CategoryResponseItem
-import com.path_studio.nike.data.source.remote.response.ProductResponseItem
 import com.path_studio.nike.data.source.local.entity.UserEntity
-import com.path_studio.nike.data.source.remote.response.UserResponse
+import com.path_studio.nike.data.source.remote.response.*
 import com.path_studio.nike.utils.EspressoIdlingResource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -182,5 +181,54 @@ class RemoteDataSource {
 
     interface CallbackLoadGetUserResult{
         fun onGetResultReceived(showResponse: UserEntity?)
+    }
+
+    suspend fun insertTransaction(data: TransactionEntity, email: String, callback: CallbackLoadInsertResult) {
+        EspressoIdlingResource.increment()
+        ApiConfig.getApiService().insertTransaction(
+            data.transaction_id,
+            email,
+            data.product_id,
+            data.quantity,
+            data.color_id,
+            data.discount,
+            data.price,
+            data.totalAllPrice,
+            data.totalAllProduct,
+            data.size,
+            1
+        )
+            .await().status.let{
+                    listResult -> callback.onInsertResultReceived((
+                    listResult
+                    ))
+                EspressoIdlingResource.decrement()
+            }
+    }
+
+    suspend fun deleteTransaction(transaction_id: String, callback: CallbackLoadDeleteResult) {
+        EspressoIdlingResource.increment()
+        ApiConfig.getApiService().deleteTransaction(transaction_id)
+            .await().status.let{
+                    listResult -> callback.onDeleteResultReceived((
+                    listResult
+                    ))
+                EspressoIdlingResource.decrement()
+            }
+    }
+
+    suspend fun getUserTransactionByStatus(userId: Int, status: Int, callback: CallbackLoadGetTransactionResult){
+        EspressoIdlingResource.increment()
+        ApiConfig.getApiService().getUserTransactionByStatus(userId, status)
+                .await().results.let{
+                    listResult -> callback.onGetResultReceived((
+                        listResult
+                        ))
+                    EspressoIdlingResource.decrement()
+                }
+    }
+
+    interface CallbackLoadGetTransactionResult{
+        fun onGetResultReceived(showResponse: List<TransactionResponseItem?>?)
     }
 }

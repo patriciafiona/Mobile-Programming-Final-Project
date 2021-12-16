@@ -11,6 +11,7 @@ import com.path_studio.nike.ui.main.home.HomeViewModel
 import com.path_studio.nike.ui.main.shoppingCart.ShoppingCartViewModel
 import com.path_studio.nike.ui.main.userAccount.UserViewModel
 import com.path_studio.nike.ui.seeAllProduct.SeeAllViewModel
+import com.path_studio.nike.ui.transactionHistory.TransactionHistoryViewModel
 import com.path_studio.nike.ui.userEdit.UserEditViewModel
 
 class ViewModelFactory private constructor(private val mNikeRepository: NikeRepository) : ViewModelProvider.NewInstanceFactory() {
@@ -50,6 +51,9 @@ class ViewModelFactory private constructor(private val mNikeRepository: NikeRepo
             }
             modelClass.isAssignableFrom(UserEditViewModel::class.java) -> {
                 UserEditViewModel(mNikeRepository) as T
+            }
+            modelClass.isAssignableFrom(TransactionHistoryViewModel::class.java) -> {
+                TransactionHistoryViewModel(mNikeRepository) as T
             }
             else -> throw Throwable("Unknown ViewModel class: " + modelClass.name)
         }

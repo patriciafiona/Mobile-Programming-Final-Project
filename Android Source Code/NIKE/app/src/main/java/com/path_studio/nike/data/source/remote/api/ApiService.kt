@@ -1,10 +1,7 @@
 package com.path_studio.nike.data.source.remote.api
 
-import com.path_studio.nike.data.source.remote.response.CategoryResponse
-import com.path_studio.nike.data.source.remote.response.ProductResponse
-import com.path_studio.nike.data.source.remote.response.StatusResponse
 import com.path_studio.nike.data.source.local.entity.UserEntity
-import com.path_studio.nike.data.source.remote.response.UserResponse
+import com.path_studio.nike.data.source.remote.response.*
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -97,4 +94,32 @@ interface ApiService {
         @Field("password") password: String,
         @Field("reinput_password") reinput_password: String,
     ): Call<StatusResponse>
+
+    @FormUrlEncoded
+    @POST("TransactionInsert")
+    fun insertTransaction(
+        @Field("transaction_id") transaction_id: String,
+        @Field("email") email: String,
+        @Field("product_id") product_id: Int,
+        @Field("quantity") quantity: Int,
+        @Field("color_id") color_id: Int,
+        @Field("discount") discount: Int,
+        @Field("price") price: Double,
+        @Field("total_all_price") total_all_price: Double,
+        @Field("total_all_product") total_all_product: Int,
+        @Field("size") size: Int,
+        @Field("status_id") status_id: Int,
+    ): Call<StatusResponse>
+
+    @FormUrlEncoded
+    @POST("TransactionDelete")
+    fun deleteTransaction(
+        @Field("transaction_id") transaction_id: String,
+    ): Call<StatusResponse>
+
+    @GET("FindUserTransactionByStatus")
+    fun getUserTransactionByStatus(
+            @Query("user_id") user_id: Int,
+            @Query("status") status: Int,
+    ): Call<TransactionResponse>
 }

@@ -97,4 +97,14 @@
     <string name="edit_your_data">Edit your data</string>
     <string name="insert_new_password_or_your_old_password">Insert new password or your old password</string>
     <string name="reinput_password">Reinput Password</string>
+    <string name="transaction_history">Transaction History</string>
+    <string name="pending_payment">Pending Payment</string>
+    <string name="packed">Packed</string>
+    <string name="received">Received</string>
+    <string name="onDelivery">On Delivery</string>
+    <string name="transaction_id">Transaction ID</string>
+    <string name="temp_transaction_id">TSC1234567890</string>
+    <string name="pay_now">Pay Now</string>
+    <string name="temp_quantity_transaction">1 product</string>
+    <string name="total_order">Total order</string>
 </resources>

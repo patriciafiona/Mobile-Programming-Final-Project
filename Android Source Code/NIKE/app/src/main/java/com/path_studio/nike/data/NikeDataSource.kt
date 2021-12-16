@@ -2,11 +2,7 @@ package com.path_studio.nike.data
 
 import androidx.lifecycle.LiveData
 import androidx.paging.PagedList
-import com.path_studio.nike.data.source.local.entity.CartDetailEntity
-import com.path_studio.nike.data.source.local.entity.CartEntity
-import com.path_studio.nike.data.source.local.entity.CategoryEntity
-import com.path_studio.nike.data.source.local.entity.ProductEntity
-import com.path_studio.nike.data.source.local.entity.UserEntity
+import com.path_studio.nike.data.source.local.entity.*
 import com.path_studio.nike.data.source.remote.response.UserResponse
 import com.path_studio.nike.vo.Resource
 
@@ -36,4 +32,8 @@ interface NikeDataSource {
     fun updateUserLogin(email: String, isLogin: Int): LiveData<String>
     fun updateUserData(data: UserEntity): LiveData<String>
     fun deleteUserdata(email: String, password: String, reinput_password: String): LiveData<String>
+
+    fun insertTransaction(data: TransactionEntity, email: String): LiveData<String>
+    fun deleteTransaction(transaction_id: String): LiveData<String>
+    fun getUserTransactionByStatus(userId: Int, status: Int): LiveData<List<TransactionEntity>>
 }

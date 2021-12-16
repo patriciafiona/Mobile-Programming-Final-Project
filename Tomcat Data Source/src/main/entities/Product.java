@@ -59,7 +59,7 @@ public class Product{
 	public Product(int productId, int product_detail_id, int category_id, String name, float price, String description,
 			double rating, String style, String color_description, int stock, String photo_01,
 			String photo_02, String photo_03, String photo_04, String photo_05,
-			String category_name, String color_code, int type_id, String type_name, int discount,
+			String category_name, String color_code, int type_id, String type_name, int discount,int color_id, 
 			Timestamp created_at, Timestamp updated_at) {
 		super();
 		this.productId = productId;
@@ -82,6 +82,7 @@ public class Product{
 		this.type_id = type_id;
 		this.type_name = type_name;
 		this.discount = discount;
+		this.color_id = color_id;
 		this.created_at = created_at;
 		this.updated_at = updated_at;
 	}

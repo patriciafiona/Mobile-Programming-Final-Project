@@ -22,7 +22,7 @@ import main.entities.Product;
 import main.entities.Transaction;
 import main.entities.User;
 import main.service.Service;
-import main.service.implementation.TranscationServiceImpl;
+import main.service.implementation.TransactionServiceImpl;
 import main.service.implementation.UserServiceImpl;
 
 @WebServlet("/UserDelete")
@@ -43,7 +43,7 @@ public class UserDelete extends HttpServlet {
 		String reinput_password = request.getParameter("reinput_password");
 		
 		UserServiceImpl us = new UserServiceImpl();
-		TranscationServiceImpl ts = new TranscationServiceImpl();
+		TransactionServiceImpl ts = new TransactionServiceImpl();
 		
 		JSONObject finalObj=new JSONObject(); 
 		try {

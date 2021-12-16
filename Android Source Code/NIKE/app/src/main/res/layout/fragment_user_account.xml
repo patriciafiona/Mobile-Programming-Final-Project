@@ -585,6 +585,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/separator_01" />
 
                 <Button
+                    android:id="@+id/orderHistoryBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"

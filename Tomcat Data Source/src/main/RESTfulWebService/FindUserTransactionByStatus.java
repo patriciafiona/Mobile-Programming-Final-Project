@@ -3,10 +3,10 @@ package main.RESTfulWebService;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,57 +18,46 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import main.entities.Product;
-import main.service.implementation.ProductsServiceImpl;
+import main.entities.Transaction;
+import main.service.implementation.TransactionServiceImpl;
 
-public class FindProductByCategoryID extends HttpServlet {
+@WebServlet("/FindUserTransactionByStatus")
+public class FindUserTransactionByStatus extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    public FindProductByCategoryID() {
+    public FindUserTransactionByStatus() {
         super();
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		ProductsServiceImpl ps = new ProductsServiceImpl();
+		TransactionServiceImpl ts = new TransactionServiceImpl();
+		int user_id = Integer.valueOf(request.getParameter("user_id")); 
+		int status_transaction = Integer.valueOf(request.getParameter("status")); 
 		
+		JSONObject finalObj=new JSONObject(); 
 		try {
-			String URI = request.getRequestURI();
-			int category_id = Integer.valueOf(URI.substring(URI.lastIndexOf('/') + 1) );
-			
-			//check if have query
-			String limit_request = request.getParameter("limit"); 
-			
-			List<Product> listProduct = Collections.<Product>emptyList();
-			if(limit_request == null) {
-				listProduct = ps.findByCategory(category_id);
-				request.setAttribute("product", listProduct);
-			}else {
-				listProduct = ps.findByCategoryLimit(category_id, Integer.valueOf(limit_request));
-				request.setAttribute("product", listProduct);
-			}
-			
+			List<Transaction> listTransaction = ts.findUserTransactionByUserIdAndStatus(user_id, status_transaction);
 			
 			ObjectMapper objectMapper = new ObjectMapper();
 			objectMapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
-			String ok = objectMapper.writeValueAsString(listProduct);
+			String ok = objectMapper.writeValueAsString(listTransaction);
 			
 			ObjectMapper mapper = new ObjectMapper();
 		    JsonNode actualObj = mapper.readTree(ok);
 		    
 		    //adding status & convert to JSON object
-		    JSONObject finalObj=new JSONObject(); 
-		    if(listProduct!=null) {
+		    if(listTransaction!=null) {
 		    	finalObj.put("status", 200); 
 		    }else {
 		    	finalObj.put("status", 400); 
 		    }
 		    finalObj.put("results", actualObj);
 			
-		    PrintWriter out = response.getWriter();
+			PrintWriter out = response.getWriter();
 	        response.setContentType("application/json");
 	        response.setCharacterEncoding("UTF-8");
 	        out.print(finalObj);
-	        out.flush();   
+	        out.flush(); 
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}

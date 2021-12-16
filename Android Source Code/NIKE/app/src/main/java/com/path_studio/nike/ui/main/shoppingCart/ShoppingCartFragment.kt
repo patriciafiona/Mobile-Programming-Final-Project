@@ -6,15 +6,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.path_studio.nike.R
+import com.path_studio.nike.data.source.local.entity.CartDetailEntity
+import com.path_studio.nike.data.source.local.entity.TransactionEntity
 import com.path_studio.nike.databinding.FragmentShoppingCartBinding
 import com.path_studio.nike.utils.Utils.getNumberThousandFormat
 import com.path_studio.nike.viewModel.ViewModelFactory
+import java.text.SimpleDateFormat
+import java.util.*
 
 class ShoppingCartFragment : Fragment() {
 
@@ -49,6 +55,8 @@ class ShoppingCartFragment : Fragment() {
                 if (products.isEmpty()) {
                     showHideDataIndicator(true)
                     binding.totalPrice.text = "Rp ${getNumberThousandFormat(0.0)}"
+
+                    setCheckoutBtn(true, null, viewModel)
                 }else {
                     showHideDataIndicator(false)
 
@@ -61,6 +69,8 @@ class ShoppingCartFragment : Fragment() {
                         }
                     }
                     binding.totalPrice.text = "Rp ${getNumberThousandFormat(tempTotal)}"
+
+                    setCheckoutBtn(false, products, viewModel)
                 }
                 cartAdapter.setProducts(products)
                 cartAdapter.notifyDataSetChanged()
@@ -93,6 +103,96 @@ class ShoppingCartFragment : Fragment() {
                 navView?.visibility = View.VISIBLE
             }else{
                 navView?.visibility = View.INVISIBLE
+            }
+        }
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    private fun setCheckoutBtn(isEmpty: Boolean, cartProducts: PagedList<CartDetailEntity>?, viewModel: ShoppingCartViewModel){
+        binding.btnCheckout.setOnClickListener {
+            binding.progressBar.visibility = View.VISIBLE
+            binding.rvShoppingCart.visibility = View.GONE
+            if(isEmpty){
+                Toast.makeText(
+                    requireActivity(),
+                    "Empty Shopping Cart",
+                    Toast.LENGTH_LONG
+                ).show()
+                binding.progressBar.visibility = View.GONE
+                binding.rvShoppingCart.visibility = View.VISIBLE
+            }else{
+                //insert product one by one
+                if (prefs.getBoolean("isLogin", false)) {
+                    if(cartProducts != null) {
+                        val sdf = SimpleDateFormat("ddMyyyyhhmmss")
+                        val currentDateTime = sdf.format(Date())
+                        val userId = prefs.getInt("userId", 0)
+                        val transactionId = "TRS${userId}${cartProducts.size}${currentDateTime}"
+                        for ((i, data) in cartProducts.withIndex()) {
+                            val transactionData = TransactionEntity(
+                                null,
+                                transactionId,
+                                userId,
+                                data.productId.toInt(),
+                                data.quantity,
+                                data.colorId,
+                                data.discount,
+                                data.price,
+                                tempTotal,
+                                cartProducts.size,
+                                data.size,
+                                1
+                            )
+                            val userEmail = prefs.getString("userEmail", "").toString()
+
+                            viewModel.insertTransaction(transactionData, userEmail)
+                                .observe(requireActivity(), { status ->
+                                    when (status) {
+                                        "success" -> {
+                                            //delete data from shopping cart database
+                                            viewModel.deleteProductToCart(data.id)
+
+                                            if (i == cartProducts.size - 1) {
+                                                Toast.makeText(
+                                                    requireActivity(),
+                                                    "Success to Process Transaction",
+                                                    Toast.LENGTH_LONG
+                                                ).show()
+                                            }
+                                            binding.progressBar.visibility = View.GONE
+                                            binding.rvShoppingCart.visibility = View.VISIBLE
+                                        }
+                                        "failed" -> {
+                                            Toast.makeText(
+                                                requireActivity(),
+                                                "Failed to Checkout",
+                                                Toast.LENGTH_LONG
+                                            ).show()
+                                            binding.progressBar.visibility = View.GONE
+                                            binding.rvShoppingCart.visibility = View.VISIBLE
+                                        }
+                                        "user_not_found" -> {
+                                            Toast.makeText(
+                                                requireActivity(),
+                                                "User Not Found For This Transaction",
+                                                Toast.LENGTH_LONG
+                                            ).show()
+                                            binding.progressBar.visibility = View.GONE
+                                            binding.rvShoppingCart.visibility = View.VISIBLE
+                                        }
+                                    }
+                                })
+                        }
+                    }
+                }else{
+                    Toast.makeText(
+                        requireActivity(),
+                        "Connect to Process Transaction",
+                        Toast.LENGTH_LONG
+                    ).show()
+                    binding.progressBar.visibility = View.GONE
+                    binding.rvShoppingCart.visibility = View.VISIBLE
+                }
             }
         }
     }

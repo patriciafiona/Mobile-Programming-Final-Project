@@ -18,7 +18,7 @@ public class ProductsDaoImp implements Dao{
 		
 		Statement st = conn.createStatement();
 		String sql = "SELECT products.id as productId, product_details.id as product_detail_id, categories.id as category_id, "
-				+ "types.id as type_id, products.name, products.price, products.description, "
+				+ "product_details.color_id, types.id as type_id, products.name, products.price, products.description, "
 				+ "product_details.rating, product_details.style, product_details.color_description, "
 				+ "product_details.stock, product_details.photo_01, product_details.photo_02, "
 				+ "product_details.photo_03, product_details.photo_04, product_details.photo_05, "
@@ -40,6 +40,7 @@ public class ProductsDaoImp implements Dao{
 			int product_detail_id = rs.getInt("product_detail_id");
 			int category_id = rs.getInt("category_id");
 			int type_id = rs.getInt("type_id");
+			int color_id = rs.getInt("color_id");
 			String type_name = rs.getString("type_name");
 			String name = rs.getString("name");
 			float price  = rs.getFloat("price");
@@ -62,7 +63,7 @@ public class ProductsDaoImp implements Dao{
 			
 			main.entities.Product product = new main.entities.Product(id, product_detail_id, category_id, name, price, description, rating, style, color_description,
 					stocks, photo_01, photo_02, photo_03, photo_04, photo_05, categories_name, color_code, type_id, type_name, 
-					discount, created_at, updated_at);
+					discount, color_id, created_at, updated_at);
 			products.add(product);
 		}
 		JDBCUtil.close(conn, st, rs);
@@ -75,7 +76,7 @@ public class ProductsDaoImp implements Dao{
 		
 		Statement st = conn.createStatement();
 		String sql = "SELECT products.id as productId, product_details.id as product_detail_id, categories.id as category_id,  "
-				+ "types.id as type_id, products.name, products.price, products.description, "
+				+ "product_details.color_id, types.id as type_id, products.name, products.price, products.description, "
 				+ "product_details.rating, product_details.style, product_details.color_description, "
 				+ "product_details.stock, product_details.photo_01, product_details.photo_02, "
 				+ "product_details.photo_03, product_details.photo_04, product_details.photo_05, "
@@ -97,6 +98,7 @@ public class ProductsDaoImp implements Dao{
 			int res_id = rs.getInt("productId");
 			int product_detail_id = rs.getInt("product_detail_id");
 			int category_id = rs.getInt("category_id");
+			int color_id = rs.getInt("color_id");
 			int type_id = rs.getInt("type_id");
 			String type_name = rs.getString("type_name");
 			String name = rs.getString("name");
@@ -120,7 +122,7 @@ public class ProductsDaoImp implements Dao{
 			
 			main.entities.Product product = new main.entities.Product(res_id, product_detail_id, category_id, name, price, description, rating, style, color_description,
 					stocks, photo_01, photo_02, photo_03, photo_04, photo_05, categories_name, color_code, type_id, type_name, 
-					discount, created_at, updated_at);
+					discount, color_id, created_at, updated_at);
 			products.add(product);
 		}
 		JDBCUtil.close(conn, st, rs);
@@ -133,7 +135,7 @@ public class ProductsDaoImp implements Dao{
 		
 		Statement st = conn.createStatement();
 		String sql = "SELECT products.id as productId, product_details.id as product_detail_id, categories.id as category_id, "
-				+ "types.id as type_id, products.name, products.price, products.description, "
+				+ "product_details.color_id, types.id as type_id, products.name, products.price, products.description, "
 				+ "product_details.rating, product_details.style, product_details.color_description, "
 				+ "product_details.stock, product_details.photo_01, product_details.photo_02, "
 				+ "product_details.photo_03, product_details.photo_04, product_details.photo_05, "
@@ -157,6 +159,7 @@ public class ProductsDaoImp implements Dao{
 			int product_detail_id = rs.getInt("product_detail_id");
 			int category_id = rs.getInt("category_id");
 			int type_id = rs.getInt("type_id");
+			int color_id = rs.getInt("color_id");
 			String type_name = rs.getString("type_name");
 			String res_name = rs.getString("name");
 			float price  = rs.getFloat("price");
@@ -179,7 +182,7 @@ public class ProductsDaoImp implements Dao{
 			
 			main.entities.Product product = new main.entities.Product(id, product_detail_id, category_id, res_name, price, description, rating, style, color_description,
 					stocks, photo_01, photo_02, photo_03, photo_04, photo_05, categories_name, color_code, type_id, type_name, 
-					discount, created_at, updated_at);
+					discount, color_id, created_at, updated_at);
 			products.add(product);
 		}
 		JDBCUtil.close(conn, st, rs);
@@ -191,7 +194,7 @@ public class ProductsDaoImp implements Dao{
 		
 		Statement st = conn.createStatement();
 		String sql = "SELECT products.id as productId, product_details.id as product_detail_id, categories.id as category_id, "
-				+ "types.id as type_id, products.name, products.price, products.description, "
+				+ "product_details.color_id, types.id as type_id, products.name, products.price, products.description, "
 				+ "product_details.rating, product_details.style, product_details.color_description, "
 				+ "product_details.stock, product_details.photo_01, product_details.photo_02, "
 				+ "product_details.photo_03, product_details.photo_04, product_details.photo_05, "
@@ -214,6 +217,7 @@ public class ProductsDaoImp implements Dao{
 			int product_detail_id = rs.getInt("product_detail_id");
 			int category_id = rs.getInt("category_id");
 			int type_id = rs.getInt("type_id");
+			int color_id = rs.getInt("color_id");
 			String type_name = rs.getString("type_name");
 			String name = rs.getString("name");
 			float price  = rs.getFloat("price");
@@ -236,7 +240,7 @@ public class ProductsDaoImp implements Dao{
 			
 			product = new main.entities.Product(res_id, product_detail_id, category_id, name, price, description, rating, style, color_description,
 					stocks, photo_01, photo_02, photo_03, photo_04, photo_05, categories_name, color_code, type_id, type_name, 
-					discount, created_at, updated_at);
+					discount, color_id, created_at, updated_at);
 		}
 		JDBCUtil.close(conn, st, rs);
 		return (Product) product;
@@ -247,7 +251,7 @@ public class ProductsDaoImp implements Dao{
 		
 		Statement st = conn.createStatement();
 		String sql = "SELECT products.id as productId, product_details.id as product_detail_id, categories.id as category_id,  "
-				+ "types.id as type_id, products.name, products.price, products.description, "
+				+ "product_details.color_id, types.id as type_id, products.name, products.price, products.description, "
 				+ "product_details.rating, product_details.style, product_details.color_description, "
 				+ "product_details.stock, product_details.photo_01, product_details.photo_02, "
 				+ "product_details.photo_03, product_details.photo_04, product_details.photo_05, "
@@ -270,6 +274,7 @@ public class ProductsDaoImp implements Dao{
 			int product_detail_id = rs.getInt("product_detail_id");
 			int res_category_id = rs.getInt("category_id");
 			int type_id = rs.getInt("type_id");
+			int color_id = rs.getInt("color_id");
 			String type_name = rs.getString("type_name");
 			String name = rs.getString("name");
 			float price  = rs.getFloat("price");
@@ -292,7 +297,7 @@ public class ProductsDaoImp implements Dao{
 			
 			main.entities.Product product = new main.entities.Product(id, product_detail_id, res_category_id, name, price, description, rating, style, color_description,
 					stocks, photo_01, photo_02, photo_03, photo_04, photo_05, categories_name, color_code, type_id, type_name, 
-					discount, created_at, updated_at);
+					discount, color_id, created_at, updated_at);
 			products.add(product);
 		}
 		JDBCUtil.close(conn, st, rs);
@@ -304,7 +309,7 @@ public class ProductsDaoImp implements Dao{
 		
 		Statement st = conn.createStatement();
 		String sql = "SELECT products.id as productId, product_details.id as product_detail_id, categories.id as category_id,  "
-				+ "types.id as type_id, products.name, products.price, products.description, "
+				+ "product_details.color_id, types.id as type_id, products.name, products.price, products.description, "
 				+ "product_details.rating, product_details.style, product_details.color_description, "
 				+ "product_details.stock, product_details.photo_01, product_details.photo_02, "
 				+ "product_details.photo_03, product_details.photo_04, product_details.photo_05, "
@@ -327,6 +332,7 @@ public class ProductsDaoImp implements Dao{
 			int product_detail_id = rs.getInt("product_detail_id");
 			int res_category_id = rs.getInt("category_id");
 			int res_type_id = rs.getInt("type_id");
+			int color_id = rs.getInt("color_id");
 			String res_type_name = rs.getString("type_name");
 			String name = rs.getString("name");
 			float price  = rs.getFloat("price");
@@ -349,7 +355,7 @@ public class ProductsDaoImp implements Dao{
 			
 			main.entities.Product product = new main.entities.Product(id, product_detail_id, res_category_id, name, price, description, rating, style, color_description,
 					stocks, photo_01, photo_02, photo_03, photo_04, photo_05, categories_name, color_code, res_type_id, res_type_name, 
-					discount, created_at, updated_at);
+					discount, color_id, created_at, updated_at);
 			products.add(product);
 		}
 		JDBCUtil.close(conn, st, rs);
@@ -371,7 +377,7 @@ public class ProductsDaoImp implements Dao{
 		
 		Statement st = conn.createStatement();
 		String sql = "SELECT products.id as productId, product_details.id as product_detail_id, categories.id as category_id, "
-				+ "types.id as type_id, products.name, products.price, products.description, "
+				+ "product_details.color_id, types.id as type_id, products.name, products.price, products.description, "
 				+ "product_details.rating, product_details.style, product_details.color_description, "
 				+ "product_details.stock, product_details.photo_01, product_details.photo_02, "
 				+ "product_details.photo_03, product_details.photo_04, product_details.photo_05, "
@@ -394,6 +400,7 @@ public class ProductsDaoImp implements Dao{
 			int product_detail_id = rs.getInt("product_detail_id");
 			int category_id = rs.getInt("category_id");
 			int type_id = rs.getInt("type_id");
+			int color_id = rs.getInt("color_id");
 			String type_name = rs.getString("type_name");
 			String name = rs.getString("name");
 			float price  = rs.getFloat("price");
@@ -416,7 +423,7 @@ public class ProductsDaoImp implements Dao{
 			
 			main.entities.Product product = new main.entities.Product(id, product_detail_id, category_id, name, price, description, rating, style, color_description,
 					stocks, photo_01, photo_02, photo_03, photo_04, photo_05, categories_name, color_code, type_id, type_name, 
-					discount, created_at, updated_at);
+					discount, color_id, created_at, updated_at);
 			products.add(product);
 		}
 		JDBCUtil.close(conn, st, rs);
@@ -428,7 +435,7 @@ public class ProductsDaoImp implements Dao{
 		
 		Statement st = conn.createStatement();
 		String sql = "SELECT products.id as productId, product_details.id as product_detail_id, categories.id as category_id,  "
-				+ "types.id as type_id, products.name, products.price, products.description, "
+				+ "product_details.color_id, types.id as type_id, products.name, products.price, products.description, "
 				+ "product_details.rating, product_details.style, product_details.color_description, "
 				+ "product_details.stock, product_details.photo_01, product_details.photo_02, "
 				+ "product_details.photo_03, product_details.photo_04, product_details.photo_05, "
@@ -452,6 +459,7 @@ public class ProductsDaoImp implements Dao{
 			int product_detail_id = rs.getInt("product_detail_id");
 			int res_category_id = rs.getInt("category_id");
 			int type_id = rs.getInt("type_id");
+			int color_id = rs.getInt("color_id");
 			String type_name = rs.getString("type_name");
 			String name = rs.getString("name");
 			float price  = rs.getFloat("price");
@@ -474,7 +482,7 @@ public class ProductsDaoImp implements Dao{
 			
 			main.entities.Product product = new main.entities.Product(id, product_detail_id, res_category_id, name, price, description, rating, style, color_description,
 					stocks, photo_01, photo_02, photo_03, photo_04, photo_05, categories_name, color_code, type_id, type_name, 
-					discount, created_at, updated_at);
+					discount, color_id, created_at, updated_at);
 			products.add(product);
 		}
 		JDBCUtil.close(conn, st, rs);
@@ -486,7 +494,7 @@ public class ProductsDaoImp implements Dao{
 		
 		Statement st = conn.createStatement();
 		String sql = "SELECT products.id as productId, product_details.id as product_detail_id, categories.id as category_id,  "
-				+ "types.id as type_id, products.name, products.price, products.description, "
+				+ "product_details.color_id, types.id as type_id, products.name, products.price, products.description, "
 				+ "product_details.rating, product_details.style, product_details.color_description, "
 				+ "product_details.stock, product_details.photo_01, product_details.photo_02, "
 				+ "product_details.photo_03, product_details.photo_04, product_details.photo_05, "
@@ -510,6 +518,7 @@ public class ProductsDaoImp implements Dao{
 			int product_detail_id = rs.getInt("product_detail_id");
 			int res_category_id = rs.getInt("category_id");
 			int res_type_id = rs.getInt("type_id");
+			int color_id = rs.getInt("color_id");
 			String res_type_name = rs.getString("type_name");
 			String name = rs.getString("name");
 			float price  = rs.getFloat("price");
@@ -532,7 +541,7 @@ public class ProductsDaoImp implements Dao{
 			
 			main.entities.Product product = new main.entities.Product(id, product_detail_id, res_category_id, name, price, description, rating, style, color_description,
 					stocks, photo_01, photo_02, photo_03, photo_04, photo_05, categories_name, color_code, res_type_id, res_type_name, 
-					discount, created_at, updated_at);
+					discount, color_id, created_at, updated_at);
 			products.add(product);
 		}
 		JDBCUtil.close(conn, st, rs);

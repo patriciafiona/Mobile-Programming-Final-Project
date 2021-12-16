@@ -47,6 +47,7 @@ public class UserLogin extends HttpServlet {
 							//Login Success go to home page
 							if(us.updateLoginStatus(userData.getId(), 1) == 1) {
 								finalObj.put("status", "success"); 
+								System.out.println("UPDATE STATUS: success");
 							}else {
 								finalObj.put("status", "failed_update_data"); 
 								System.out.println("UPDATE STATUS: failed_update_data");
