@@ -3,9 +3,10 @@ package com.path_studio.nike.data.source.local.entity
 import androidx.annotation.NonNull
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "product_entities")
+@Entity(tableName = "product_entities", indices = [Index(value = ["productDetailId"], unique = true)])
 data class ProductEntity(
     @PrimaryKey(autoGenerate = true)
     @NonNull
