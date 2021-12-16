@@ -13,6 +13,9 @@
         android:theme="@style/Theme.NIKE"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ui.userEdit.UserEditActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.about.AboutActivity"
             android:exported="false" />
         <activity

@@ -34,6 +34,6 @@ interface NikeDataSource {
     fun insertUserData(data: UserEntity): LiveData<String>
     fun updateUserLogin(email: String, password: String, isLogin: Int): LiveData<String>
     fun updateUserLogin(email: String, isLogin: Int): LiveData<String>
-    fun updateUserData(data: UserEntity)
-    fun deleteUserdata(id: Int)
+    fun updateUserData(data: UserEntity): LiveData<String>
+    fun deleteUserdata(email: String, password: String, reinput_password: String): LiveData<String>
 }

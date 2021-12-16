@@ -552,10 +552,36 @@ class NikeRepository private constructor(private val remoteDataSource: RemoteDat
         return statusResult
     }
 
-    override fun updateUserData(data: UserEntity){
+    override fun updateUserData(data: UserEntity): LiveData<String>{
+        _isLoading.value = true
+        val statusResult = MutableLiveData<String>()
+        CoroutineScope(Dispatchers.IO).launch{
+            remoteDataSource.updateUserData(data, object : RemoteDataSource.CallbackLoadUpdateResult{
+                override fun onUpdateResultReceived(showResponse: String?) {
+                    if (showResponse != null) {
+                        _isLoading.postValue(false)
+                        statusResult.postValue(showResponse!!)
+                    }
+                }
+            })
+        }
+        return statusResult
     }
 
-    override fun deleteUserdata(id: Int){
+    override fun deleteUserdata(email: String, password: String, reinput_password: String): LiveData<String>{
+        _isLoading.value = true
+        val statusResult = MutableLiveData<String>()
+        CoroutineScope(Dispatchers.IO).launch{
+            remoteDataSource.deleteUserData(email, password, reinput_password, object : RemoteDataSource.CallbackLoadDeleteResult{
+                override fun onDeleteResultReceived(showResponse: String?) {
+                    if (showResponse != null) {
+                        _isLoading.postValue(false)
+                        statusResult.postValue(showResponse!!)
+                    }
+                }
+            })
+        }
+        return statusResult
     }
 
 }

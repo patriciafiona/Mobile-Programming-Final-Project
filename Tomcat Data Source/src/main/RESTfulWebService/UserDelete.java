@@ -1,27 +1,35 @@
 package main.RESTfulWebService;
 
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
+import java.util.Collections;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
 
+import main.entities.Product;
+import main.entities.Transaction;
 import main.entities.User;
+import main.service.Service;
+import main.service.implementation.TranscationServiceImpl;
 import main.service.implementation.UserServiceImpl;
 
-@WebServlet("/UserLogin")
-public class UserLogin extends HttpServlet {
+@WebServlet("/UserDelete")
+public class UserDelete extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
-    public UserLogin() {
+       
+    public UserDelete() {
         super();
     }
 
@@ -32,47 +40,43 @@ public class UserLogin extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
+		String reinput_password = request.getParameter("reinput_password");
+		
+		UserServiceImpl us = new UserServiceImpl();
+		TranscationServiceImpl ts = new TranscationServiceImpl();
 		
 		JSONObject finalObj=new JSONObject(); 
-		if(!email.isEmpty() && !password.isEmpty() ) {
-			UserServiceImpl us = new UserServiceImpl();
-			try {
-				User userData = us.findUserByEmail(email);
-				if(userData != null) {
-					if(userData.getIsLogin() == 1) {
-						finalObj.put("status", "failed_still_login"); 
-						System.out.println("UPDATE STATUS: failed_still_login");
-					}else {
-						if(userData.getEmail().equals(email) && givenPassword_whenHashing_thenVerifying(userData.getPassword(), password) ) {
-							//Login Success go to home page
-							if(us.updateLoginStatus(userData.getId(), 1) == 1) {
-								finalObj.put("status", "success"); 
-							}else {
-								finalObj.put("status", "failed_update_data"); 
-								System.out.println("UPDATE STATUS: failed_update_data");
-							}
+		try {
+			User userData = us.findUserByEmail(email);
+			if(password.equals(reinput_password)) {
+				if(givenPassword_whenHashing_thenVerifying(userData.getPassword(), password) ) {
+					//check if user still have transaction with status not finished
+					List<Transaction> listActiveTransaction = ts.findRunningTransactionByUserId(userData.getId());
+					if(listActiveTransaction == null || listActiveTransaction.size() <= 0 ) {
+						//Delete Account
+						if(us.delete(email) == 1) {
+							finalObj.put("status", "success"); 
 						}else {
-							finalObj.put("status", "email_or_password_wrong"); 
-							System.out.println("UPDATE STATUS: email_or_password_wrong");
+							finalObj.put("status", "failed");  
 						}
+					}else{
+						finalObj.put("status", "still_have_active_transaction");  
 					}
 				}else {
-					finalObj.put("status", "user_not_register"); 
+					finalObj.put("status", "password_wrong");  
 				}
-				
-			} catch (SQLException e) {
-				e.printStackTrace();
+			}else {
+				finalObj.put("status", "password_not_same"); 
 			}
-		}else {
-			finalObj.put("status", "email_or_password_empty"); 
-			System.out.println("UPDATE STATUS: email_or_password_empty");
+			
+			PrintWriter out = response.getWriter();
+	        response.setContentType("application/json");
+	        response.setCharacterEncoding("UTF-8");
+	        out.print(finalObj);
+	        out.flush();   
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
-		
-		PrintWriter out = response.getWriter();
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        out.print(finalObj);
-        out.flush();  
 	}
 	
 	private boolean givenPassword_whenHashing_thenVerifying(String hashPwd, String inputPwd){

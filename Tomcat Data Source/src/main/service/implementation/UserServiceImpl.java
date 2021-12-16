@@ -26,8 +26,8 @@ public class UserServiceImpl implements Service{
 		return dao.update(user);
 	}
 	
-	public int delete(int id) throws SQLException {
-		return dao.delete(id);
+	public int delete(String email) throws SQLException {
+		return dao.delete(email);
 	}
 
 	@Override

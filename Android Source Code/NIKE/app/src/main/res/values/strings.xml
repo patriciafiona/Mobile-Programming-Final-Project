@@ -94,4 +94,7 @@
     <string name="see_order_history">See Order History</string>
     <string name="temp_date">12-12-2021</string>
     <string name="logout">Logout</string>
+    <string name="edit_your_data">Edit your data</string>
+    <string name="insert_new_password_or_your_old_password">Insert new password or your old password</string>
+    <string name="reinput_password">Reinput Password</string>
 </resources>

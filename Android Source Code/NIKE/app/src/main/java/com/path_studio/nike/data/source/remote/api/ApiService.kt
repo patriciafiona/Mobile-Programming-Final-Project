@@ -78,4 +78,23 @@ interface ApiService {
     fun getUserByEmail(
         @Path("email") email: String
     ): Call<UserResponse>
+
+    @FormUrlEncoded
+    @POST("UserUpdate")
+    fun updateUser(
+        @Field("name") name: String,
+        @Field("email") email: String,
+        @Field("password") password: String,
+        @Field("phoneNumber") phoneNumber: String,
+        @Field("address") address: String,
+        @Field("birthday") birthday: String
+    ): Call<StatusResponse>
+
+    @FormUrlEncoded
+    @POST("UserDelete")
+    fun deleteUser(
+        @Field("email") email: String,
+        @Field("password") password: String,
+        @Field("reinput_password") reinput_password: String,
+    ): Call<StatusResponse>
 }

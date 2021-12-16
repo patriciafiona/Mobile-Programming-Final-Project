@@ -13,4 +13,6 @@ class UserViewModel(private val nikeRepository: NikeRepository): ViewModel() {
         nikeRepository.updateUserLogin(email, isLogin)
     fun getUserData(email: String): LiveData<UserEntity> =
         nikeRepository.getUserData(email)
+    fun deleteUserData(email: String, password: String, reinput_password: String): LiveData<String> =
+        nikeRepository.deleteUserdata(email, password, reinput_password)
 }

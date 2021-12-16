@@ -127,8 +127,7 @@ public class UserDaoImp implements Dao{
 		Connection conn = JDBCUtil.getConnection();
 		
 		String sql = "update users set name=?, email=?, password=?, phone_number=?, address=?, birthday=?, "
-				+ "isLogin=?, phone_number=?, updated_at=? "
-				+ "where id=?";
+				+ " updated_at=? where email=?";
 		PreparedStatement pst = conn.prepareStatement(sql);
 		
 		System.out.println("ID: "+ ((main.entities.User) user).getId());
@@ -139,14 +138,13 @@ public class UserDaoImp implements Dao{
 		pst.setString(4, ((main.entities.User) user).getPhoneNumber());
 		pst.setString(5, ((main.entities.User) user).getAddress());
 		pst.setString(6, ((main.entities.User) user).getBirthday());
-		pst.setInt(7, ((main.entities.User) user).getIsLogin());
 		
 		java.util.Date date= new java.util.Date();
 		long time = date.getTime();
 		Timestamp timestamp = new Timestamp(time);
-		pst.setTimestamp(8, timestamp);
+		pst.setTimestamp(7, timestamp);
 		
-		pst.setInt(7, ((main.entities.User) user).getId());
+		pst.setString(8, ((main.entities.User) user).getEmail());
 		int n = pst.executeUpdate();
 		JDBCUtil.close(conn, pst);
 		return n;
@@ -164,11 +162,11 @@ public class UserDaoImp implements Dao{
 	}
 	
 	
-	public int delete(int id) throws SQLException {
+	public int delete(String email) throws SQLException {
 		Connection conn = JDBCUtil.getConnection();
-		String sql = "delete from users where id=?";
+		String sql = "delete from users where email=?";
 		PreparedStatement pst = conn.prepareStatement(sql);
-		pst.setInt(1, id);
+		pst.setString(1, email);
 		int n = pst.executeUpdate();
 		JDBCUtil.close(conn, pst);
 		return n;

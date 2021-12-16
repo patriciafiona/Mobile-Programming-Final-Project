@@ -130,6 +130,45 @@ class RemoteDataSource {
         fun onUpdateLoginResultReceived(showResponse: String?)
     }
 
+    suspend fun updateUserData(data: UserEntity, callback: CallbackLoadUpdateResult) {
+        EspressoIdlingResource.increment()
+        ApiConfig.getApiService().updateUser(
+            data.name,
+            data.email,
+            data.password,
+            data.phone_number,
+            data.address,
+            data.birthday)
+            .await().status.let{
+                    listResult -> callback.onUpdateResultReceived((
+                    listResult
+                    ))
+                EspressoIdlingResource.decrement()
+            }
+    }
+
+    interface CallbackLoadUpdateResult{
+        fun onUpdateResultReceived(showResponse: String?)
+    }
+
+    suspend fun deleteUserData(email: String, password: String, reinput_password: String, callback: CallbackLoadDeleteResult) {
+        EspressoIdlingResource.increment()
+        ApiConfig.getApiService().deleteUser(
+            email,
+            password,
+            reinput_password)
+            .await().status.let{
+                    listResult -> callback.onDeleteResultReceived((
+                    listResult
+                    ))
+                EspressoIdlingResource.decrement()
+            }
+    }
+
+    interface CallbackLoadDeleteResult{
+        fun onDeleteResultReceived(showResponse: String?)
+    }
+
     suspend fun getUserData(email: String, callback: CallbackLoadGetUserResult) {
         EspressoIdlingResource.increment()
         ApiConfig.getApiService().getUserByEmail(email)

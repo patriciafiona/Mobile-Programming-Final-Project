@@ -1,24 +1,33 @@
 package com.path_studio.nike.ui.main.userAccount
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import com.path_studio.nike.R
 import com.path_studio.nike.data.source.local.entity.UserEntity
 import com.path_studio.nike.databinding.FragmentUserAccountBinding
 
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.content.SharedPreferences
 import java.util.*
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import com.path_studio.nike.ui.userEdit.UserEditActivity
 import com.path_studio.nike.viewModel.ViewModelFactory
 import java.text.SimpleDateFormat
+import android.content.DialogInterface
+import android.text.InputType
+
+import android.widget.EditText
+import android.R
+
+import com.path_studio.nike.ui.main.MainActivity
 
 
 class UserAccountFragment : Fragment() {
@@ -38,9 +47,13 @@ class UserAccountFragment : Fragment() {
         return binding.root
     }
 
-    @SuppressLint("UseCompatLoadingForDrawables")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+    }
+
+    @SuppressLint("UseCompatLoadingForDrawables")
+    override fun onResume() {
+        super.onResume()
 
         dateFormatter = SimpleDateFormat("dd-MM-yyyy", Locale.US)
         val factory = ViewModelFactory.getInstance(requireActivity())
@@ -57,7 +70,7 @@ class UserAccountFragment : Fragment() {
         //scroll listener
         binding.scrollContainer.viewTreeObserver.addOnScrollChangedListener {
             val scrollY: Int = binding.scrollContainer.scrollY
-            val navView = activity?.findViewById<View>(R.id.top_nav_container)
+            val navView = activity?.findViewById<View>(com.path_studio.nike.R.id.top_nav_container)
 
             if (scrollY in 0..70) {
                 navView?.visibility = View.VISIBLE
@@ -157,6 +170,9 @@ class UserAccountFragment : Fragment() {
                             //get userData
                             viewModel.getUserData(email).observe(requireActivity(), { data ->
                                 if(data != null){
+                                    setLayoutVisibility("afterLogin")
+                                    binding.afterLoginContainerSkeleton.showSkeleton()
+
                                     //save user information and status login in SharedPreferences
                                     if(!prefs.getBoolean("isLogin", false)){
                                         prefs.edit().putBoolean("isLogin", true).apply()
@@ -176,7 +192,7 @@ class UserAccountFragment : Fragment() {
 
                                     //set the user data into after login container
                                     setUserData()
-                                    setLayoutVisibility("afterLogin")
+                                    binding.afterLoginContainerSkeleton.showOriginal()
                                 }
                             })
                         }
@@ -200,6 +216,14 @@ class UserAccountFragment : Fragment() {
                             Toast.makeText(
                                 requireActivity(),
                                 "Email or Password Still Empty",
+                                Toast.LENGTH_LONG
+                            ).show()
+                            setLayoutVisibility("login")
+                        }
+                        "user_not_register" ->{
+                            Toast.makeText(
+                                requireActivity(),
+                                "User Not Registered",
                                 Toast.LENGTH_LONG
                             ).show()
                             setLayoutVisibility("login")
@@ -241,7 +265,8 @@ class UserAccountFragment : Fragment() {
                                     prefs.edit().remove("userBirthDay").apply()
 
                                     //change person icon to available
-                                    binding.userProfile.setImageDrawable(requireActivity().getDrawable(R.drawable.not_registered))
+                                    binding.userProfile.setImageDrawable(requireActivity().getDrawable(
+                                        com.path_studio.nike.R.drawable.not_registered))
 
                                     Toast.makeText(
                                         requireActivity(),
@@ -280,6 +305,94 @@ class UserAccountFragment : Fragment() {
         binding.loginSignUpBtn.setOnClickListener {
             setLayoutVisibility("signUp")
         }
+
+        binding.btnUserEdit.setOnClickListener {
+            //go to edit page
+            val intent = Intent(requireActivity(), UserEditActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.btnUserDelete.setOnClickListener {
+            val builder = AlertDialog.Builder(requireActivity())
+            builder.setTitle("Delete USer Account Permanent")
+            builder.setMessage("Please validate your account by Input this Fields:")
+
+            val inflater: LayoutInflater = layoutInflater
+            val mView: View = inflater.inflate(com.path_studio.nike.R.layout.user_delete_edittext, null)
+            val password_field = mView.findViewById<View>(com.path_studio.nike.R.id.pass_val) as EditText
+            val reinput_password_field = mView.findViewById<View>(com.path_studio.nike.R.id.reinput_pass_val) as EditText
+            builder.setView(mView)
+
+            builder.setPositiveButton(
+                "Confirm"
+            ) { dialog, which ->
+                //delete from cart database
+                val userEmail = prefs.getString("userEmail", "").toString()
+                val userPassword = password_field.text.toString()
+                val userReinputPassword = reinput_password_field.text.toString()
+
+                if(userEmail.isNotEmpty() && userPassword.isNotEmpty() && userReinputPassword.isNotEmpty()) {
+                    viewModel.deleteUserData(userEmail, userPassword, userReinputPassword).observe(requireActivity(), { status ->
+                        when (status) {
+                            "success" -> {
+                                prefs.edit().putBoolean("isLogin", false).apply()
+
+                                //remove user data in sharepreferences
+                                prefs.edit().remove("userName").apply()
+                                prefs.edit().remove("userEmail").apply()
+                                prefs.edit().remove("userAddress").apply()
+                                prefs.edit().remove("userPhoneNumber").apply()
+                                prefs.edit().remove("userBirthDay").apply()
+
+                                Toast.makeText(
+                                    requireActivity(),
+                                    "Success to Delete Account",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                                setLayoutVisibility("login")
+                            }
+                            "failed" -> {
+                                Toast.makeText(
+                                    requireActivity(),
+                                    "Failed to Delete Account",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                                setLayoutVisibility("afterLogin")
+                            }
+                            "password_wrong" -> {
+                                Toast.makeText(
+                                    requireActivity(),
+                                    "Password is Wrong",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                                setLayoutVisibility("afterLogin")
+                            }
+                            "password_not_same" -> {
+                                Toast.makeText(
+                                    requireActivity(),
+                                    "Password not Same",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                                setLayoutVisibility("afterLogin")
+                            }
+                            "still_have_active_transaction" -> {
+                                Toast.makeText(
+                                    requireActivity(),
+                                    "Still Have Active Transaction",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                                setLayoutVisibility("afterLogin")
+                            }
+                        }
+                    })
+                }
+            }
+            builder.setNegativeButton(
+                "Cancel"
+            ) { dialog, which -> dialog.cancel() }
+
+            builder.show()
+        }
     }
 
     private fun showLoadingIndicator(status: Boolean){
@@ -291,7 +404,7 @@ class UserAccountFragment : Fragment() {
         if(prefs.getBoolean("isLogin", false)){
             with(binding){
                 //change person icon to available
-                userProfile.setImageDrawable(requireActivity().getDrawable(R.drawable.user_icon))
+                userProfile.setImageDrawable(requireActivity().getDrawable(com.path_studio.nike.R.drawable.user_icon))
 
                 userName.text = prefs.getString("userName", "").toString()
                 userEmail.text = prefs.getString("userEmail", "").toString()

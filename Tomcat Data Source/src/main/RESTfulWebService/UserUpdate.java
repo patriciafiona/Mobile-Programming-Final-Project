@@ -1,6 +1,7 @@
 package main.RESTfulWebService;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -56,6 +57,11 @@ public class UserUpdate extends HttpServlet {
 				e.printStackTrace();
 			}
 		}
+		PrintWriter out = response.getWriter();
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        out.print(finalObj);
+        out.flush();   
 	}
 	
 	private String ConvertResult(String val) {
