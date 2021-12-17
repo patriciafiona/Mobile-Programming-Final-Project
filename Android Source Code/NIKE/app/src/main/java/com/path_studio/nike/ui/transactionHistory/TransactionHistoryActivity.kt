@@ -1,13 +1,12 @@
 package com.path_studio.nike.ui.transactionHistory
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.annotation.StringRes
+import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.path_studio.nike.R
-import com.path_studio.nike.databinding.ActivityMainBinding
 import com.path_studio.nike.databinding.ActivityTransactionHistoryBinding
 
 class TransactionHistoryActivity : AppCompatActivity() {

@@ -3,7 +3,6 @@ package com.path_studio.nike.ui.transactionHistory
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.path_studio.nike.ui.main.home.HomeFragment
 import com.path_studio.nike.ui.transactionHistory.onDelivery.OnDeliveryFragment
 import com.path_studio.nike.ui.transactionHistory.packed.PackedFragment
 import com.path_studio.nike.ui.transactionHistory.paymentPending.PaymentPendingFragment

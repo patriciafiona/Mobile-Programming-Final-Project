@@ -2,6 +2,7 @@ package com.path_studio.nike.ui.seeAllProduct
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -99,11 +100,12 @@ class SeeAllProductActivity : AppCompatActivity() {
     private fun prepareCollectionRV(viewModel: SeeAllViewModel, categoryId: Int){
         val collectionAdapter = SeeAllProductAdapter(viewModel)
 
-        viewModel.getProductsByCategory(categoryId).observe(this, { products ->
+        viewModel.getProductsByCategory(this, categoryId).observe(this, { products ->
             if (products != null) {
                 when (products.status) {
                     Status.LOADING -> binding.progressBar.visibility = View.VISIBLE
                     Status.SUCCESS -> {
+                        Log.e("DATA", products.data.toString())
                         showHideDataIndicator(true)
                         binding.progressBar.visibility = View.GONE
                         collectionAdapter.setProducts(products.data)

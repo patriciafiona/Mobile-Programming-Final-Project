@@ -1,6 +1,5 @@
 package com.path_studio.nike.data.source.remote.api
 
-import com.path_studio.nike.data.source.local.entity.UserEntity
 import com.path_studio.nike.data.source.remote.response.*
 import retrofit2.Call
 import retrofit2.http.*
@@ -37,6 +36,13 @@ interface ApiService {
     @GET("product/category_id/{category_id}")
     fun getProductByCategoryWithLimit(
         @Path("category_id") category_id: String,
+        @Query("limit") limit: Int
+    ): Call<ProductResponse>
+
+    @GET("product/category_type")
+    fun getProductsByCategoryAndTypeWithLimit(
+        @Query("category_id") category_id: String,
+        @Query("type_id") type_id: String,
         @Query("limit") limit: Int
     ): Call<ProductResponse>
 

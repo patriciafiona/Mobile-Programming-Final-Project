@@ -27,6 +27,7 @@ class LocalDataSource private constructor(private val mNikeDao: NikeDao) {
     fun getProductsByCategoryAndTypeWithLimit(categoryId: Int, type_name: String, limit: Int):
             DataSource.Factory<Int, ProductEntity> = mNikeDao.getProductsByCategoryAndTypeWithLimit(categoryId, type_name, limit)
     fun getFavoriteProducts(): DataSource.Factory<Int, ProductEntity> = mNikeDao.getFavoriteProducts()
+    fun getFavoriteProductsDetailId(): DataSource.Factory<Int, Int> = mNikeDao.getFavoriteProductsDetailId()
 
     fun insertProducts(products: ArrayList<ProductEntity>) = mNikeDao.insertProducts(products)
     fun setProductFavorite(product : ProductEntity, newState: Boolean) {

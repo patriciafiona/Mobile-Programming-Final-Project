@@ -2,16 +2,13 @@ package com.path_studio.nike.ui.userEdit
 
 import android.app.DatePickerDialog
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
-import com.path_studio.nike.R
 import com.path_studio.nike.data.source.local.entity.UserEntity
-import com.path_studio.nike.databinding.ActivityMainBinding
 import com.path_studio.nike.databinding.ActivityUserEditBinding
-import com.path_studio.nike.ui.main.userAccount.UserViewModel
 import com.path_studio.nike.viewModel.ViewModelFactory
 import java.text.SimpleDateFormat
 import java.util.*

@@ -14,7 +14,7 @@ class DetailProductViewModel(private val nikeRepository: NikeRepository): ViewMo
             LiveData<Resource<PagedList<ProductEntity>>> = nikeRepository.getProductById(id)
 
     fun setFavorite(selectedProduct: ProductEntity) {
-        val newState = !selectedProduct.favorite
+        val newState = !selectedProduct.favorite!!
         nikeRepository.setFavoriteProduct(selectedProduct, newState)
     }
 

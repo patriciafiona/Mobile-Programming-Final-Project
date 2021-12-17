@@ -18,20 +18,23 @@ interface NikeDao {
     @Query("SELECT * FROM product_entities WHERE categoryId = :categoryId GROUP BY productId ORDER BY updated_at DESC LIMIT :limit")
     fun getLatestProductWithLimit(categoryId: Int, limit: Int): DataSource.Factory<Int, ProductEntity>
 
-    @Query("SELECT * FROM product_entities WHERE categoryId = :categoryId GROUP BY productId")
+    @Query("SELECT * FROM product_entities WHERE categoryId = :categoryId GROUP BY productId ORDER BY rating")
     fun getProductByCategory(categoryId: Int): DataSource.Factory<Int, ProductEntity>
 
     @Query("SELECT * FROM product_entities WHERE productId = :id")
     fun getProductById(id: Int): DataSource.Factory<Int, ProductEntity>
 
-    @Query("SELECT * FROM product_entities WHERE categoryId = :categoryId GROUP BY productId LIMIT :limit")
+    @Query("SELECT * FROM product_entities WHERE categoryId = :categoryId GROUP BY productId ORDER BY rating DESC LIMIT :limit")
     fun getProductByCategoryWithLimit(categoryId: Int, limit: Int): DataSource.Factory<Int, ProductEntity>
 
-    @Query("SELECT * FROM product_entities WHERE categoryId = :categoryId AND typeName LIKE :type_name GROUP BY productId LIMIT :limit")
+    @Query("SELECT * FROM product_entities WHERE categoryId = :categoryId AND typeName LIKE :type_name GROUP BY productId ORDER BY updated_at DESC LIMIT :limit")
     fun getProductsByCategoryAndTypeWithLimit(categoryId: Int, type_name: String, limit: Int): DataSource.Factory<Int, ProductEntity>
 
     @Query("SELECT * FROM product_entities where favorite = 1")
     fun getFavoriteProducts(): DataSource.Factory<Int, ProductEntity>
+
+    @Query("SELECT productDetailId FROM product_entities where favorite = 1")
+    fun getFavoriteProductsDetailId(): DataSource.Factory<Int, Int>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertProducts(product: List<ProductEntity>)

@@ -1,12 +1,10 @@
 package com.path_studio.nike.ui.transactionHistory.packed
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.path_studio.nike.R
-import com.path_studio.nike.databinding.FragmentOnDeliveryBinding
+import androidx.fragment.app.Fragment
 import com.path_studio.nike.databinding.FragmentPackedBinding
 
 class PackedFragment : Fragment() {

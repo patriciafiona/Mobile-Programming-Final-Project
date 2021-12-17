@@ -2,33 +2,26 @@ package com.path_studio.nike.ui.main.userAccount
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.app.DatePickerDialog
+import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
-import com.path_studio.nike.data.source.local.entity.UserEntity
-import com.path_studio.nike.databinding.FragmentUserAccountBinding
-
-import android.app.DatePickerDialog
-import android.content.Intent
-import android.content.SharedPreferences
-import java.util.*
+import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.path_studio.nike.data.source.local.entity.UserEntity
+import com.path_studio.nike.databinding.FragmentUserAccountBinding
+import com.path_studio.nike.ui.transactionHistory.TransactionHistoryActivity
 import com.path_studio.nike.ui.userEdit.UserEditActivity
 import com.path_studio.nike.viewModel.ViewModelFactory
 import java.text.SimpleDateFormat
-import android.content.DialogInterface
-import android.text.InputType
-
-import android.widget.EditText
-import android.R
-
-import com.path_studio.nike.ui.main.MainActivity
-import com.path_studio.nike.ui.transactionHistory.TransactionHistoryActivity
+import java.util.*
 
 
 class UserAccountFragment : Fragment() {

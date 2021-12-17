@@ -2,22 +2,17 @@ package com.path_studio.nike.ui.transactionHistory.paymentPending
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.path_studio.nike.R
 import com.path_studio.nike.data.source.local.entity.TransactionEntity
-import com.path_studio.nike.databinding.FragmentPackedBinding
 import com.path_studio.nike.databinding.FragmentPaymentPendingBinding
-import com.path_studio.nike.ui.main.home.adapter.ProductRotateXLAdapter
-import com.path_studio.nike.ui.main.userAccount.UserViewModel
 import com.path_studio.nike.ui.transactionHistory.TransactionHistoryViewModel
 import com.path_studio.nike.viewModel.ViewModelFactory
 

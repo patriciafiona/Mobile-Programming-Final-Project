@@ -31,7 +31,8 @@ public class ProductsDaoImp implements Dao{
 				+ "INNER JOIN colors ON "
 				+ "colors.id = product_details.color_id "
 				+ "INNER JOIN types ON "
-				+ "types.id = products.type_id ";
+				+ "types.id = products.type_id "
+				+ "ORDER BY product_details.updated_at DESC ";
 		ResultSet rs = st.executeQuery(sql);
 		
 		ArrayList<main.entities.Product> products = new ArrayList<main.entities.Product>();
@@ -90,7 +91,8 @@ public class ProductsDaoImp implements Dao{
 				+ "colors.id = product_details.color_id "
 				+ "INNER JOIN types ON "
 				+ "types.id = products.type_id "
-				+ "WHERE products.id = '"+ id +"'";
+				+ "WHERE products.id = '"+ id +"' "
+				+ "ORDER BY product_details.updated_at DESC ";
 		ResultSet rs = st.executeQuery(sql);
 		
 		ArrayList<main.entities.Product> products = new ArrayList<main.entities.Product>();
@@ -150,7 +152,8 @@ public class ProductsDaoImp implements Dao{
 				+ "INNER JOIN types ON "
 				+ "types.id = products.type_id "
 				+ "WHERE products.name LIKE '%"+ name +"%' "
-				+ "GROUP BY products.id";
+				+ "GROUP BY products.id "
+				+ "ORDER BY product_details.updated_at DESC ";
 		ResultSet rs = st.executeQuery(sql);
 		
 		ArrayList<main.entities.Product> products = new ArrayList<main.entities.Product>();
@@ -208,7 +211,8 @@ public class ProductsDaoImp implements Dao{
 				+ "colors.id = product_details.color_id "
 				+ "INNER JOIN types ON "
 				+ "types.id = products.type_id "
-				+ "WHERE product_details.id = '"+ id +"'";
+				+ "WHERE product_details.id = '"+ id +"' "
+				+ "ORDER BY product_details.updated_at DESC ";
 		ResultSet rs = st.executeQuery(sql);
 		
 		main.entities.Product product = null;
@@ -265,7 +269,8 @@ public class ProductsDaoImp implements Dao{
 				+ "colors.id = product_details.color_id "
 				+ "INNER JOIN types ON "
 				+ "types.id = products.type_id "
-				+ "WHERE products.category_id = '"+ category_id +"'";
+				+ "WHERE products.category_id = '"+ category_id +"' "
+				+ "ORDER BY product_details.updated_at DESC ";
 		ResultSet rs = st.executeQuery(sql);
 		
 		ArrayList<main.entities.Product> products = new ArrayList<main.entities.Product>();
@@ -323,7 +328,8 @@ public class ProductsDaoImp implements Dao{
 				+ "colors.id = product_details.color_id "
 				+ "INNER JOIN types ON "
 				+ "types.id = products.type_id "
-				+ "WHERE products.category_id = '"+ category_id +"' AND types.name LIKE '%"+ type_name +"%' ";
+				+ "WHERE products.category_id = '"+ category_id +"' AND types.name LIKE '%"+ type_name +"%' "
+				+ "ORDER BY product_details.updated_at DESC ";
 		ResultSet rs = st.executeQuery(sql);
 		
 		ArrayList<main.entities.Product> products = new ArrayList<main.entities.Product>();
@@ -391,6 +397,7 @@ public class ProductsDaoImp implements Dao{
 				+ "colors.id = product_details.color_id "
 				+ "INNER JOIN types ON "
 				+ "types.id = products.type_id "
+				+ "ORDER BY product_details.updated_at DESC "
 				+ "LIMIT "+ limit;
 		ResultSet rs = st.executeQuery(sql);
 		
@@ -450,6 +457,7 @@ public class ProductsDaoImp implements Dao{
 				+ "INNER JOIN types ON "
 				+ "types.id = products.type_id "
 				+ "WHERE products.category_id = '"+ category_id +"' "
+				+ "ORDER BY product_details.updated_at DESC "
 				+ "LIMIT "+ limit;
 		ResultSet rs = st.executeQuery(sql);
 		
@@ -509,6 +517,7 @@ public class ProductsDaoImp implements Dao{
 				+ "INNER JOIN types ON "
 				+ "types.id = products.type_id "
 				+ "WHERE products.category_id = '"+ category_id +"' AND types.name LIKE '%"+ type_name +"%' "
+				+ "ORDER BY product_details.updated_at DESC "
 				+ "LIMIT "+ limit;
 		ResultSet rs = st.executeQuery(sql);
 		

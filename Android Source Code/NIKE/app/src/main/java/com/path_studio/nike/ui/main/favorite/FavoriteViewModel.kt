@@ -12,7 +12,7 @@ class FavoriteViewModel(private val nikeRepository: NikeRepository): ViewModel()
     }
 
     fun setFavorite(selectedProduct: ProductEntity) {
-        val newState = !selectedProduct.favorite
+        val newState = !selectedProduct.favorite!!
         nikeRepository.setFavoriteProduct(selectedProduct, newState)
     }
 }

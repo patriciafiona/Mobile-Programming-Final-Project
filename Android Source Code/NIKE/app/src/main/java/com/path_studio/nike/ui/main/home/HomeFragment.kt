@@ -92,59 +92,61 @@ class HomeFragment : Fragment() {
 
     @SuppressLint("UseCompatLoadingForColorStateLists")
     private fun prepareCategoryChips(){
-        viewModel.getAllCategory().observe(requireActivity(), { categories ->
-            if (categories != null) {
-                when (categories.status) {
-                    Status.LOADING -> {}
-                    Status.SUCCESS -> {
-                        val catData = categories.data
-                        if(catData != null && catData.size > 0){
-                            var isFirstCategory = true
-                            for (d in catData){
-                                val chip = Chip(requireActivity())
-                                val chipDrawable = ChipDrawable.createFromAttributes(
-                                    requireActivity(),
-                                    null,
-                                    0,
-                                    R.style.CustomChipChoice
-                                )
-                                chip.setChipDrawable(chipDrawable)
-                                chip.isClickable = true
+        if(activity != null) {
+            viewModel.getAllCategory().observe(requireActivity(), { categories ->
+                if (categories != null) {
+                    when (categories.status) {
+                        Status.LOADING -> {}
+                        Status.SUCCESS -> {
+                            val catData = categories.data
+                            if (catData != null && catData.size > 0) {
+                                var isFirstCategory = true
+                                for (d in catData) {
+                                    val chip = Chip(activity)
+                                    val chipDrawable = ChipDrawable.createFromAttributes(
+                                        requireActivity(),
+                                        null,
+                                        0,
+                                        R.style.CustomChipChoice
+                                    )
+                                    chip.setChipDrawable(chipDrawable)
+                                    chip.isClickable = true
 
-                                val chipId = d.id.toInt()
-                                chip.id = chipId
-                                chip.tag = chipId
+                                    val chipId = d.id.toInt()
+                                    chip.id = chipId
+                                    chip.tag = chipId
 
-                                chip.text = d.name
-                                chip.setTextColor(resources.getColorStateList(R.color.text_color_chip_state_list))
-                                chip.isCloseIconVisible = false
+                                    chip.text = d.name
+                                    chip.setTextColor(resources.getColorStateList(R.color.text_color_chip_state_list))
+                                    chip.isCloseIconVisible = false
 
-                                chip.setOnClickListener {
-                                    binding.categoriesChipsContainer.check(chipId)
-                                }
+                                    chip.setOnClickListener {
+                                        binding.categoriesChipsContainer.check(chipId)
+                                    }
 
-                                binding.categoriesChipsContainer.addView(chip)
+                                    binding.categoriesChipsContainer.addView(chip)
 
-                                if(isFirstCategory){
-                                    selectedCategory = chipId
-                                    binding.categoriesChipsContainer.check(chip.id)
-                                    isFirstCategory = false
+                                    if (isFirstCategory) {
+                                        selectedCategory = chipId
+                                        binding.categoriesChipsContainer.check(chip.id)
+                                        isFirstCategory = false
+                                    }
                                 }
                             }
                         }
-                    }
-                    Status.ERROR -> {
-                        Toast.makeText(context, "Something Error", Toast.LENGTH_SHORT).show()
+                        Status.ERROR -> {
+                            Toast.makeText(context, "Something Error", Toast.LENGTH_SHORT).show()
+                        }
                     }
                 }
-            }
-        })
+            })
+        }
     }
 
     private fun prepareCollectionRV(viewModel: HomeViewModel, categoryId: Int){
         val collectionAdapter = ProductRotateXLAdapter(viewModel)
 
-        viewModel.getProductsByCategoryWithLimit(categoryId, 5).observe(requireActivity(), { products ->
+        viewModel.getProductsByCategoryWithLimit(requireActivity(), categoryId, 5).observe(requireActivity(), { products ->
             if (products != null) {
                 when (products.status) {
                     Status.LOADING -> binding.progressBarCollection.visibility = View.VISIBLE
@@ -173,7 +175,7 @@ class HomeFragment : Fragment() {
     private fun prepareLatestRV(viewModel: HomeViewModel, categoryId: Int){
         val adapter = ProductMDAdapter()
 
-        viewModel.getLatestProductWithLimit(categoryId, 5).observe(requireActivity(), { products ->
+        viewModel.getLatestProductWithLimit(requireActivity(), categoryId, 5).observe(requireActivity(), { products ->
             if (products != null) {
                 when (products.status) {
                     Status.LOADING -> binding.progressBarBasketball.visibility = View.VISIBLE
@@ -203,7 +205,7 @@ class HomeFragment : Fragment() {
     private fun prepareTypeRV(rv: RecyclerView, status: String, viewModel: HomeViewModel, categoryId: Int, typeName: String){
         val adapter = ProductMDAdapter()
 
-        viewModel.getProductsByCategoryAndTypeWithLimit(categoryId, typeName, 5).observe(requireActivity(), { products ->
+        viewModel.getProductsByCategoryAndTypeWithLimit(requireActivity(), categoryId, typeName, 5).observe(requireActivity(), { products ->
             if (products != null) {
                 when (products.status) {
                     Status.LOADING -> binding.progressBarBasketball.visibility = View.VISIBLE

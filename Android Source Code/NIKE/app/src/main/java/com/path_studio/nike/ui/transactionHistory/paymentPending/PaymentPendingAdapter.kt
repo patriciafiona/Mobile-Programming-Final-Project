@@ -2,22 +2,12 @@ package com.path_studio.nike.ui.transactionHistory.paymentPending
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.AlertDialog
-import android.content.Intent
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
-import com.path_studio.nike.R
-import com.path_studio.nike.data.source.local.entity.ProductEntity
 import com.path_studio.nike.data.source.local.entity.TransactionEntity
-import com.path_studio.nike.databinding.ItemRowProductWideBinding
 import com.path_studio.nike.databinding.ItemRowTransactionBinding
-import com.path_studio.nike.ui.detailProduct.DetailProductActivity
-import com.path_studio.nike.ui.main.search.SearchAdapter
 import com.path_studio.nike.ui.transactionHistory.TransactionHistoryViewModel
 import com.path_studio.nike.utils.Utils
 

@@ -1,7 +1,9 @@
 package com.path_studio.nike.data
 
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.lifecycleScope
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.path_studio.nike.data.source.local.LocalDataSource
@@ -16,6 +18,7 @@ import com.path_studio.nike.vo.Resource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class NikeRepository private constructor(private val remoteDataSource: RemoteDataSource,
                                          private val localDataSource: LocalDataSource,
@@ -42,14 +45,14 @@ class NikeRepository private constructor(private val remoteDataSource: RemoteDat
             public override fun loadFromDB(): LiveData<PagedList<ProductEntity>> {
                 val config = PagedList.Config.Builder()
                     .setEnablePlaceholders(false)
-                    .setInitialLoadSizeHint(4)
+                    .setInitialLoadSizeHint(1000)
                     .setPageSize(4)
                     .build()
                 return LivePagedListBuilder(localDataSource.getAllProduct(), config).build()
             }
 
             override fun shouldFetch(data: PagedList<ProductEntity>?): Boolean =
-                data == null || data.isEmpty()
+                data == null || data.isEmpty() || data != remoteDataSource.getAllProduct()
 
             public override fun createCall(): LiveData<ApiResponse<List<ProductResponseItem>>> =
                 remoteDataSource.getAllProduct()
@@ -90,159 +93,294 @@ class NikeRepository private constructor(private val remoteDataSource: RemoteDat
         }.asLiveData()
     }
 
-    override fun getProductByCategory(categoryId: Int): LiveData<Resource<PagedList<ProductEntity>>> {
+    override fun getProductByCategory(activity: LifecycleOwner, categoryId: Int): LiveData<Resource<PagedList<ProductEntity>>> {
         return object: NetworkBoundResource<PagedList<ProductEntity>, List<ProductResponseItem>>(appExecutors) {
             public override fun loadFromDB(): LiveData<PagedList<ProductEntity>> {
                 val config = PagedList.Config.Builder()
                     .setEnablePlaceholders(false)
-                    .setInitialLoadSizeHint(4)
+                    .setInitialLoadSizeHint(1000)
                     .setPageSize(4)
                     .build()
                 return LivePagedListBuilder(localDataSource.getProductByCategory(categoryId), config).build()
             }
 
             override fun shouldFetch(data: PagedList<ProductEntity>?): Boolean =
-                data == null || data.isEmpty()
+                data == null || data.isEmpty() || data != remoteDataSource.getProductByCategory(categoryId)
 
             public override fun createCall(): LiveData<ApiResponse<List<ProductResponseItem>>> =
-                remoteDataSource.getAllProduct()
+                remoteDataSource.getProductByCategory(categoryId)
 
             public override fun saveCallResult(data: List<ProductResponseItem>) {
                 val products = ArrayList<ProductEntity>()
+
+                val config = PagedList.Config.Builder()
+                    .setEnablePlaceholders(false)
+                    .setInitialLoadSizeHint(1000)
+                    .setPageSize(4)
+                    .build()
+
                 for(response in data){
-                    val product = ProductEntity(
-                        0,
-                        response.productId.toLong(),
-                        response.productDetailId,
-                        response.typeName,
-                        response.categoryName,
-                        response.typeId,
-                        response.colorDescription,
-                        response.rating,
-                        response.description,
-                        response.colorId,
-                        response.categoryId,
-                        response.price,
-                        response.name,
-                        response.style,
-                        response.stock,
-                        response.colorCode,
-                        response.photo01,
-                        response.photo02,
-                        response.photo03,
-                        response.photo04,
-                        response.photo05,
-                        response.createdAt,
-                        response.updatedAt,
-                        response.discount
-                    )
-                    products.add(product)
+                    activity.lifecycleScope.launch {
+                        withContext(Dispatchers.Main) {
+                            val localData:LiveData<PagedList<Int>> = LivePagedListBuilder(localDataSource.getFavoriteProductsDetailId(), config).build()
+                            localData.observe(activity, { data->
+                                if(data.contains(response.productDetailId)){
+                                    val product = ProductEntity(
+                                        0,
+                                        response.productId.toLong(),
+                                        response.productDetailId,
+                                        response.typeName,
+                                        response.categoryName,
+                                        response.typeId,
+                                        response.colorDescription,
+                                        response.rating,
+                                        response.description,
+                                        response.colorId,
+                                        response.categoryId,
+                                        response.price,
+                                        response.name,
+                                        response.style,
+                                        response.stock,
+                                        response.colorCode,
+                                        response.photo01,
+                                        response.photo02,
+                                        response.photo03,
+                                        response.photo04,
+                                        response.photo05,
+                                        response.createdAt,
+                                        response.updatedAt,
+                                        response.discount,
+                                        true
+                                    )
+                                    products.add(product)
+                                }else{
+                                    val product = ProductEntity(
+                                        0,
+                                        response.productId.toLong(),
+                                        response.productDetailId,
+                                        response.typeName,
+                                        response.categoryName,
+                                        response.typeId,
+                                        response.colorDescription,
+                                        response.rating,
+                                        response.description,
+                                        response.colorId,
+                                        response.categoryId,
+                                        response.price,
+                                        response.name,
+                                        response.style,
+                                        response.stock,
+                                        response.colorCode,
+                                        response.photo01,
+                                        response.photo02,
+                                        response.photo03,
+                                        response.photo04,
+                                        response.photo05,
+                                        response.createdAt,
+                                        response.updatedAt,
+                                        response.discount
+                                    )
+                                    products.add(product)
+                                }
+                            })
+                        }
+                    }
                 }
                 localDataSource.insertProducts(products)
             }
         }.asLiveData()
     }
 
-    override fun getProductByCategoryWithLimit(categoryId: Int, limit: Int): LiveData<Resource<PagedList<ProductEntity>>> {
+    override fun getProductByCategoryWithLimit(activity: LifecycleOwner, categoryId: Int, limit: Int): LiveData<Resource<PagedList<ProductEntity>>> {
         return object: NetworkBoundResource<PagedList<ProductEntity>, List<ProductResponseItem>>(appExecutors) {
             public override fun loadFromDB(): LiveData<PagedList<ProductEntity>> {
                 val config = PagedList.Config.Builder()
                     .setEnablePlaceholders(false)
-                    .setInitialLoadSizeHint(4)
+                    .setInitialLoadSizeHint(1000)
                     .setPageSize(4)
                     .build()
                 return LivePagedListBuilder(localDataSource.getProductByCategoryWithLimit(categoryId, limit), config).build()
             }
 
             override fun shouldFetch(data: PagedList<ProductEntity>?): Boolean =
-                data == null || data.isEmpty()
+                data == null || data.isEmpty() || data != remoteDataSource.getProductByCategoryWithLimit(categoryId, limit)
 
             public override fun createCall(): LiveData<ApiResponse<List<ProductResponseItem>>> =
                 remoteDataSource.getAllProduct()
 
             public override fun saveCallResult(data: List<ProductResponseItem>) {
                 val products = ArrayList<ProductEntity>()
+
+                val config = PagedList.Config.Builder()
+                    .setEnablePlaceholders(false)
+                    .setInitialLoadSizeHint(1000)
+                    .setPageSize(4)
+                    .build()
+
                 for(response in data){
-                    val product = ProductEntity(
-                        0,
-                        response.productId.toLong(),
-                        response.productDetailId,
-                        response.typeName,
-                        response.categoryName,
-                        response.typeId,
-                        response.colorDescription,
-                        response.rating,
-                        response.description,
-                        response.colorId,
-                        response.categoryId,
-                        response.price,
-                        response.name,
-                        response.style,
-                        response.stock,
-                        response.colorCode,
-                        response.photo01,
-                        response.photo02,
-                        response.photo03,
-                        response.photo04,
-                        response.photo05,
-                        response.createdAt,
-                        response.updatedAt,
-                        response.discount
-                    )
-                    products.add(product)
+                    activity.lifecycleScope.launch {
+                        withContext(Dispatchers.Main) {
+                            val localData:LiveData<PagedList<Int>> = LivePagedListBuilder(localDataSource.getFavoriteProductsDetailId(), config).build()
+                            localData.observe(activity, { data->
+                                if(data.contains(response.productDetailId)){
+                                    val product = ProductEntity(
+                                        0,
+                                        response.productId.toLong(),
+                                        response.productDetailId,
+                                        response.typeName,
+                                        response.categoryName,
+                                        response.typeId,
+                                        response.colorDescription,
+                                        response.rating,
+                                        response.description,
+                                        response.colorId,
+                                        response.categoryId,
+                                        response.price,
+                                        response.name,
+                                        response.style,
+                                        response.stock,
+                                        response.colorCode,
+                                        response.photo01,
+                                        response.photo02,
+                                        response.photo03,
+                                        response.photo04,
+                                        response.photo05,
+                                        response.createdAt,
+                                        response.updatedAt,
+                                        response.discount,
+                                        true
+                                    )
+                                    products.add(product)
+                                }else{
+                                    val product = ProductEntity(
+                                        0,
+                                        response.productId.toLong(),
+                                        response.productDetailId,
+                                        response.typeName,
+                                        response.categoryName,
+                                        response.typeId,
+                                        response.colorDescription,
+                                        response.rating,
+                                        response.description,
+                                        response.colorId,
+                                        response.categoryId,
+                                        response.price,
+                                        response.name,
+                                        response.style,
+                                        response.stock,
+                                        response.colorCode,
+                                        response.photo01,
+                                        response.photo02,
+                                        response.photo03,
+                                        response.photo04,
+                                        response.photo05,
+                                        response.createdAt,
+                                        response.updatedAt,
+                                        response.discount
+                                    )
+                                    products.add(product)
+                                }
+                            })
+                        }
+                    }
                 }
                 localDataSource.insertProducts(products)
             }
         }.asLiveData()
     }
 
-    override fun getProductsByCategoryAndTypeWithLimit(categoryId: Int, type_name: String, limit: Int): LiveData<Resource<PagedList<ProductEntity>>> {
+    override fun getProductsByCategoryAndTypeWithLimit(activity: LifecycleOwner, categoryId: Int, type_name: String, limit: Int): LiveData<Resource<PagedList<ProductEntity>>> {
         return object: NetworkBoundResource<PagedList<ProductEntity>, List<ProductResponseItem>>(appExecutors) {
             public override fun loadFromDB(): LiveData<PagedList<ProductEntity>> {
                 val config = PagedList.Config.Builder()
                     .setEnablePlaceholders(false)
-                    .setInitialLoadSizeHint(4)
+                    .setInitialLoadSizeHint(1000)
                     .setPageSize(4)
                     .build()
                 return LivePagedListBuilder(localDataSource.getProductsByCategoryAndTypeWithLimit(categoryId, type_name, limit), config).build()
             }
 
             override fun shouldFetch(data: PagedList<ProductEntity>?): Boolean =
-                data == null || data.isEmpty()
+                data == null || data.isEmpty() || data != remoteDataSource.getProductsByCategoryAndTypeWithLimit(categoryId,
+                    type_name, limit)
 
             public override fun createCall(): LiveData<ApiResponse<List<ProductResponseItem>>> =
                 remoteDataSource.getAllProduct()
 
             public override fun saveCallResult(data: List<ProductResponseItem>) {
                 val products = ArrayList<ProductEntity>()
+                val config = PagedList.Config.Builder()
+                    .setEnablePlaceholders(false)
+                    .setInitialLoadSizeHint(1000)
+                    .setPageSize(4)
+                    .build()
+
                 for(response in data){
-                    val product = ProductEntity(
-                        0,
-                        response.productId.toLong(),
-                        response.productDetailId,
-                        response.typeName,
-                        response.categoryName,
-                        response.typeId,
-                        response.colorDescription,
-                        response.rating,
-                        response.description,
-                        response.colorId,
-                        response.categoryId,
-                        response.price,
-                        response.name,
-                        response.style,
-                        response.stock,
-                        response.colorCode,
-                        response.photo01,
-                        response.photo02,
-                        response.photo03,
-                        response.photo04,
-                        response.photo05,
-                        response.createdAt,
-                        response.updatedAt,
-                        response.discount
-                    )
-                    products.add(product)
+                    activity.lifecycleScope.launch {
+                        withContext(Dispatchers.Main) {
+                            val localData:LiveData<PagedList<Int>> = LivePagedListBuilder(localDataSource.getFavoriteProductsDetailId(), config).build()
+                            localData.observe(activity, { data->
+                                if(data.contains(response.productDetailId)){
+                                    val product = ProductEntity(
+                                        0,
+                                        response.productId.toLong(),
+                                        response.productDetailId,
+                                        response.typeName,
+                                        response.categoryName,
+                                        response.typeId,
+                                        response.colorDescription,
+                                        response.rating,
+                                        response.description,
+                                        response.colorId,
+                                        response.categoryId,
+                                        response.price,
+                                        response.name,
+                                        response.style,
+                                        response.stock,
+                                        response.colorCode,
+                                        response.photo01,
+                                        response.photo02,
+                                        response.photo03,
+                                        response.photo04,
+                                        response.photo05,
+                                        response.createdAt,
+                                        response.updatedAt,
+                                        response.discount,
+                                        true
+                                    )
+                                    products.add(product)
+                                }else{
+                                    val product = ProductEntity(
+                                        0,
+                                        response.productId.toLong(),
+                                        response.productDetailId,
+                                        response.typeName,
+                                        response.categoryName,
+                                        response.typeId,
+                                        response.colorDescription,
+                                        response.rating,
+                                        response.description,
+                                        response.colorId,
+                                        response.categoryId,
+                                        response.price,
+                                        response.name,
+                                        response.style,
+                                        response.stock,
+                                        response.colorCode,
+                                        response.photo01,
+                                        response.photo02,
+                                        response.photo03,
+                                        response.photo04,
+                                        response.photo05,
+                                        response.createdAt,
+                                        response.updatedAt,
+                                        response.discount
+                                    )
+                                    products.add(product)
+                                }
+                            })
+                        }
+                    }
                 }
                 localDataSource.insertProducts(products)
             }
@@ -254,7 +392,7 @@ class NikeRepository private constructor(private val remoteDataSource: RemoteDat
             public override fun loadFromDB(): LiveData<PagedList<CategoryEntity>> {
                 val config = PagedList.Config.Builder()
                     .setEnablePlaceholders(false)
-                    .setInitialLoadSizeHint(4)
+                    .setInitialLoadSizeHint(1000)
                     .setPageSize(4)
                     .build()
                 return LivePagedListBuilder(localDataSource.getAllCategory(), config).build()
@@ -280,12 +418,12 @@ class NikeRepository private constructor(private val remoteDataSource: RemoteDat
         }.asLiveData()
     }
 
-    override fun getLatestProductWithLimit(categoryId: Int, limit: Int): LiveData<Resource<PagedList<ProductEntity>>> {
+    override fun getLatestProductWithLimit(activity: LifecycleOwner, categoryId: Int, limit: Int): LiveData<Resource<PagedList<ProductEntity>>> {
         return object: NetworkBoundResource<PagedList<ProductEntity>, List<ProductResponseItem>>(appExecutors) {
             public override fun loadFromDB(): LiveData<PagedList<ProductEntity>> {
                 val config = PagedList.Config.Builder()
                     .setEnablePlaceholders(false)
-                    .setInitialLoadSizeHint(4)
+                    .setInitialLoadSizeHint(1000)
                     .setPageSize(4)
                     .build()
                 return LivePagedListBuilder(localDataSource.getLatestProductWithLimit(categoryId, limit), config).build()
@@ -299,34 +437,78 @@ class NikeRepository private constructor(private val remoteDataSource: RemoteDat
 
             public override fun saveCallResult(data: List<ProductResponseItem>) {
                 val products = ArrayList<ProductEntity>()
+                val config = PagedList.Config.Builder()
+                    .setEnablePlaceholders(false)
+                    .setInitialLoadSizeHint(1000)
+                    .setPageSize(4)
+                    .build()
+
                 for(response in data){
-                    val product = ProductEntity(
-                        0,
-                        response.productId.toLong(),
-                        response.productDetailId,
-                        response.typeName,
-                        response.categoryName,
-                        response.typeId,
-                        response.colorDescription,
-                        response.rating,
-                        response.description,
-                        response.colorId,
-                        response.categoryId,
-                        response.price,
-                        response.name,
-                        response.style,
-                        response.stock,
-                        response.colorCode,
-                        response.photo01,
-                        response.photo02,
-                        response.photo03,
-                        response.photo04,
-                        response.photo05,
-                        response.createdAt,
-                        response.updatedAt,
-                        response.discount
-                    )
-                    products.add(product)
+                    activity.lifecycleScope.launch {
+                        withContext(Dispatchers.Main) {
+                            val localData:LiveData<PagedList<Int>> = LivePagedListBuilder(localDataSource.getFavoriteProductsDetailId(), config).build()
+                            localData.observe(activity, { data->
+                                if(data.contains(response.productDetailId)){
+                                    val product = ProductEntity(
+                                        0,
+                                        response.productId.toLong(),
+                                        response.productDetailId,
+                                        response.typeName,
+                                        response.categoryName,
+                                        response.typeId,
+                                        response.colorDescription,
+                                        response.rating,
+                                        response.description,
+                                        response.colorId,
+                                        response.categoryId,
+                                        response.price,
+                                        response.name,
+                                        response.style,
+                                        response.stock,
+                                        response.colorCode,
+                                        response.photo01,
+                                        response.photo02,
+                                        response.photo03,
+                                        response.photo04,
+                                        response.photo05,
+                                        response.createdAt,
+                                        response.updatedAt,
+                                        response.discount,
+                                        true
+                                    )
+                                    products.add(product)
+                                }else{
+                                    val product = ProductEntity(
+                                        0,
+                                        response.productId.toLong(),
+                                        response.productDetailId,
+                                        response.typeName,
+                                        response.categoryName,
+                                        response.typeId,
+                                        response.colorDescription,
+                                        response.rating,
+                                        response.description,
+                                        response.colorId,
+                                        response.categoryId,
+                                        response.price,
+                                        response.name,
+                                        response.style,
+                                        response.stock,
+                                        response.colorCode,
+                                        response.photo01,
+                                        response.photo02,
+                                        response.photo03,
+                                        response.photo04,
+                                        response.photo05,
+                                        response.createdAt,
+                                        response.updatedAt,
+                                        response.discount
+                                    )
+                                    products.add(product)
+                                }
+                            })
+                        }
+                    }
                 }
                 localDataSource.insertProducts(products)
             }
@@ -336,7 +518,7 @@ class NikeRepository private constructor(private val remoteDataSource: RemoteDat
     override fun getFavoriteProducts(): LiveData<PagedList<ProductEntity>> {
         val config = PagedList.Config.Builder()
             .setEnablePlaceholders(false)
-            .setInitialLoadSizeHint(4)
+            .setInitialLoadSizeHint(1000)
             .setPageSize(4)
             .build()
         return LivePagedListBuilder(localDataSource.getFavoriteProducts(), config).build()
@@ -401,7 +583,7 @@ class NikeRepository private constructor(private val remoteDataSource: RemoteDat
             public override fun loadFromDB(): LiveData<PagedList<ProductEntity>> {
                 val config = PagedList.Config.Builder()
                     .setEnablePlaceholders(false)
-                    .setInitialLoadSizeHint(4)
+                    .setInitialLoadSizeHint(1000)
                     .setPageSize(4)
                     .build()
                 return LivePagedListBuilder(localDataSource.getProductById(id), config).build()
@@ -411,7 +593,7 @@ class NikeRepository private constructor(private val remoteDataSource: RemoteDat
                 data == null || data.isEmpty()
 
             public override fun createCall(): LiveData<ApiResponse<List<ProductResponseItem>>> =
-                remoteDataSource.getAllProduct()
+                remoteDataSource.getProductById(id)
 
             public override fun saveCallResult(data: List<ProductResponseItem>) {
                 val products = ArrayList<ProductEntity>()
@@ -452,7 +634,7 @@ class NikeRepository private constructor(private val remoteDataSource: RemoteDat
     override fun getProductInCart(): LiveData<PagedList<CartDetailEntity>> {
         val config = PagedList.Config.Builder()
             .setEnablePlaceholders(false)
-            .setInitialLoadSizeHint(4)
+            .setInitialLoadSizeHint(1000)
             .setPageSize(4)
             .build()
         return LivePagedListBuilder(localDataSource.getShoppingCart(), config).build()
@@ -461,7 +643,7 @@ class NikeRepository private constructor(private val remoteDataSource: RemoteDat
     override fun getProductInCartById(productDetailId: Int): LiveData<PagedList<CartDetailEntity>> {
         val config = PagedList.Config.Builder()
             .setEnablePlaceholders(false)
-            .setInitialLoadSizeHint(4)
+            .setInitialLoadSizeHint(1000)
             .setPageSize(4)
             .build()
         return LivePagedListBuilder(localDataSource.getProductInCartById(productDetailId), config).build()

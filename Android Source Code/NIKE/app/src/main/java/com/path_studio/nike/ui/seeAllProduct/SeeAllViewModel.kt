@@ -1,5 +1,6 @@
 package com.path_studio.nike.ui.seeAllProduct
 
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.paging.PagedList
@@ -10,8 +11,8 @@ import com.path_studio.nike.vo.Resource
 
 class SeeAllViewModel(private val nikeRepository: NikeRepository): ViewModel() {
     fun getAllCategory(): LiveData<Resource<PagedList<CategoryEntity>>> = nikeRepository.getAllCategory()
-    fun getProductsByCategory(categoryId: Int):
-            LiveData<Resource<PagedList<ProductEntity>>> = nikeRepository.getProductByCategory(categoryId)
+    fun getProductsByCategory(activity: LifecycleOwner,  categoryId: Int):
+            LiveData<Resource<PagedList<ProductEntity>>> = nikeRepository.getProductByCategory(activity, categoryId)
 
     fun setFavorite(selectedProduct: ProductEntity) {
         val newState = !selectedProduct.favorite

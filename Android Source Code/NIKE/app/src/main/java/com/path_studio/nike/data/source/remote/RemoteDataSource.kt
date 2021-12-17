@@ -4,9 +4,11 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.path_studio.nike.data.source.local.entity.TransactionEntity
-import com.path_studio.nike.data.source.remote.api.ApiConfig
 import com.path_studio.nike.data.source.local.entity.UserEntity
-import com.path_studio.nike.data.source.remote.response.*
+import com.path_studio.nike.data.source.remote.api.ApiConfig
+import com.path_studio.nike.data.source.remote.response.CategoryResponseItem
+import com.path_studio.nike.data.source.remote.response.ProductResponseItem
+import com.path_studio.nike.data.source.remote.response.TransactionResponseItem
 import com.path_studio.nike.utils.EspressoIdlingResource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -61,6 +63,91 @@ class RemoteDataSource {
         return  resultProductResponse
     }
 
+    fun getProductById(id: Int): LiveData<ApiResponse<List<ProductResponseItem>>> {
+        EspressoIdlingResource.increment()
+        val resultProductResponse = MutableLiveData<ApiResponse<List<ProductResponseItem>>>()
+        CoroutineScope(Dispatchers.IO).launch {
+            try{
+                val response = ApiConfig.getApiService().getProductByID(id.toString()).await()
+                resultProductResponse.postValue(ApiResponse.success(response.results))
+            }catch (e: IOException){
+                Log.e("getProductByID Error", e.message.toString())
+                resultProductResponse.postValue(
+                    ApiResponse.error(
+                        e.message.toString(),
+                        mutableListOf()
+                    )
+                )
+            }
+        }
+        EspressoIdlingResource.decrement()
+        return  resultProductResponse
+    }
+
+    fun getProductByCategory(category_id: Int): LiveData<ApiResponse<List<ProductResponseItem>>> {
+        EspressoIdlingResource.increment()
+        val resultProductResponse = MutableLiveData<ApiResponse<List<ProductResponseItem>>>()
+        CoroutineScope(Dispatchers.IO).launch {
+            try{
+                val response = ApiConfig.getApiService().getProductByCategory(category_id.toString()).await()
+                resultProductResponse.postValue(ApiResponse.success(response.results))
+            }catch (e: IOException){
+                Log.e("getProductByCategory Error", e.message.toString())
+                resultProductResponse.postValue(
+                    ApiResponse.error(
+                        e.message.toString(),
+                        mutableListOf()
+                    )
+                )
+            }
+        }
+        EspressoIdlingResource.decrement()
+        return  resultProductResponse
+    }
+
+    fun getProductByCategoryWithLimit(category_id: Int, limit: Int): LiveData<ApiResponse<List<ProductResponseItem>>> {
+        EspressoIdlingResource.increment()
+        val resultProductResponse = MutableLiveData<ApiResponse<List<ProductResponseItem>>>()
+        CoroutineScope(Dispatchers.IO).launch {
+            try{
+                val response = ApiConfig.getApiService().getProductByCategoryWithLimit(category_id.toString(), limit).await()
+                resultProductResponse.postValue(ApiResponse.success(response.results))
+            }catch (e: IOException){
+                Log.e("getProductByCategoryWithLimit Error", e.message.toString())
+                resultProductResponse.postValue(
+                    ApiResponse.error(
+                        e.message.toString(),
+                        mutableListOf()
+                    )
+                )
+            }
+        }
+        EspressoIdlingResource.decrement()
+        return  resultProductResponse
+    }
+
+    fun getProductsByCategoryAndTypeWithLimit(category_id: Int, type_name: String, limit: Int): LiveData<ApiResponse<List<ProductResponseItem>>> {
+        EspressoIdlingResource.increment()
+        val resultProductResponse = MutableLiveData<ApiResponse<List<ProductResponseItem>>>()
+        CoroutineScope(Dispatchers.IO).launch {
+            try{
+                val response = ApiConfig.getApiService().getProductsByCategoryAndTypeWithLimit(category_id.toString(),
+                    type_name, limit).await()
+                resultProductResponse.postValue(ApiResponse.success(response.results))
+            }catch (e: IOException){
+                Log.e("getProductsByCategoryAndTypeWithLimit Error", e.message.toString())
+                resultProductResponse.postValue(
+                    ApiResponse.error(
+                        e.message.toString(),
+                        mutableListOf()
+                    )
+                )
+            }
+        }
+        EspressoIdlingResource.decrement()
+        return  resultProductResponse
+    }
+
     fun getAllCategory(): LiveData<ApiResponse<List<CategoryResponseItem>>> {
         EspressoIdlingResource.increment()
         val resultCategoryResponse = MutableLiveData<ApiResponse<List<CategoryResponseItem>>>()
@@ -69,7 +156,7 @@ class RemoteDataSource {
                 val response = ApiConfig.getApiService().getAllCategories().await()
                 resultCategoryResponse.postValue(ApiResponse.success(response.results))
             }catch (e: IOException){
-                Log.e("getAllProduct Error", e.message.toString())
+                Log.e("getAllCategory Error", e.message.toString())
                 resultCategoryResponse.postValue(
                     ApiResponse.error(
                         e.message.toString(),

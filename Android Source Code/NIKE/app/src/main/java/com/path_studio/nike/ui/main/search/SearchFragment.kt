@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.path_studio.nike.R
@@ -33,12 +34,17 @@ class SearchFragment : Fragment() {
         //search field listener
         binding.searchField.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextChange(name: String): Boolean {
-                if (name.isNotEmpty() && name != "") {
-                    binding.searchText.text = name
-                    binding.skeleton.showSkeleton()
-                    loadSearchResult(name)
+                if (name.isNotEmpty()) {
+                    if(name != "") {
+                        binding.searchText.text = name
+                        showLoadingIndicator(true)
+                        loadSearchResult(name)
 
-                    showResult(true)
+                        showResult(true)
+                    }else{
+                        showLoadingIndicator(false)
+                        showResult(false)
+                    }
                 }else{
                     showResult(false)
                 }
@@ -64,6 +70,13 @@ class SearchFragment : Fragment() {
         }
     }
 
+    private fun showLoadingIndicator(isLoading: Boolean){
+        binding.progressBar.isVisible = isLoading
+        binding.textView9.isVisible = !isLoading
+        binding.searchText.isVisible = !isLoading
+        binding.rvSearchResult.isVisible = !isLoading
+    }
+
     private fun loadSearchResult(name: String){
         val searchViewModel = SearchViewModel(Injection.provideNikeRepository(requireActivity()))
         val results = searchViewModel.getSearchResult(name)
@@ -82,9 +95,9 @@ class SearchFragment : Fragment() {
 
         searchViewModel.getLoading().observe(requireActivity(), {
             if (it) {
-                binding.skeleton.showSkeleton()
+                showLoadingIndicator(true)
             }else{
-                binding.skeleton.showOriginal()
+                showLoadingIndicator(false)
             }
         })
     }
