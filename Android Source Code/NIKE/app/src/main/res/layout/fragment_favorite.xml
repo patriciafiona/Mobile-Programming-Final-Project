@@ -49,7 +49,7 @@
             android:id="@+id/rv_favorite"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginBottom="70dp"
+            android:layout_marginBottom="150dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -79,7 +79,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/wave_background"
-            app:layout_constraintWidth_percent=".5"
+            app:layout_constraintWidth_percent=".4"
             android:contentDescription="@string/img_desc" />
 
         <TextView
@@ -91,7 +91,7 @@
             android:gravity="center"
             android:text="@string/you_don_t_have_any_favorite_product"
             android:textColor="@color/black"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -107,7 +107,7 @@
             android:gravity="center"
             android:text="@string/you_can_add_an_item_to_favorites_by_click_the_heart_icon_in_product"
             android:textColor="@color/black"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

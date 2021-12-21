@@ -40,7 +40,7 @@ class NikeRepository private constructor(private val remoteDataSource: RemoteDat
             }
     }
 
-    override fun getAllProduct(): LiveData<Resource<PagedList<ProductEntity>>> {
+    override fun getAllProduct(activity: LifecycleOwner): LiveData<Resource<PagedList<ProductEntity>>> {
         return object: NetworkBoundResource<PagedList<ProductEntity>, List<ProductResponseItem>>(appExecutors) {
             public override fun loadFromDB(): LiveData<PagedList<ProductEntity>> {
                 val config = PagedList.Config.Builder()
@@ -52,7 +52,7 @@ class NikeRepository private constructor(private val remoteDataSource: RemoteDat
             }
 
             override fun shouldFetch(data: PagedList<ProductEntity>?): Boolean =
-                data == null || data.isEmpty() || data != remoteDataSource.getAllProduct()
+                (data == null || data.isEmpty()) && data != remoteDataSource.getAllProduct()
 
             public override fun createCall(): LiveData<ApiResponse<List<ProductResponseItem>>> =
                 remoteDataSource.getAllProduct()
@@ -105,7 +105,9 @@ class NikeRepository private constructor(private val remoteDataSource: RemoteDat
             }
 
             override fun shouldFetch(data: PagedList<ProductEntity>?): Boolean =
-                data == null || data.isEmpty() || data != remoteDataSource.getProductByCategory(categoryId)
+                (data == null || data.isEmpty()) &&
+                        (remoteDataSource.getProductByCategory(categoryId).value != null ||
+                                data != remoteDataSource.getProductByCategory(categoryId))
 
             public override fun createCall(): LiveData<ApiResponse<List<ProductResponseItem>>> =
                 remoteDataSource.getProductByCategory(categoryId)
@@ -203,10 +205,12 @@ class NikeRepository private constructor(private val remoteDataSource: RemoteDat
             }
 
             override fun shouldFetch(data: PagedList<ProductEntity>?): Boolean =
-                data == null || data.isEmpty() || data != remoteDataSource.getProductByCategoryWithLimit(categoryId, limit)
+                (data == null || data.isEmpty()) &&
+                        (remoteDataSource.getProductByCategoryWithLimit(categoryId, limit).value != null ||
+                        data != remoteDataSource.getProductByCategoryWithLimit(categoryId, limit))
 
             public override fun createCall(): LiveData<ApiResponse<List<ProductResponseItem>>> =
-                remoteDataSource.getAllProduct()
+                remoteDataSource.getProductByCategoryWithLimit(categoryId, limit)
 
             public override fun saveCallResult(data: List<ProductResponseItem>) {
                 val products = ArrayList<ProductEntity>()
@@ -301,11 +305,11 @@ class NikeRepository private constructor(private val remoteDataSource: RemoteDat
             }
 
             override fun shouldFetch(data: PagedList<ProductEntity>?): Boolean =
-                data == null || data.isEmpty() || data != remoteDataSource.getProductsByCategoryAndTypeWithLimit(categoryId,
-                    type_name, limit)
+                (data == null || data.isEmpty()) && (remoteDataSource.getProductsByCategoryAndTypeWithLimit(categoryId, type_name, limit).value != null ||
+                        data != remoteDataSource.getProductsByCategoryAndTypeWithLimit(categoryId, type_name, limit))
 
             public override fun createCall(): LiveData<ApiResponse<List<ProductResponseItem>>> =
-                remoteDataSource.getAllProduct()
+                remoteDataSource.getProductsByCategoryAndTypeWithLimit(categoryId, type_name, limit)
 
             public override fun saveCallResult(data: List<ProductResponseItem>) {
                 val products = ArrayList<ProductEntity>()

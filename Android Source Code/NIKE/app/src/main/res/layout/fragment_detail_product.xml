@@ -140,14 +140,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="50dp"
                     android:layout_marginEnd="16dp"
                     android:fontFamily="@font/roboto_regular"
                     android:text="@string/temp_price"
                     android:visibility="invisible"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/color_container" />
+                    app:layout_constraintTop_toBottomOf="@+id/product_category" />
 
                 <TextView
                     android:id="@+id/product_price_after"

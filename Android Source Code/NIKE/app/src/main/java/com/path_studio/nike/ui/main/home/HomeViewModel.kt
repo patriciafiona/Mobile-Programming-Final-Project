@@ -10,6 +10,7 @@ import com.path_studio.nike.data.source.local.entity.ProductEntity
 import com.path_studio.nike.vo.Resource
 
 class HomeViewModel(private val nikeRepository: NikeRepository): ViewModel() {
+    fun getAllProduct(activity: LifecycleOwner): LiveData<Resource<PagedList<ProductEntity>>> = nikeRepository.getAllProduct(activity)
     fun getAllCategory(): LiveData<Resource<PagedList<CategoryEntity>>> = nikeRepository.getAllCategory()
     fun getProductsByCategoryWithLimit(activity: LifecycleOwner,  categoryId: Int, limit: Int):
             LiveData<Resource<PagedList<ProductEntity>>> = nikeRepository.getProductByCategoryWithLimit(activity, categoryId, limit)

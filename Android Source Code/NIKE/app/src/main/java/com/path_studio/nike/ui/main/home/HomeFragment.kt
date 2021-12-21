@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -50,7 +51,28 @@ class HomeFragment : Fragment() {
             val factory = ViewModelFactory.getInstance(requireActivity())
             viewModel = ViewModelProvider(requireActivity(), factory)[HomeViewModel::class.java]
 
-            prepareCategoryChips()
+            viewModel.getAllProduct(requireActivity()).observe(requireActivity(), { data ->
+                when (data.status) {
+                    Status.LOADING -> {
+                        binding.progressBarLatest.isVisible = true
+                        binding.progressBarCollection.isVisible = true
+                        binding.progressBarBasketball.isVisible = true
+                        binding.progressBarHighTops.isVisible = true
+                        binding.progressBarSneaker.isVisible = true
+                    }
+                    Status.SUCCESS -> {
+                        prepareCategoryChips()
+                    }
+                    Status.ERROR -> {
+                        binding.progressBarLatest.isVisible = false
+                        binding.progressBarCollection.isVisible = false
+                        binding.progressBarBasketball.isVisible = false
+                        binding.progressBarHighTops.isVisible = false
+                        binding.progressBarSneaker.isVisible = false
+                        Toast.makeText(context, "Something Error", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            })
         }
 
         //scroll listener
@@ -156,6 +178,7 @@ class HomeFragment : Fragment() {
                         collectionAdapter.submitList(products.data)
                     }
                     Status.ERROR -> {
+                        showHideDataIndicator("collection", false)
                         binding.progressBarCollection.visibility = View.GONE
                         Toast.makeText(context, "Something Error", Toast.LENGTH_SHORT).show()
                     }
@@ -178,14 +201,15 @@ class HomeFragment : Fragment() {
         viewModel.getLatestProductWithLimit(requireActivity(), categoryId, 5).observe(requireActivity(), { products ->
             if (products != null) {
                 when (products.status) {
-                    Status.LOADING -> binding.progressBarBasketball.visibility = View.VISIBLE
+                    Status.LOADING -> binding.progressBarLatest.visibility = View.VISIBLE
                     Status.SUCCESS -> {
                         showHideDataIndicator("latest", true)
-                        binding.progressBarBasketball.visibility = View.GONE
+                        binding.progressBarLatest.visibility = View.GONE
                         adapter.submitList(products.data)
                     }
                     Status.ERROR -> {
-                        binding.progressBarBasketball.visibility = View.GONE
+                        showHideDataIndicator("latest", false)
+                        binding.progressBarLatest.visibility = View.GONE
                         Toast.makeText(context, "Something Error", Toast.LENGTH_SHORT).show()
                     }
                 }
@@ -208,19 +232,31 @@ class HomeFragment : Fragment() {
         viewModel.getProductsByCategoryAndTypeWithLimit(requireActivity(), categoryId, typeName, 5).observe(requireActivity(), { products ->
             if (products != null) {
                 when (products.status) {
-                    Status.LOADING -> binding.progressBarBasketball.visibility = View.VISIBLE
+                    Status.LOADING -> {
+                        binding.progressBarBasketball.visibility = View.VISIBLE
+                        binding.progressBarHighTops.visibility = View.VISIBLE
+                        binding.progressBarSneaker.visibility = View.VISIBLE
+                    }
                     Status.SUCCESS -> {
                         showHideDataIndicator(status, true)
                         binding.progressBarBasketball.visibility = View.GONE
+                        binding.progressBarHighTops.visibility = View.GONE
+                        binding.progressBarSneaker.visibility = View.GONE
                         adapter.submitList(products.data)
                     }
                     Status.ERROR -> {
+                        showHideDataIndicator(status, false)
                         binding.progressBarBasketball.visibility = View.GONE
+                        binding.progressBarHighTops.visibility = View.GONE
+                        binding.progressBarSneaker.visibility = View.GONE
                         Toast.makeText(context, "Something Error", Toast.LENGTH_SHORT).show()
                     }
                 }
             }else{
                 showHideDataIndicator(status, false)
+                binding.progressBarBasketball.visibility = View.GONE
+                binding.progressBarHighTops.visibility = View.GONE
+                binding.progressBarSneaker.visibility = View.GONE
             }
         })
 
