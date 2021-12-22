@@ -65,9 +65,14 @@ abstract class NetworkBoundResource<ResultType, RequestType>(private val mExecut
                     }
                 }
                 StatusResponse.ERROR -> {
-                    onFetchFailed()
+                    /*onFetchFailed()
                     result.addSource(dbSource) { newData ->
                         result.value = Resource.error(response.message, newData)
+                    }*/
+
+                    //keep get from database
+                    result.addSource(loadFromDB()) { newData ->
+                        result.value = Resource.success(newData)
                     }
                 }
             }
