@@ -1,5 +1,6 @@
 package com.path_studio.nike.data
 
+import android.util.Log
 import androidx.lifecycle.*
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
@@ -7,6 +8,7 @@ import com.path_studio.nike.data.source.local.LocalDataSource
 import com.path_studio.nike.data.source.local.entity.*
 import com.path_studio.nike.data.source.remote.ApiResponse
 import com.path_studio.nike.data.source.remote.RemoteDataSource
+import com.path_studio.nike.data.source.remote.StatusResponse
 import com.path_studio.nike.data.source.remote.response.CategoryResponseItem
 import com.path_studio.nike.data.source.remote.response.ProductResponseItem
 import com.path_studio.nike.data.source.remote.response.TransactionResponseItem
@@ -45,7 +47,8 @@ class NikeRepository private constructor(private val remoteDataSource: RemoteDat
                 return LivePagedListBuilder(localDataSource.getAllProduct(), config).build()
             }
 
-            override fun shouldFetch(data: PagedList<ProductEntity>?): Boolean = true
+            override fun shouldFetch(data: PagedList<ProductEntity>?): Boolean =
+                data == null || data.isEmpty()
 
             public override fun createCall(): LiveData<ApiResponse<List<ProductResponseItem>>> =
                 remoteDataSource.getAllProduct()
@@ -53,80 +56,36 @@ class NikeRepository private constructor(private val remoteDataSource: RemoteDat
             public override fun saveCallResult(data: List<ProductResponseItem>) {
                 val products = ArrayList<ProductEntity>()
 
-                val config = PagedList.Config.Builder()
-                    .setEnablePlaceholders(false)
-                    .setInitialLoadSizeHint(1000)
-                    .setPageSize(4)
-                    .build()
-
-                for(response in data){
-                    activity.lifecycleScope.launch {
-                        withContext(Dispatchers.Main) {
-                            val localData: Deferred<LiveData<PagedList<Int>>> = async { LivePagedListBuilder(localDataSource.getFavoriteProductsDetailId(), config).build()}
-                            val getLocalData = localData.await()
-                            getLocalData.observe(activity, { d->
-                                if(d.contains(response.productDetailId)){
-                                    val product = ProductEntity(
-                                        0,
-                                        response.productId.toLong(),
-                                        response.productDetailId,
-                                        response.typeName,
-                                        response.categoryName,
-                                        response.typeId,
-                                        response.colorDescription,
-                                        response.rating,
-                                        response.description,
-                                        response.colorId,
-                                        response.categoryId,
-                                        response.price,
-                                        response.name,
-                                        response.style,
-                                        response.stock,
-                                        response.colorCode,
-                                        response.photo01,
-                                        response.photo02,
-                                        response.photo03,
-                                        response.photo04,
-                                        response.photo05,
-                                        response.createdAt,
-                                        response.updatedAt,
-                                        response.discount,
-                                        true
-                                    )
-                                    products.add(product)
-                                }else{
-                                    val product = ProductEntity(
-                                        0,
-                                        response.productId.toLong(),
-                                        response.productDetailId,
-                                        response.typeName,
-                                        response.categoryName,
-                                        response.typeId,
-                                        response.colorDescription,
-                                        response.rating,
-                                        response.description,
-                                        response.colorId,
-                                        response.categoryId,
-                                        response.price,
-                                        response.name,
-                                        response.style,
-                                        response.stock,
-                                        response.colorCode,
-                                        response.photo01,
-                                        response.photo02,
-                                        response.photo03,
-                                        response.photo04,
-                                        response.photo05,
-                                        response.createdAt,
-                                        response.updatedAt,
-                                        response.discount
-                                    )
-                                    products.add(product)
-                                }
-                            })
-                        }
-                    }
+                for(response in data) {
+                    val product = ProductEntity(
+                        0,
+                        response.productId.toLong(),
+                        response.productDetailId,
+                        response.typeName,
+                        response.categoryName,
+                        response.typeId,
+                        response.colorDescription,
+                        response.rating,
+                        response.description,
+                        response.colorId,
+                        response.categoryId,
+                        response.price,
+                        response.name,
+                        response.style,
+                        response.stock,
+                        response.colorCode,
+                        response.photo01,
+                        response.photo02,
+                        response.photo03,
+                        response.photo04,
+                        response.photo05,
+                        response.createdAt,
+                        response.updatedAt,
+                        response.discount
+                    )
+                    products.add(product)
                 }
+
                 localDataSource.insertProducts(products)
             }
         }.asLiveData()
@@ -143,7 +102,8 @@ class NikeRepository private constructor(private val remoteDataSource: RemoteDat
                 return LivePagedListBuilder(localDataSource.getProductByCategory(categoryId), config).build()
             }
 
-            override fun shouldFetch(data: PagedList<ProductEntity>?): Boolean = true
+            override fun shouldFetch(data: PagedList<ProductEntity>?): Boolean =
+                data == null || data.isEmpty()
 
             public override fun createCall(): LiveData<ApiResponse<List<ProductResponseItem>>> =
                 remoteDataSource.getProductByCategory(categoryId)
@@ -151,80 +111,36 @@ class NikeRepository private constructor(private val remoteDataSource: RemoteDat
             public override fun saveCallResult(data: List<ProductResponseItem>) {
                 val products = ArrayList<ProductEntity>()
 
-                val config = PagedList.Config.Builder()
-                    .setEnablePlaceholders(false)
-                    .setInitialLoadSizeHint(1000)
-                    .setPageSize(4)
-                    .build()
-
-                for(response in data){
-                    activity.lifecycleScope.launch {
-                        withContext(Dispatchers.Main) {
-                            val localData: Deferred<LiveData<PagedList<Int>>> = async { LivePagedListBuilder(localDataSource.getFavoriteProductsDetailId(), config).build()}
-                            val getLocalData = localData.await()
-                            getLocalData.observe(activity, { d->
-                                if(d.contains(response.productDetailId)){
-                                    val product = ProductEntity(
-                                        0,
-                                        response.productId.toLong(),
-                                        response.productDetailId,
-                                        response.typeName,
-                                        response.categoryName,
-                                        response.typeId,
-                                        response.colorDescription,
-                                        response.rating,
-                                        response.description,
-                                        response.colorId,
-                                        response.categoryId,
-                                        response.price,
-                                        response.name,
-                                        response.style,
-                                        response.stock,
-                                        response.colorCode,
-                                        response.photo01,
-                                        response.photo02,
-                                        response.photo03,
-                                        response.photo04,
-                                        response.photo05,
-                                        response.createdAt,
-                                        response.updatedAt,
-                                        response.discount,
-                                        true
-                                    )
-                                    products.add(product)
-                                }else{
-                                    val product = ProductEntity(
-                                        0,
-                                        response.productId.toLong(),
-                                        response.productDetailId,
-                                        response.typeName,
-                                        response.categoryName,
-                                        response.typeId,
-                                        response.colorDescription,
-                                        response.rating,
-                                        response.description,
-                                        response.colorId,
-                                        response.categoryId,
-                                        response.price,
-                                        response.name,
-                                        response.style,
-                                        response.stock,
-                                        response.colorCode,
-                                        response.photo01,
-                                        response.photo02,
-                                        response.photo03,
-                                        response.photo04,
-                                        response.photo05,
-                                        response.createdAt,
-                                        response.updatedAt,
-                                        response.discount
-                                    )
-                                    products.add(product)
-                                }
-                            })
-                        }
-                    }
+                for(response in data) {
+                    val product = ProductEntity(
+                        0,
+                        response.productId.toLong(),
+                        response.productDetailId,
+                        response.typeName,
+                        response.categoryName,
+                        response.typeId,
+                        response.colorDescription,
+                        response.rating,
+                        response.description,
+                        response.colorId,
+                        response.categoryId,
+                        response.price,
+                        response.name,
+                        response.style,
+                        response.stock,
+                        response.colorCode,
+                        response.photo01,
+                        response.photo02,
+                        response.photo03,
+                        response.photo04,
+                        response.photo05,
+                        response.createdAt,
+                        response.updatedAt,
+                        response.discount
+                    )
+                    products.add(product)
                 }
+
                 localDataSource.insertProducts(products)
             }
         }.asLiveData()
@@ -241,7 +157,8 @@ class NikeRepository private constructor(private val remoteDataSource: RemoteDat
                 return LivePagedListBuilder(localDataSource.getProductByCategoryWithLimit(categoryId, limit), config).build()
             }
 
-            override fun shouldFetch(data: PagedList<ProductEntity>?): Boolean = true
+            override fun shouldFetch(data: PagedList<ProductEntity>?): Boolean =
+                data == null || data.isEmpty()
 
             public override fun createCall(): LiveData<ApiResponse<List<ProductResponseItem>>> =
                 remoteDataSource.getProductByCategoryWithLimit(categoryId, limit)
@@ -249,80 +166,36 @@ class NikeRepository private constructor(private val remoteDataSource: RemoteDat
             public override fun saveCallResult(data: List<ProductResponseItem>) {
                 val products = ArrayList<ProductEntity>()
 
-                val config = PagedList.Config.Builder()
-                    .setEnablePlaceholders(false)
-                    .setInitialLoadSizeHint(1000)
-                    .setPageSize(4)
-                    .build()
-
-                for(response in data){
-                    activity.lifecycleScope.launch {
-                        withContext(Dispatchers.Main) {
-                            val localData: Deferred<LiveData<PagedList<Int>>> = async { LivePagedListBuilder(localDataSource.getFavoriteProductsDetailId(), config).build()}
-                            val getLocalData = localData.await()
-                            getLocalData.observe(activity, { d->
-                                if(d.contains(response.productDetailId)){
-                                    val product = ProductEntity(
-                                        0,
-                                        response.productId.toLong(),
-                                        response.productDetailId,
-                                        response.typeName,
-                                        response.categoryName,
-                                        response.typeId,
-                                        response.colorDescription,
-                                        response.rating,
-                                        response.description,
-                                        response.colorId,
-                                        response.categoryId,
-                                        response.price,
-                                        response.name,
-                                        response.style,
-                                        response.stock,
-                                        response.colorCode,
-                                        response.photo01,
-                                        response.photo02,
-                                        response.photo03,
-                                        response.photo04,
-                                        response.photo05,
-                                        response.createdAt,
-                                        response.updatedAt,
-                                        response.discount,
-                                        true
-                                    )
-                                    products.add(product)
-                                }else{
-                                    val product = ProductEntity(
-                                        0,
-                                        response.productId.toLong(),
-                                        response.productDetailId,
-                                        response.typeName,
-                                        response.categoryName,
-                                        response.typeId,
-                                        response.colorDescription,
-                                        response.rating,
-                                        response.description,
-                                        response.colorId,
-                                        response.categoryId,
-                                        response.price,
-                                        response.name,
-                                        response.style,
-                                        response.stock,
-                                        response.colorCode,
-                                        response.photo01,
-                                        response.photo02,
-                                        response.photo03,
-                                        response.photo04,
-                                        response.photo05,
-                                        response.createdAt,
-                                        response.updatedAt,
-                                        response.discount
-                                    )
-                                    products.add(product)
-                                }
-                            })
-                        }
-                    }
+                for(response in data) {
+                    val product = ProductEntity(
+                        0,
+                        response.productId.toLong(),
+                        response.productDetailId,
+                        response.typeName,
+                        response.categoryName,
+                        response.typeId,
+                        response.colorDescription,
+                        response.rating,
+                        response.description,
+                        response.colorId,
+                        response.categoryId,
+                        response.price,
+                        response.name,
+                        response.style,
+                        response.stock,
+                        response.colorCode,
+                        response.photo01,
+                        response.photo02,
+                        response.photo03,
+                        response.photo04,
+                        response.photo05,
+                        response.createdAt,
+                        response.updatedAt,
+                        response.discount
+                    )
+                    products.add(product)
                 }
+
                 localDataSource.insertProducts(products)
             }
         }.asLiveData()
@@ -339,7 +212,8 @@ class NikeRepository private constructor(private val remoteDataSource: RemoteDat
                 return LivePagedListBuilder(localDataSource.getProductsByCategoryAndTypeWithLimit(categoryId, type_name, limit), config).build()
             }
 
-            override fun shouldFetch(data: PagedList<ProductEntity>?): Boolean = true
+            override fun shouldFetch(data: PagedList<ProductEntity>?): Boolean =
+                data == null || data.isEmpty()
 
             public override fun createCall(): LiveData<ApiResponse<List<ProductResponseItem>>> =
                 remoteDataSource.getProductsByCategoryAndTypeWithLimit(categoryId, type_name, limit)
@@ -352,74 +226,36 @@ class NikeRepository private constructor(private val remoteDataSource: RemoteDat
                     .setPageSize(4)
                     .build()
 
-                for(response in data){
-                    activity.lifecycleScope.launch {
-                        withContext(Dispatchers.Main) {
-                            val localData: Deferred<LiveData<PagedList<Int>>> = async { LivePagedListBuilder(localDataSource.getFavoriteProductsDetailId(), config).build()}
-                            val getLocalData = localData.await()
-                            getLocalData.observe(activity, { d->
-                                if(d.contains(response.productDetailId)){
-                                    val product = ProductEntity(
-                                        0,
-                                        response.productId.toLong(),
-                                        response.productDetailId,
-                                        response.typeName,
-                                        response.categoryName,
-                                        response.typeId,
-                                        response.colorDescription,
-                                        response.rating,
-                                        response.description,
-                                        response.colorId,
-                                        response.categoryId,
-                                        response.price,
-                                        response.name,
-                                        response.style,
-                                        response.stock,
-                                        response.colorCode,
-                                        response.photo01,
-                                        response.photo02,
-                                        response.photo03,
-                                        response.photo04,
-                                        response.photo05,
-                                        response.createdAt,
-                                        response.updatedAt,
-                                        response.discount,
-                                        true
-                                    )
-                                    products.add(product)
-                                }else{
-                                    val product = ProductEntity(
-                                        0,
-                                        response.productId.toLong(),
-                                        response.productDetailId,
-                                        response.typeName,
-                                        response.categoryName,
-                                        response.typeId,
-                                        response.colorDescription,
-                                        response.rating,
-                                        response.description,
-                                        response.colorId,
-                                        response.categoryId,
-                                        response.price,
-                                        response.name,
-                                        response.style,
-                                        response.stock,
-                                        response.colorCode,
-                                        response.photo01,
-                                        response.photo02,
-                                        response.photo03,
-                                        response.photo04,
-                                        response.photo05,
-                                        response.createdAt,
-                                        response.updatedAt,
-                                        response.discount
-                                    )
-                                    products.add(product)
-                                }
-                            })
-                        }
-                    }
+                for(response in data) {
+                    val product = ProductEntity(
+                        0,
+                        response.productId.toLong(),
+                        response.productDetailId,
+                        response.typeName,
+                        response.categoryName,
+                        response.typeId,
+                        response.colorDescription,
+                        response.rating,
+                        response.description,
+                        response.colorId,
+                        response.categoryId,
+                        response.price,
+                        response.name,
+                        response.style,
+                        response.stock,
+                        response.colorCode,
+                        response.photo01,
+                        response.photo02,
+                        response.photo03,
+                        response.photo04,
+                        response.photo05,
+                        response.createdAt,
+                        response.updatedAt,
+                        response.discount
+                    )
+                    products.add(product)
                 }
+
                 localDataSource.insertProducts(products)
             }
         }.asLiveData()
@@ -467,87 +303,45 @@ class NikeRepository private constructor(private val remoteDataSource: RemoteDat
                 return LivePagedListBuilder(localDataSource.getLatestProductWithLimit(categoryId, limit), config).build()
             }
 
-            override fun shouldFetch(data: PagedList<ProductEntity>?): Boolean = true
+            override fun shouldFetch(data: PagedList<ProductEntity>?): Boolean =
+                data == null || data.isEmpty()
 
             public override fun createCall(): LiveData<ApiResponse<List<ProductResponseItem>>> =
                 remoteDataSource.getProductByCategory(categoryId)
 
             public override fun saveCallResult(data: List<ProductResponseItem>) {
                 val products = ArrayList<ProductEntity>()
-                val config = PagedList.Config.Builder()
-                    .setEnablePlaceholders(false)
-                    .setInitialLoadSizeHint(1000)
-                    .setPageSize(4)
-                    .build()
 
-                for(response in data){
-                    activity.lifecycleScope.launch {
-                        withContext(Dispatchers.Main) {
-                            val localData: Deferred<LiveData<PagedList<Int>>> = async { LivePagedListBuilder(localDataSource.getFavoriteProductsDetailId(), config).build()}
-                            val getLocalData = localData.await()
-                            getLocalData.observe(activity, { d->
-                                if(d.contains(response.productDetailId)){
-                                    val product = ProductEntity(
-                                        0,
-                                        response.productId.toLong(),
-                                        response.productDetailId,
-                                        response.typeName,
-                                        response.categoryName,
-                                        response.typeId,
-                                        response.colorDescription,
-                                        response.rating,
-                                        response.description,
-                                        response.colorId,
-                                        response.categoryId,
-                                        response.price,
-                                        response.name,
-                                        response.style,
-                                        response.stock,
-                                        response.colorCode,
-                                        response.photo01,
-                                        response.photo02,
-                                        response.photo03,
-                                        response.photo04,
-                                        response.photo05,
-                                        response.createdAt,
-                                        response.updatedAt,
-                                        response.discount,
-                                        true
-                                    )
-                                    products.add(product)
-                                }else{
-                                    val product = ProductEntity(
-                                        0,
-                                        response.productId.toLong(),
-                                        response.productDetailId,
-                                        response.typeName,
-                                        response.categoryName,
-                                        response.typeId,
-                                        response.colorDescription,
-                                        response.rating,
-                                        response.description,
-                                        response.colorId,
-                                        response.categoryId,
-                                        response.price,
-                                        response.name,
-                                        response.style,
-                                        response.stock,
-                                        response.colorCode,
-                                        response.photo01,
-                                        response.photo02,
-                                        response.photo03,
-                                        response.photo04,
-                                        response.photo05,
-                                        response.createdAt,
-                                        response.updatedAt,
-                                        response.discount
-                                    )
-                                    products.add(product)
-                                }
-                            })
-                        }
-                    }
+                for(response in data) {
+                    val product = ProductEntity(
+                        0,
+                        response.productId.toLong(),
+                        response.productDetailId,
+                        response.typeName,
+                        response.categoryName,
+                        response.typeId,
+                        response.colorDescription,
+                        response.rating,
+                        response.description,
+                        response.colorId,
+                        response.categoryId,
+                        response.price,
+                        response.name,
+                        response.style,
+                        response.stock,
+                        response.colorCode,
+                        response.photo01,
+                        response.photo02,
+                        response.photo03,
+                        response.photo04,
+                        response.photo05,
+                        response.createdAt,
+                        response.updatedAt,
+                        response.discount
+                    )
+                    products.add(product)
                 }
+
                 localDataSource.insertProducts(products)
             }
         }.asLiveData()
