@@ -12,7 +12,7 @@ Result of Mobile Programming Final Project, requirement for pass Mobile Programm
 
 ## Information
 <p align="center">
-  <img src="https://img.tek.id/img/content/2019/08/23/19621/google-resmi-umumkan-nama-android-terbaru-3BlX51XEX7.jpg" width="200"/>
+  <img src="https://img.tek.id/img/content/2019/08/23/19621/google-resmi-umumkan-nama-android-terbaru-3BlX51XEX7.jpg" width="300"/>
 </p>
 <p align="center"><i><b>Figure 2</b> Android Logo</i></p>
 
@@ -34,5 +34,7 @@ Data source           : [DISCLAIMER- For Study Only] NIKE
 | Add - Remove Favorite Shoes       | <img src="https://user-images.githubusercontent.com/32255348/147899749-96ea65db-89d7-4bf8-a354-0bb2d7277072.gif" width="200" />      | Add - Remove Shoes in/to Shopping Cart          | <img src="https://user-images.githubusercontent.com/32255348/147899545-ce809f35-fa98-4276-a4d0-f87239d14176.gif" width="200" />      | 
 | Login & User Profile       | <img src="https://user-images.githubusercontent.com/32255348/147899689-b57bba65-5a29-461b-95df-9e93d7e17592.gif" width="200" />      | Checkout & Transaction History Page          | <img src="https://user-images.githubusercontent.com/32255348/147899692-4946f1c0-773d-481e-8824-0e78eb97e938.gif" width="200" />      | 
 
+## Reports
+You can find the reports of this project [here](https://github.com/patriciafiona/Mobile-Programming-Final-Project/tree/main/Reports).
 
 <p align="center">© Patricia Fiona 2021</p>
